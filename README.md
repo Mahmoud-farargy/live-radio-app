@@ -29,7 +29,7 @@ Give me a star if you like it. ⭐
         </li>
         <li><p>Station Info </p>
             <ul class="bullet--2">
-                <li><p>Get information about the current station, the song that's playing, and even its lyrics.<p><li>
+                <li><p>Get information about the current station, the song that's playing, and even its lyrics.</p><li>
             </ul>
         </li>
         <li><p>Settings </p>
