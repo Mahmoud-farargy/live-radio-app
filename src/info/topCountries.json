@@ -1,0 +1,23 @@
+[
+   {"name": "The United States Of America","countryCode":"us", "stationcount": 4596},
+{"name": "Germany", "countryCode":"de","stationcount": 3147},
+{"name": "China", "countryCode":"cn", "stationcount": 2293},
+{"name": "France", "countryCode":"fr", "stationcount": 1774},
+{"name": "Greece", "countryCode":"gr", "stationcount": 1235},
+{"name": "Italy", "countryCode":"it", "stationcount": 1048},
+{"name": "Russian", "countryCode":"ru", "stationcount": 1022},
+{"name": "Mexico", "countryCode":"mx", "stationcount": 997},
+{"name": "Egypt", "countryCode":"eg", "stationcount": 26},
+{"name": "Canada", "countryCode":"ca", "stationcount": 901},
+{"name": "The United Kingdom", "countryCode":"uk", "stationcount": 789},
+{"name": "Poland", "countryCode":"pl", "stationcount": 747},
+{"name": "Brazil", "countryCode":"br", "stationcount": 563},
+{"name": "Spain", "countryCode":"es", "stationcount": 552},
+{"name": "The Netherlands", "countryCode":"nl", "stationcount": 431},
+{"name": "Switzerland", "countryCode":"ch", "stationcount": 396},
+{"name": "Argentina", "countryCode":"ar", "stationcount": 354},
+{"name": "Australia", "countryCode":"aus", "stationcount": 287},
+{"name": "Peru", "countryCode":"pe", "stationcount": 257},
+{"name": "Turkey", "countryCode":"tr", "stationcount": 245},
+{"name": "Ukraine", "countryCode":"ua", "stationcount": 228}
+]

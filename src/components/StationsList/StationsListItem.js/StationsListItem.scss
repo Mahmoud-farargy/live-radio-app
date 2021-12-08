@@ -1,0 +1,108 @@
+#stationsListItem{
+    width: 100%;
+    margin:0;
+    padding: 0.6rem 0.9rem;
+    min-height: 59px;
+    transition: background-color 0.3s linear;
+    border-radius: 0.4rem;
+    .stationsList--item--inner{
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        .stationsList--item--left, .stationsList--item--actions{
+            display: flex;
+            align-items: center;
+        }
+        $right-spacing: 0.6rem;
+        .stationsList--item--left{
+            cursor: pointer;
+            .station--number{
+                width: 20px;
+                &::before{
+                    content: attr(data-attr);
+                    color: var(--text-black);
+                }
+                margin-right: $right-spacing;
+            }
+            img{
+                width: 45px;
+                height: 45px;
+                object-fit: cover;
+                border-radius: 5px;
+                margin-right: $right-spacing;
+            }
+        }
+       .stationsList--item--actions{
+           .stationsList--item--like{
+                display: grid;
+                place-items: center;
+                transition: all 0.3s linear;
+                cursor: pointer;
+                opacity: 0.7;
+                font-size: var(--font-size-large);
+                padding: 0.2rem 0.5rem;
+                &:hover{
+                    opacity: 1;
+                }
+           }
+           .like{
+               display: none;
+               color: var(--dark-gray);
+           }
+           .unlike{
+                opacity: 0.5;
+                color: var(--light-red);
+            }
+        .stationsList--item--select--container{
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            place-items: center;
+            vertical-align: text-top;
+            width: 30px;
+            height: 30px;
+            font-size: var(--font-size-medium);
+            max-width: 200px;
+            color: var(--text-black);
+            select{
+                cursor: pointer;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                appearance: none;
+                border:none;
+                opacity: 0;
+                &:focus{
+                    outline: none;
+                }
+            }
+        }
+       }
+    }
+
+    &:hover{
+        background-color: var(--transparent-black);
+        .stationsList--item--inner .stationsList--item--left .station--number{
+            &::before{
+                content: attr(data-playingstatus);
+            }
+        }
+        .stationsList--item--actions .stationsList--item--like{
+            .like{
+               display: inline-block;  
+            }
+            .unlike{
+                opacity: 1;
+            }
+        }
+    }
+} 
+li.active--station#stationsListItem{
+    background-color: var(--primary-clr);
+    .station--name{
+         color: #424242;
+    }
+    .station--location{
+        color: var(--quaternary-clr);
+    }
+}

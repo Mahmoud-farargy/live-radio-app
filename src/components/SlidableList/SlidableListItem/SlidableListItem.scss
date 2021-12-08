@@ -1,0 +1,22 @@
+#slidableListItem{
+    margin-right: 0.2rem;
+    max-width: 180px;
+    &:last-of-type{
+        margin-right: 0;
+    }
+    .picture--container{
+        img{
+            height: 140px;
+            width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+            border-radius:  0 var(--radius-curved) 0 var(--radius-curved);
+        }
+    }
+    .slidablelist--station--info{
+        margin-top:0.3rem;
+        .station--name, .station--location{
+            width:100vw;
+        }
+    }
+}

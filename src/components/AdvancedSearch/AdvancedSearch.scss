@@ -1,0 +1,49 @@
+#advancedSearch{
+    padding: 0 1rem 0 0;
+    position: relative;
+
+        span.Collapsible__trigger{
+            display: block;
+            width: 100%;
+            cursor: pointer;
+            font-weight: var(--font-weight-heavy);
+            font-size: var(--font-size-small);
+        }
+        .accordion__indicator{
+           position: absolute;
+           top:0;
+           right: 0;
+           padding: 0;
+           color: var(--text-gray);
+           transition: color 0.3s linear;
+           &:hover{
+                color: var(--text-dark);
+            }
+        } 
+        .accordion__indicator{
+            svg{
+                transition: transform 0.2s linear;
+                font-size: 1.1rem;
+                font-weight: 700;
+            }
+        }
+        form.advanced--search--form{
+           padding: 0 0 1.6rem;
+           .search--input--group{
+               padding-bottom: 0.9rem;
+               .input--label{
+                   align-items: center;
+                   padding-bottom: 0.5rem;
+                   font-size: 1rem;
+                   letter-spacing: 0.07rem;
+                   svg{
+                       margin-right: 0.2rem;
+                   }
+               }
+
+           }
+           .search--filters .search--select--input{
+                margin-bottom: 0.5em;
+            }
+        }
+}

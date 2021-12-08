@@ -1,0 +1,33 @@
+#hotKeys{
+    gap: 0.3rem 0.8rem;
+    padding-right: 1rem;
+    margin-bottom: 0.8rem;
+    &:last-of-type{
+        margin-bottom: 0;
+    }
+    .key__item{
+        background-color: var(--lighter-gray);
+        width: 40px;
+        height: 35px;
+        border-radius: 0.4rem; 
+        text-align: center;
+        display: grid;
+        place-items: center;
+        padding: 0.3rem 0.4rem;
+        span{
+            font-weight: var(--font-weight-heavy);
+            
+            font-size: var(--font-size-small);
+        }
+    }
+    .space__hotkey.key__item{
+        span{
+            font-size: 9px;
+        }
+    }
+    .hotkey--info{
+        h4{
+            margin-bottom: 0.3rem;
+        }
+    }
+}

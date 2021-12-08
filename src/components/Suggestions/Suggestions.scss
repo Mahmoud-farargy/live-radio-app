@@ -1,0 +1,98 @@
+#suggestions{
+    width: 100%;
+    margin: 1.1rem 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.3rem 1rem;
+    #recommended, #featured{
+        .suggestions--box--header{
+            align-items: center;
+            justify-content: space-between;
+        }
+        width: 100%;
+        padding:0;
+        background-color: var(--homeBoxes-bg-clr);
+        transition: background-color 0.3 linear;
+        display: block;
+        padding: 1.3rem 1rem;
+        margin-top: 1.3rem;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0px 4px 16px 0px rgba(44,101, 144, 0.1);
+        .list--name{
+            margin-bottom: 1.5rem;
+        }
+        ul{
+            list-style: none;
+            padding: 0;
+        }
+    }
+    #featured{
+        ul.pop--tags--list{
+            display: flex;
+            flex-wrap: wrap;
+            padding: 1.4rem 0.5rem;
+            gap: 0.8rem 0.6rem;
+            width: 100%;
+            background-color: var(--more-lighter-gray);
+            align-items: stretch;
+            border-radius: 0.3rem;
+            li.pop--tags--list--item{
+                .pop--tag{
+                    padding: 0.2rem 0.4rem;
+                    border-radius: 0.4rem;
+                    background-color: var(--text-black);
+                    color: var(--ultra-white);
+                    transition:  0.3s linear;
+                    transition-property: color,background-color;
+                    cursor: pointer;
+                    border: 1px solid transparent;
+                    &:hover{
+                        background-color: var(--light-primary-clr);
+                        color: var(--text-black);
+                        border-color: var(--text-black);
+                    }
+                    &:active{
+                        background-color: var(--primary-clr);
+                    }
+                }
+            }
+        }
+    }
+    #recommended{
+        .remomended--list{
+            display: grid;
+            gap: 0.8rem 0.6rem;
+            .recommended--item{
+                background-color: var(--more-lighter-gray);
+                border-radius: 0.4rem;
+                display: grid;
+                place-items: center;
+                padding: 0.9rem 0.5rem;
+                cursor: pointer;
+                .recommended--item--inner{
+                    img{
+                        width: 50px;
+                        min-height: 100%;
+                        object-fit: contain;
+                        background-color: inherit;
+                        margin-bottom: 1.4rem;
+                    }  
+                    h5{
+                        display: block;
+                        text-align: center;
+                        text-transform: capitalize;
+                    }
+                }
+                transition: background-color 0.3s linear;
+                &:hover{
+                    background-color: var(--light-primary-clr);
+                }
+                &:active{
+                    background-color: var(--primary-clr);
+                }
+            }
+
+        }
+    }
+}

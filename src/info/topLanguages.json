@@ -1,0 +1,21 @@
+[
+    {"name": "english", "countryCode": "us","iso_639": "en", "stationcount": 7350},
+    {"name": "german", "countryCode": "de","iso_639": "de", "stationcount": 2928},
+    {"name": "spanish", "countryCode": "es","iso_639": "es", "stationcount": 2626},
+    {"name": "chinese", "countryCode": "ch","iso_639": "zh", "stationcount": 2207},
+    {"name": "french",  "countryCode": "fr","iso_639": "fr", "stationcount": 1952},
+    {"name": "greek", "countryCode": "gr", "iso_639": "el", "stationcount": 1050},
+    {"name": "italian", "countryCode": "it", "iso_639": "it", "stationcount": 1030},
+    {"name": "russian", "countryCode": "ru","iso_639": "ru", "stationcount": 796},
+    {"name": "polish", "countryCode": "pl", "iso_639": "pl", "stationcount": 671},
+    {"name": "portuguese", "countryCode": "pt","iso_639": "pt", "stationcount": 573},
+    {"name": "dutch", "countryCode": "nl","iso_639": "nl", "stationcount": 394},
+    {"name": "arabic",  "countryCode": "sa","iso_639": "ar", "stationcount": 226},
+    {"name": "ukrainian", "countryCode": "ua","iso_639": "uk", "stationcount": 204},
+    {"name": "hungarian", "countryCode": "hu", "iso_639": "hu", "stationcount": 171},
+    {"name": "romanian", "countryCode": "ro", "iso_639": "ro", "stationcount": 155},
+    {"name": "czech", "countryCode": "cz","iso_639": "cs", "stationcount": 152},
+    {"name": "japanese", "countryCode": "jp","iso_639": "ja", "stationcount": 144},
+    {"name": "croatian", "countryCode": "hr","iso_639": "hr", "stationcount": 133},
+    {"name": "catalan", "countryCode": "ca","iso_639": "ca", "stationcount": 125}
+]
