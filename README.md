@@ -18,13 +18,13 @@ Give me a star if you like it. ⭐
  <ul class="bullet--1">
          <li><p>Listen to thousands of Radio stations</p>
             <ul class="bullet--2">
-                <li><p>Bookmark your favorites.<p><li>
+                <li><p>Bookmark your favorites.</p><li>
                 <li><p>History list that keeps track of the most recently played stations.</p></li>
             </ul>
         </li>
         <li><p>Search </p>
             <ul class="bullet--2">
-                <li><p>Search for stations based on name, language, country, state, and shared tags.<p><li>
+                <li><p>Search for stations based on name, language, country, state, and shared tags.</p><li>
             </ul>
         </li>
         <li><p>Station Info </p>
@@ -34,7 +34,7 @@ Give me a star if you like it. ⭐
         </li>
         <li><p>Settings </p>
             <ul class="bullet--2">
-                <li><p>Change the app language.<p><li>
+                <li><p>Change the app language.</p><li>
                 <li><p>Set a sleep timeout, change the current theme, and more.</p></li>
             </ul>
         </li>
