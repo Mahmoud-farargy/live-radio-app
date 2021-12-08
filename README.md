@@ -1,5 +1,5 @@
 <h2>Description</h2>
-A live radio app made with React.js. (hasn't been finished yet)
+A live radio app made with React.js. **(hasn't been finished yet)**
 
 <h2>Preview</h2>
 
