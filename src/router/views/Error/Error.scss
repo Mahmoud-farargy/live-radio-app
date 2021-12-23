@@ -1,0 +1,23 @@
+#errorRoute{
+    width: 100%;
+    height: calc(100vh - var(--height-header));
+    display: grid;
+    place-content: center;
+    padding:20px;
+    .error--route--inner{
+        text-align: center;
+        h2{
+            margin-bottom: 2.3rem;
+        }
+        p{
+            margin-bottom: 1.2rem;
+            color: var(--text-black);
+        }
+        a{
+            justify-self:center;
+            margin: auto;
+            display: inline;
+            text-decoration: none;
+        }
+    }
+}

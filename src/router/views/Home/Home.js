@@ -22,7 +22,6 @@ const Home = () => {
             <Suggestions />
              <SlidableList params={{tag:  getRandomList(), order: "random"}}
             />
-            {/* languages & countries */}
              <SlidableList params={{tag:  getRandomList(), order: "random"}}
             />
             <SlidableList params={{tag:  getRandomList(), order: "random"}}

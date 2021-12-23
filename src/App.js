@@ -10,14 +10,21 @@ import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import { useTranslation } from 'react-i18next';
 import LostConnectivity from "./components/Modal/LostConnection/LostConnection";
+import { useLocation } from "react-router-dom";
 
 function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, localMemory }) {
+  const currlocation = useLocation();
+  // refs
   const _isMounted = useRef(true);
   const navToggler = useRef(null);
+  // states
   const [isMenuExpanded, setMenuExpansion]= useState(false);
   const [isConnected, setConnectivity] = useState(navigator.onLine);
+  const [isLoading, setLoading] = useState(true);
   const { i18n } = useTranslation();
+  // effects
   useEffect(() => {
+    window.addEventListener("load", () => setLoading(false));
     window.addEventListener('offline', ()=> setConnectivity(false));
     window.addEventListener('online', () => setConnectivity(true));
     changeTheme(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light");
@@ -27,10 +34,21 @@ function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, localMemo
     const newLocStorage = locStorage({ type: "get" });
   
     if (newLocStorage && Object.keys(newLocStorage).length > 0) { 
-      console.log(newLocStorage);
       updateStoreWithLocalStorage({ type: "update", storage: newLocStorage});
     }
+    let consoleStyles= [ 
+      "font-size: 12px", 
+      "font-family: monospace", 
+      "background: white", 
+      "display: inline-block", 
+      "color: black", 
+      "padding: 8px 19px", 
+      "border: 1px dashed;" 
+  ].join(";") 
+    console.log(`%c Hi 👋 ! Glad you made it down here. Welcome to a console.log() adventure.`, consoleStyles);
+    console.log('%c If you like Soundex, I suggest you see more projects on my portfolio: https://mahmoud-farargy.web.app. Kiss from me 😘', 'background: #ee11cc; color: #eee; font-size: 15px');
     return () => {
+      window.addEventListener("load", () => {});
       window.removeEventListener('offline', () => {});
       window.removeEventListener('online', () => {});
     // window.matchMedia('(prefers-color-scheme: dark)').removeEventListener(() => {});
@@ -54,10 +72,16 @@ function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, localMemo
       document.body.style.overflow = "visible";
     }
   },[]);
-  
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left:0,
+      behavior: "auto"
+    })
+  },[currlocation]);
+  // functions
   const onNavTogglerChange = (e) => {
     const isChecked = e.target.checked;
-    console.log(isChecked);
     if((window.innerWidth || document.documentElement.clientWidth) <= 670){
       if(isChecked){
          document.body.style.overflow = "hidden"; 
@@ -67,6 +91,7 @@ function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, localMemo
     }
     setMenuExpansion(isChecked);
   }
+  // jsx
   return (
     <div id="app">
       {/* modals */}
@@ -76,7 +101,7 @@ function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, localMemo
       <input ref={navToggler} type="checkbox" onChange={(e) => onNavTogglerChange(e)} id="nav-toggler" />
       <>
         <Sidebar closeSidebarOnMobile={closeSidebarOnMobile} isMenuExpanded={isMenuExpanded}/>
-        <Screens closeSidebarOnMobile={closeSidebarOnMobile}/>
+        <Screens closeSidebarOnMobile={closeSidebarOnMobile} isAppLoading={isLoading}/>
       </>
       <Player />
     </div>

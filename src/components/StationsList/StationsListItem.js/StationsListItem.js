@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useEffect, useState, memo } from "react";
+import React, { Fragment, useRef, useEffect, useState, memo, useContext } from "react";
 import "./StationsListItem.scss";
 import defaultImg from "../../../desgin/Assets/radio.jpg";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
@@ -8,14 +8,20 @@ import * as actionTypes from "../../../store/actions/actions";
 import { connect } from "react-redux";
 import * as consts from "../../../utilities/consts";
 import StationInfoModal from "../../Modal/StationInfo/StationInfo";
+import StationOptions from "../../StationOptions/StationOptions";
+import { AudioContext } from "../../PlayerContext/PlayerContext";
+import { BsPlayFill, BsFillPauseFill} from "react-icons/bs";
+import Loader from "react-loader-spinner";
 
-const StationsListItem = ({ item, index, updateFavs, changeCurrentPlaylist, wholeList, currentStationId, storageCopy }) => {
+const StationsListItem = ({ item, index, updateFavs, changeCurrentPlaylist, wholeList, currentStationId, isAudioPlaying, storageCopy }) => {
     const imgRef = useRef(null);
     const stationLocation = `${(item.state && item.country) ? item.state + ", " : item.state}${item.country}`;
     const [isPlaying, setPlaying] = useState(false);
     const [isLiked, setLikingState] = useState(false);
     const [isRecentlyPlayed, setRecentlyPlayed] = useState(false);
+    const [isHoveredOn, setHovering] = useState(false);
     const [openInfoModal, setInfoModal] = useState(false);
+    const { playAudio, pauseAudio } = useContext( AudioContext );
 
     useEffect(() => {
         if (imgRef && imgRef.current) {
@@ -47,7 +53,6 @@ const StationsListItem = ({ item, index, updateFavs, changeCurrentPlaylist, whol
     }
 
     const onLikingUnlikingStation = () => {
-        console.log(item);
         if(isLiked){
             updateFavs({ type: "delete", itemId: item.stationuuid, destination: "favorites" });   
         }else{
@@ -57,36 +62,28 @@ const StationsListItem = ({ item, index, updateFavs, changeCurrentPlaylist, whol
     const removeFromHistory = () => {
         updateFavs({ type: "delete", itemId: item.stationuuid, destination: "history" }); 
     }
-    const onOptionsChange = (e) => {
-        const val = e.target.value;
-        switch(val){
-            case "more_info":
-                console.log("met");
-                setInfoModal(true);
-            break;
-            case "visit_homepage":
-                if(item.homepage){
-                    window.open(item.homepage,"_blank");
-                }
-            break;
-            case "like_unlike":
-                onLikingUnlikingStation();
-            break;
-            case "remove_from_history":
-                removeFromHistory();
-            break;
-            default:
+    const handleStationPlaying = () => {
+        if(isPlaying && isAudioPlaying){
+            pauseAudio();
+        }else{
+            changeCurrentPlaylist({list: wholeList, currentStationId: item.stationuuid});
+            playAudio();
         }
     }
     return (
         <Fragment>
             {/* modal(s) */}
-            {openInfoModal && <StationInfoModal isModalOpen={openInfoModal} setModalOpenning={setInfoModal} itemObject={item} />}
+            {openInfoModal && <StationInfoModal isModalOpen={openInfoModal} setModalOpenning={setInfoModal} itemObject={item}  handleStationPlaying={handleStationPlaying} isAudioPlaying={isAudioPlaying} isPlaying={isPlaying}  />}
 
-            <li id="stationsListItem" className={`${isPlaying ? "active--station" : ""}`}>
+            <li id="stationsListItem" onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)} className={`${isPlaying ? "active--station" : ""}`}>
                 <div className="stationsList--item--inner flex-row">
-                    <div className="stationsList--item--left" onClick={() => !isPlaying && changeCurrentPlaylist({ list: wholeList, currentStationId: item.stationuuid })}>
-                        <span className="station--number" data-attr={index + 1} data-playingstatus={isPlaying ? "■" : "▶"}></span>
+                    <div className="stationsList--item--left" onClick={() => handleStationPlaying()}>
+                        <span className="station--number" >{ isHoveredOn ?  ((isPlaying && isAudioPlaying)  ? <BsFillPauseFill className="stations__item__media__btn"/> : <BsPlayFill className="stations__item__media__btn"/>) : (isPlaying && isAudioPlaying) ?
+                        <Loader
+                            type="Audio"
+                            color="var(--ultra-white)"
+                            height={15}
+                            width={15} /> :`${index + 1}` }</span>
                         <img
                             src={item.favicon}
                             alt={item.name || "station"}
@@ -107,21 +104,18 @@ const StationsListItem = ({ item, index, updateFavs, changeCurrentPlaylist, whol
                             }
 
                         </span>
-                        <span className="stationsList--item--select--container">
-                            <select value={"hiddenoption"} onChange={(e) => onOptionsChange(e)}>
-                                <optgroup label={`Options for "${item.name}"`}>
-                                    <option value="hiddenoption" hidden="hidden" disabled="disabled">Please select..</option>
-                                    <option value="more_info">More Info about {trimText(item.name, 17)}</option>
-                                    {isRecentlyPlayed && <option value="remove_from_history">Remove from play history</option>}
-                                    <option value="visit_homepage">Visit Homepage</option>
-                                    <option value="like_unlike">{isLiked? "Unlike" : "Like"}</option>
-                                </optgroup>
-                                <option>Cancel</option>
-                            </select>
-                            <BsThreeDotsVertical />
+                        <span className="options__btn">
+                            <StationOptions
+                                isRecentlyPlayed={isRecentlyPlayed}
+                                isLiked={isLiked}
+                                setInfoModal={setInfoModal}
+                                item={item}
+                                onLikingUnlikingStation={onLikingUnlikingStation}
+                                removeFromHistory={removeFromHistory}
+                                btnIcon={<BsThreeDotsVertical />}
+                            />   
                         </span>
                     </div>
-
                 </div>
             </li>
         </Fragment>
@@ -130,7 +124,8 @@ const StationsListItem = ({ item, index, updateFavs, changeCurrentPlaylist, whol
 const mapStateToProps = state => {
     return {
         currentStationId: state[consts.MAIN].currentStationId || "",
-        storageCopy: state[consts.MAIN].localStorageCopy
+        storageCopy: state[consts.MAIN].localStorageCopy,
+        isAudioPlaying: state[consts.MAIN].isAudioPlaying || false
     }
 }
 const mapDispatchToProps = dispatch => {

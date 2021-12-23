@@ -5,12 +5,95 @@
         margin-right: 0;
     }
     .picture--container{
+        position: relative;
+        min-height: 140px;
+        width: 100%;
+        .music--anim--container, .slidable--item--layout, .slidable--item--layout--inner, img{
+                position: absolute;
+                top:0;
+                left: 0;
+                width: 100%;
+        }
+        .slidable--item--layout{
+            height: 100%;
+            visibility: none;
+            opacity: 0;
+            pointer-events: none;
+            background-color: rgba(0,0,0,0.2);
+            color: var(--gray);
+            padding: 0.4rem;
+            display: block;
+            transition: 0.250s ease-in;
+            transition-property: visibility, opacity;
+            border-radius: var(--radius) ;
+
+            .slidable--item--layout--inner{
+                height: 100%;
+                top:0.4rem;
+                left: 0.4rem;
+                z-index: 10;
+                .option__btn{
+                    cursor: pointer;
+                    color: #fff;
+                    padding: 0.1rem 0.2rem;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    background-color: transparent;
+                    backdrop-filter: blur(15px) brightness(90%);
+                    transition: 0.2s linear;
+                    transition-property: background-color;
+                    display: grid;
+                    place-content: center;
+                    &:hover{
+                        background-color: var(--primary-clr);
+                    }
+                }
+                .slidable__item__fav__btn, .slidable__item__options__btn, .slidable__item__media__btn{
+                    position: absolute;
+                    right: 13px;
+                }
+                .slidable__item__options__btn, .slidable__item__media__btn{
+                    bottom: 13px;
+                }
+                .slidable__item__fav__btn{
+                    top: 0px;
+                } 
+                .slidable__item__media__btn{
+                    left:0px;
+                }
+                .slidable__item__options__btn{
+                    font-size: 22px;
+                }
+                .unlike{
+                    color: var(--light-red);
+                }
+            }
+
+        }
         img{
             height: 140px;
-            width: 100%;
             min-height: 100%;
-            object-fit: cover;
-            border-radius:  0 var(--radius-curved) 0 var(--radius-curved);
+            object-fit: fill;
+            border-radius: var(--radius);
+            z-index: 3;
+        }
+        .music--anim--container{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translate(-50%,-50%);
+            z-index: 3;
+          }
+    }      
+    &:hover{
+        .picture--container .slidable--item--layout{
+            visibility: visible;
+            pointer-events: auto;
+            opacity: 1;
         }
     }
     .slidablelist--station--info{

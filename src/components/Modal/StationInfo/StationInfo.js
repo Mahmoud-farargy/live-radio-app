@@ -9,14 +9,16 @@ import { useHistory } from "react-router-dom";
 import * as Consts from "../../../utilities/consts";
 import { FaRegThumbsUp } from "react-icons/fa";
 import { ImHome3 } from "react-icons/im";
+import { BsPlayFill, BsFillPauseFill} from "react-icons/bs";
 
-const StationInfo = ({ itemObject, setModalOpenning, isModalOpen }) => {
+const StationInfo = ({ itemObject, setModalOpenning, isModalOpen, handleStationPlaying, isPlaying, isAudioPlaying }) => {
     const history = useHistory();
     // states
     const [moreInfo, setMoreInfo] = useState({});
     const [tagsList, setTagsList] = useState([]);
     const [songLyrics, setSongLyrics] = useState([]);
     const [getAvatar, setGetAvatar] = useState([]);
+
     // refs
     const _isMounted = useRef(true);
     useEffect(() => {
@@ -24,7 +26,6 @@ const StationInfo = ({ itemObject, setModalOpenning, isModalOpen }) => {
             // gets artist and song titles
             if (_isMounted.current) {
                 const receivedData = res?.data;
-                console.log(receivedData);
                 if (receivedData && Object.keys(receivedData).length > 0) {
                     const splittedTitle = receivedData.title?.split("-");
                     const editVal = (x) => {
@@ -54,7 +55,6 @@ const StationInfo = ({ itemObject, setModalOpenning, isModalOpen }) => {
                         // Get additional info
                         Api().get(`https://ws.audioscrobbler.com/2.0/?method=track.getinfo&api_key=${lastFMKey}&artist=${artist?.trim()?.toLowerCase()}&track=${song?.trim()?.toLowerCase()}&format=json`).then(res => {
                             if (_isMounted?.current) {
-                                console.log(res);
                                 const trackInfo = res?.data?.track;
                                 const songInfo = {
                                     artwork: trackInfo?.album?.image[3]?.["#text"] ? trackInfo?.album?.image[3]?.["#text"] : trackInfo?.album?.image[2]?.["#text"] ? trackInfo?.album?.image[2]?.["#text"] : "",
@@ -72,7 +72,6 @@ const StationInfo = ({ itemObject, setModalOpenning, isModalOpen }) => {
 
                         }).catch((e) => {
                             if (_isMounted?.current) {
-                                console.log(e)
                                 setGetAvatar([]);
                             }
                         });
@@ -86,9 +85,6 @@ const StationInfo = ({ itemObject, setModalOpenning, isModalOpen }) => {
             _isMounted.current = false;
         }
     }, []);
-    useEffect(() => {
-        console.log(moreInfo, songLyrics, getAvatar);
-    }, [moreInfo, songLyrics, getAvatar]);
     useEffect(() => {
         if (itemObject.tags) {
             const newArr = [
@@ -105,6 +101,7 @@ const StationInfo = ({ itemObject, setModalOpenning, isModalOpen }) => {
         history.push(`${Consts.CATEGORY}?tag=${tagName}&order=votes&reverse=true`);
         setModalOpenning(false);
     }
+
     return (
         <Modal label={itemObject.name ? trimText(itemObject.name, 20) : ""} isDismissible={true} isModalOpen={isModalOpen} onModalChange={setModalOpenning}>
             <div id="stationInfoModal">
@@ -112,7 +109,10 @@ const StationInfo = ({ itemObject, setModalOpenning, isModalOpen }) => {
                 <div className="into--top">
                     {(moreInfo.song && moreInfo.artist) && <h4 className="song__title"> {moreInfo.song} / {moreInfo.artist}</h4>}
                 </div>
-
+                {/* play/pause station */}
+                <span className="modal__play__pause__btns" onClick={() => handleStationPlaying()}>
+                        {(isPlaying && isAudioPlaying) ? <BsFillPauseFill/> : <BsPlayFill/>}   
+                </span>
                 {/* tags */}
                 <ul className="info--song--tags flex-row">
                     {
@@ -171,5 +171,8 @@ StationInfo.propTypes = {
     itemObject: PropTypes.object.isRequired,
     setModalOpenning: PropTypes.func.isRequired,
     isModalOpen: PropTypes.bool.isRequired,
+    handleStationPlaying: PropTypes.func.isRequired,
+    isPlaying: PropTypes.bool.isRequired,
+    isAudioPlaying: PropTypes.bool.isRequired,
 }
 export default StationInfo;

@@ -18,10 +18,9 @@
             cursor: pointer;
             .station--number{
                 width: 20px;
-                &::before{
-                    content: attr(data-attr);
-                    color: var(--text-black);
-                }
+                display: grid;
+                place-content: center;
+                color: var(--text-black);
                 margin-right: $right-spacing;
             }
             img{
@@ -30,6 +29,9 @@
                 object-fit: cover;
                 border-radius: 5px;
                 margin-right: $right-spacing;
+            }
+            .stations__item__media__btn{
+                font-size: var(--font-size-large);
             }
         }
        .stationsList--item--actions{
@@ -53,40 +55,15 @@
                 opacity: 0.5;
                 color: var(--light-red);
             }
-        .stationsList--item--select--container{
-            position: relative;
-            overflow: hidden;
-            display: grid;
-            place-items: center;
-            vertical-align: text-top;
-            width: 30px;
-            height: 30px;
-            font-size: var(--font-size-medium);
-            max-width: 200px;
+        .options__btn{
             color: var(--text-black);
-            select{
-                cursor: pointer;
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                appearance: none;
-                border:none;
-                opacity: 0;
-                &:focus{
-                    outline: none;
-                }
-            }
+            font-size: var(--font-size-medium);
         }
        }
     }
 
     &:hover{
         background-color: var(--transparent-black);
-        .stationsList--item--inner .stationsList--item--left .station--number{
-            &::before{
-                content: attr(data-playingstatus);
-            }
-        }
         .stationsList--item--actions .stationsList--item--like{
             .like{
                display: inline-block;  

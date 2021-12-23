@@ -6,22 +6,18 @@ import { getObjectFromQueries } from "../../../utilities/tools";
 
 const Category = ({ fetchStations }) => {
     const currentQueries = useQuery();
-    console.log(currentQueries);
     const [response, setResponse] = useState({
         results: [],
         loading: false
     });
 
     useEffect(() => {
-        console.log(currentQueries);
         if (currentQueries) {
             setResponse({
                 ...response,
                 loading: true
             });
-            console.log("current query", getObjectFromQueries(currentQueries), new URLSearchParams(currentQueries));
             fetchStations(getObjectFromQueries(currentQueries)).then((res) => {
-                console.log(res);
                 setResponse({
                     results: res,
                     loading: false
@@ -37,7 +33,7 @@ const Category = ({ fetchStations }) => {
 
     return (
         <Fragment>
-            <StationsList list={response?.results} loading={response?.loading} title={currentQueries.get("tag") || currentQueries.get("name") || "Search"}/>
+            <StationsList list={response?.results} loading={response?.loading} title={currentQueries?.get("tag") || currentQueries?.get("name") || "Search"}/>
         </Fragment>
     )
 }

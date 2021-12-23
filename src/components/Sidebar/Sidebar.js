@@ -17,6 +17,7 @@ import PropTypes from "prop-types";
 import { retry } from "../../utilities/RetryImport";
 import * as consts from "../../utilities/consts";
 import styled from "styled-components";
+import GlobalLoading from "../Loading/Global";
 
 const AdvancedSearch = lazy(() => retry(() => import("../AdvancedSearch/AdvancedSearch")));
 const Settings = lazy(() => retry(() => import("../Settings/Settings")));
@@ -136,7 +137,7 @@ const Sidebar = ({ isPlayerFullMode, isPlayerOpen, closeSidebarOnMobile, isMenuE
                                     :
                                     activeListItem.id === consts.menuIds.advanced_search ?
                                     // advanced search
-                                    <Suspense fallback="loading...">
+                                    <Suspense fallback={<GlobalLoading />}>
                                           <AdvancedSearch closeSidebarOnMobile={closeSidebarOnMobile}/>
                                     </Suspense>
                                     :
@@ -146,7 +147,7 @@ const Sidebar = ({ isPlayerFullMode, isPlayerOpen, closeSidebarOnMobile, isMenuE
                                     :
                                     activeListItem.id === consts.menuIds.settings ?
                                     // settings
-                                    <Suspense fallback="loading...">
+                                    <Suspense fallback={<GlobalLoading />}>
                                         <Settings switchToMainSlide={switchToMainSlide}/>
                                     </Suspense>
                                     : null

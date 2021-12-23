@@ -1,17 +1,17 @@
-import React, {memo} from "react";
+import React, { memo, useState } from "react";
 import Auxiliary from "../HOC/Auxiliary";
 import StationsListItem from "./StationsListItem.js/StationsListItem";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import EmptyResults from "../Generic/EmptyResults";
+import PropTypes from "prop-types";
 import * as consts from "../../utilities/consts";
+import { BsShareFill } from "react-icons/bs";
+import ShareList from "../Modal/ShareList/ShareList";
 
 
 const OuterContainer = styled.div`
         ul#stationsList{
-            .list--name{
-                margin: 0.1rem 0 1rem 0;
-            }
             width: 100%;
             list-style: none;
             padding:0;
@@ -21,6 +21,28 @@ const OuterContainer = styled.div`
             margin-top: 1.3rem;
             border-radius: 0.5rem;
             overflow: hidden;
+            .stations--list--header{
+                margin: 0.1rem 0 0.8rem 0;
+                width: 100%;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                .list--name{
+                    margin:0;
+                }
+                button.social__share__btn{
+                    display: grid;
+                    place-content:center;
+                    border:none;
+                    background: transparent;
+                    padding: 0.4rem 0.5rem;
+                    cursor: pointer;
+                    border-radius: 5px;
+                    &:hover{
+                        background-color: var(--light-primary-clr);
+                    }
+                }
+            }
         }
         .list--loading{
             @keyframes spin {
@@ -46,14 +68,22 @@ const OuterContainer = styled.div`
         }
 `;
 
-const StationsList = ({ list, loading, isPlayerFullMode, isPlayerOpen, title }) => {
+const StationsList = ({ list, loading, isPlayerFullMode, isPlayerOpen, title, areSavedStations }) => {
+    const [ isSocialModalOpen, setSocialModalOpenning ] = useState(false);
     return (
         <Auxiliary>
+            {isSocialModalOpen && <ShareList listName={title} setSocialModalOpenning={setSocialModalOpenning} isSocialModalOpen={isSocialModalOpen} listLink={window.location.href}/>}
             <OuterContainer playerState={{isPlayerFullMode, isPlayerOpen}} className="stationsList--outer--container">
                 {
                     !loading ?
                     <ul id="stationsList">
-                        {list?.length > 0 &&<h4 className="list--name">{title}</h4>}
+                        <div className="stations--list--header flex-row">
+                          {list?.length > 0 &&<h4 className="list--name">{title}</h4>}  
+                            {(!areSavedStations && list?.length > 0) && <button onClick={() => setSocialModalOpenning(true)} title="Share this list" className="social__share__btn">
+                                <BsShareFill />
+                            </button>}
+                        </div>
+                        
                         {
                             list && list.length > 0 ? list.map((item, idx) => {
                                 return item && (
@@ -73,12 +103,20 @@ const StationsList = ({ list, loading, isPlayerFullMode, isPlayerOpen, title }) 
         </Auxiliary>
     )
 };
-
+StationsList.propTypes = {
+    list: PropTypes.array.isRequired,
+    loading: PropTypes.bool.isRequired,
+    isPlayerFullMode: PropTypes.bool.isRequired,
+    isPlayerOpen:  PropTypes.bool.isRequired,
+    title:  PropTypes.string.isRequired,
+    areSavedStations: PropTypes.bool.isRequired,
+}
 StationsList.defaultProps ={
     list: [],
     loading: false,
     title: "",
-    isPlayerFullMode: true
+    isPlayerFullMode: true,
+    areSavedStations: false
 }
 const mapStateToProps = state => {
     return {

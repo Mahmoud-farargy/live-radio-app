@@ -6,7 +6,7 @@ import * as actionTypes from "../../store/actions/actions";
 import * as consts from "../../utilities/consts"; 
 import PropTypes from "prop-types";
 import appConfig from "../../info/app-config.json";
-
+import { AudioContext } from "../PlayerContext/PlayerContext";
 class Player extends PureComponent {
     constructor(props){
         super(props);
@@ -19,10 +19,10 @@ class Player extends PureComponent {
         }
         this.onPlayerModeChange = this.onPlayerModeChange.bind(this);
     }
+    static contextType = AudioContext;
     componentDidMount(){
         document.onkeydown = (clickedKey) => {
             if(document.activeElement.tagName !== "INPUT" && ((window.innerWidth || document.documentElement.clientWidth) >= 670)){
-                console.log(clickedKey);
                 switch(clickedKey.code){
                     case "Space":
                         clickedKey.preventDefault();
@@ -32,14 +32,20 @@ class Player extends PureComponent {
                         const decreaseVal = 1 / 10;
                         if(this.state.currentVolumeLevel > 0.001 && this.state.currentVolumeLevel <= 1){
                             clickedKey.preventDefault();
-                            this.setState((prevState) => ({...this.state, currentVolumeLevel: Number(prevState.currentVolumeLevel - decreaseVal)})) ;
+                            this.setState((prevState) => {
+                                let newVolume = prevState.currentVolumeLevel - decreaseVal;
+                               return ({...this.state, currentVolumeLevel: Number(newVolume < 0 ? 0 : newVolume > 1 ? 1 : newVolume)});
+                            });
                         }
                     break;
                     case "Equal":
                         const increaseVal =  0.10 * 1;
                         if(this.state.currentVolumeLevel < 0.9){
                             clickedKey.preventDefault();
-                            this.setState((prevState) => ({...this.state, currentVolumeLevel: Number(prevState.currentVolumeLevel + increaseVal)}));
+                            this.setState((prevState) => {
+                               let newVolume = prevState.currentVolumeLevel + increaseVal;
+                               return ( {...this.state, currentVolumeLevel: Number( newVolume < 0 ? 0 : newVolume > 1 ? 1 : newVolume )});
+                            });
                         }
                     break;
                     case "KeyP":
@@ -65,25 +71,30 @@ class Player extends PureComponent {
             const currIdx = this.props.currentPlaylist?.list?.map(el => el.id).indexOf(this.props.currentStationId);
           
             if(currIdx !== -1){
-                // console.log(this.props.currentPlaylist?.oldList[currIdx]);
                   this.props.updateHistory({ type: "add", item: this.props.currentPlaylist?.oldList?.[currIdx], destination: "history" });
             } 
         }
         if(prevState.currentVolumeLevel !== this.state.currentVolumeLevel){
-            console.log(this.state.currentVolumeLevel);
             this.audioInstance.volume = this.state.currentVolumeLevel;
         }
-        if(prevProps.localMemory?.settings !== this.props.localMemory?.settings){
+        if((prevProps.localMemory?.settings !== this.props.localMemory?.settings) || (prevProps.isAudioPlaying !== this.props.isAudioPlaying)){
             const settings = this.props.localMemory?.settings
             if(settings){
                 if(settings.sleepTimer && settings.sleepTimeout > 0){
-                    this.sleepElTimeout.current = setTimeout(() => {
-                    if(this._isMounted){
-                        this.audioInstance.pause();
-                        notify("Time is up.");
+                    if(this.props.isAudioPlaying){
+                        this.sleepElTimeout.current = setTimeout(() => {
+                        if(this._isMounted){
+                            if(this.props.isAudioPlaying){
+                                this.audioInstance.pause(); 
+                                notify(`${settings.sleepTimeout} ${settings.sleepTimeout > 1 ? "mins are" : " min is"} over. The stream has been stopped.`); 
+                            }
+                            clearTimeout(this.sleepElTimeout.current);
+                        }
+                        }, settings.sleepTimeout * 60000); 
+                    }else{
                         clearTimeout(this.sleepElTimeout.current);
                     }
-                    }, settings.sleepTimeout * 60000);
+
                 } 
             }
         }
@@ -99,7 +110,6 @@ class Player extends PureComponent {
         }
     }
     getCurrentPlayingStation(x) {
-        console.log("test",x);
         if(x.id){
           document.title = `${x.name ? x.name + " | " : ""}${appConfig.title}`;
           this.props.changeCurrentID(x.id);  
@@ -109,14 +119,21 @@ class Player extends PureComponent {
     changeTheme(currTheme){
         this.props.changeCurrentTheme(currTheme);
     }
+    onPlaying(x){
+        this.getCurrentPlayingStation(x);
+        this.props.changePlayingState(true);
+    }
+    onPausing(){
+        this.props.changePlayingState(false);
+    }
 
     render(){
         return (
             <Fragment>
                  <ReactJkMusicPlayer 
                     getAudioInstance={(instance) => {
-                        console.log(instance);
-                        this.audioInstance = instance
+                        this.audioInstance = instance;
+                        this.context.onAudioInstanceChange(instance);
                     }}
                     showDownload={false}
                     showPlayMode={false}
@@ -134,7 +151,9 @@ class Player extends PureComponent {
                     clearPriorAudioLists={true}
                     defaultVolume={this.state.currentVolumeLevel}
                     onModeChange={(e) => this.onPlayerModeChange(e)}
-                    onAudioPlay={(a) => this.getCurrentPlayingStation(a)}
+                    onAudioPlay={(a) => this.onPlaying(a)}
+                    onAudioEnded={() => this.onPausing()}
+                    onAudioPause={() => this.onPausing()}
                     // onAudioError={(e) => notify(e?.message || "Failed to play this radio station.","error")}
                     showLyric={false}
                     onPlayIndexChange={(e) => this.setState({currentPlayIndex:e})}
@@ -157,14 +176,16 @@ Player.propTypes = {
     currentPlaylist: PropTypes.object.isRequired,
     isPlayerOpen: PropTypes.bool.isRequired,
     currentStationId: PropTypes.string.isRequired,
-    localMemory: PropTypes.object.isRequired
+    localMemory: PropTypes.object.isRequired,
+    isAudioPlaying: PropTypes.bool.isRequired
 }
 const mapStateToProps = state => {
     return {
         currentPlaylist: state[consts.MAIN].currentPlaylist || {},
         isPlayerOpen: state[consts.MAIN].isPlayerOpen,
         currentStationId: state[consts.MAIN].currentStationId || "",
-        localMemory: state[consts.MAIN].localStorageCopy || {}
+        localMemory: state[consts.MAIN].localStorageCopy || {},
+        isAudioPlaying: state[consts.MAIN].isAudioPlaying || false
     }
 }
 const mapDispatchToProps = dispatch => {
@@ -172,7 +193,8 @@ const mapDispatchToProps = dispatch => {
       changePlayerMode: (val) => dispatch({type: actionTypes.CHANGE_PLAYER_MODE, modeState: val}),
       changeCurrentID: (id) => dispatch({type: actionTypes.CHANGE_CURRENT_ID, id}),
       changeCurrentTheme: (val) => dispatch({type: actionTypes.CHANGE_CURRENT_THEME, currTheme: val}),
-      updateHistory: (payload) => dispatch({ type: actionTypes.UPDATE_MEMORY, payload })
+      updateHistory: (payload) => dispatch({ type: actionTypes.UPDATE_MEMORY, payload }),
+      changePlayingState: (playingState) => dispatch({type: actionTypes.CHANGE_AUDIO_PLAYING, playingState})
     };
   };
 export default connect(mapStateToProps, mapDispatchToProps)(Player);

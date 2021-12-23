@@ -4,7 +4,7 @@ import { locStorage } from "../../utilities/tools";
 import { localStorageBasicData } from "../../info/localStorageSkeletonData";
 
 const initialState = {
-    audioList: [],
+    isAudioPlaying: false,
     isPlayerFullMode: true,
     isPlayerOpen: false,
     currentStationId: "",
@@ -24,10 +24,10 @@ const initialState = {
 
 export const mainReducer = (state = initialState, actions) => {
     switch (actions.type) {
-        case actionTypes.CHANGE_AUDIO_LIST:
+        case actionTypes.CHANGE_AUDIO_PLAYING:
             return {
                 ...state,
-                audioList: actions.payload?.list
+                isAudioPlaying: actions.playingState
             }
         case actionTypes.CHANGE_PLAYER_MODE:
             return {
@@ -36,10 +36,8 @@ export const mainReducer = (state = initialState, actions) => {
             }
         case actionTypes.CHANGE_CURRENT_PLAYLIST:
             const { list, currentStationId } = actions.payload;
-            console.log(list, currentStationId);
             if (list && list.length > 0 && Array.isArray(list) && currentStationId) {
                 const activeIndex = list.map((el) => el.stationuuid).indexOf(currentStationId);
-                console.log(list, activeIndex, currentStationId);
                 const newList = list.map((item) => {
                     return {
                         name: item.name,
@@ -61,7 +59,6 @@ export const mainReducer = (state = initialState, actions) => {
             }
         case actionTypes.CHANGE_CURRENT_ID:
             const ID = actions.id;
-            console.log(ID);
             if (ID) {
                 return {
                     ...state,
@@ -72,11 +69,9 @@ export const mainReducer = (state = initialState, actions) => {
             }
         case actionTypes.UPDATE_MEMORY:
             const { type, itemId, item, destination, storage, newObject } = actions.payload;
-            console.log(type, itemId, item, destination, storage)
             if (type === "add" && typeof item === "object" && destination && (destination === "favorites" || destination === "history") && state.localStorageCopy?.hasOwnProperty(destination)) {
                 let newArr = JSON.parse(JSON.stringify(state.localStorageCopy?.[destination]));
                 if (Array.isArray(newArr)) {
-                     console.log(newArr);
                     newArr.unshift(item);
                     newArr = Array.from(
                         new Set(newArr.map((x) => x.stationuuid))
@@ -88,7 +83,6 @@ export const mainReducer = (state = initialState, actions) => {
                             newLocStorageArr[key] = localStorageBasicData[key];
                         }
                     });
-                    console.log(newLocStorageArr);
                     return {
                         ...state,
                         localStorageCopy: newLocStorageArr
@@ -126,7 +120,6 @@ export const mainReducer = (state = initialState, actions) => {
                 }
                
             } else if (type === "update" && typeof storage === "object") {
-                console.log(storage);
                 return {
                     ...state,
                     localStorageCopy: {
@@ -140,7 +133,6 @@ export const mainReducer = (state = initialState, actions) => {
             }
 
         case actionTypes.CHANGE_CURRENT_THEME: {
-            console.log(actions.currTheme);
             return {
                 ...state,
                 currentTheme: actions.currTheme
