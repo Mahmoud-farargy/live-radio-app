@@ -66,13 +66,11 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
         }
     }
     const reformatData = (res, keyName) => {
-        console.log(res);
         if (!Array.isArray(res) || !typeof keyName === "string") return;
         return res && res.length > 0 &&
             res.map((item) => {
                 if (item && item.hasOwnProperty("name") && typeof item.name === "string") {
                     if(keyName === "countries"){
-                        console.log("counties ?>>>")
                         return {
                             value: item.name,
                             label: countriesListJSON.filter(el => el.code === item.name).pop()?.name || item.name,
@@ -92,19 +90,15 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
             });
     }
     const handleResponse = ({ res, keyName }) => {
-        console.log(keyName);
         if (res.data) {
             const formattedResponse = reformatData(res.data, keyName);
             if (formattedResponse && typeof formattedResponse === "object") {
                 
                 switch(keyName){
                     case "countries":
-                        console.log(keyName,"221", formattedResponse);
                         setCountriesOption({list: [{ value: `all ${keyName}`, label: `All ${keyName}`, name: getSingular(keyName) }, ...formattedResponse.sort((a,b) => b.value - a.value )], isLoading: false});
                     break;
-                    case "languages":
-                        console.log(keyName,"22");
-                        
+                    case "languages":                        
                         setLanguagesOption({list: [{ value: `all ${keyName}`, label: `All ${keyName}`, name: getSingular(keyName) }, ...formattedResponse], isLoading: false});
                     break;
                     case "states":
@@ -117,7 +111,6 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
         }
     }
     const getOptions = ({path, name}) => {
-        console.log(path)
         if(path){
             api().get(path).then((res) => {
                 if(_isMounted.current){
@@ -156,7 +149,6 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
         x.preventDefault();
 
         if(Object.values(formState).some(el => el !== undefined)){
-            console.log(formState);
                 if(typeof formState !== "object") return ;
                 const newVal = (val) => {
                     const newValue = typeof val === "string" ? val?.toLowerCase() : val;
@@ -180,7 +172,6 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
         }
     }
     const getTags = useCallback((arr) => {
-        console.log(arr);
         if (Array.isArray(arr)) {
             setFormState({
                 ...formState,

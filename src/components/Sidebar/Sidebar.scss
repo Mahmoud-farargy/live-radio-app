@@ -70,6 +70,9 @@
                     margin-bottom: 0.2rem;
                     letter-spacing: 0.090rem;
                     font-size: var(--font-size-medium);
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
                 small{
                     color: var(--text-gray);

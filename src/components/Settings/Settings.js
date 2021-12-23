@@ -18,7 +18,6 @@ const Settings = ({ updateMemo, localMemory, switchToMainSlide }) => {
     useEffect(() => {
         const savedSettings = localMemory.settings;
         if(savedSettings && Object.keys(savedSettings).length >0) {
-            console.log(savedSettings);
             let stateCopy = JSON.parse(JSON.stringify(formState));
             Object.keys(stateCopy).forEach((key) => (
                  stateCopy[key] = savedSettings.hasOwnProperty(key) ? savedSettings[key] : formState[key]
@@ -27,7 +26,6 @@ const Settings = ({ updateMemo, localMemory, switchToMainSlide }) => {
         }
     },[]);
     const onInputChange = (e) => {
-        console.log(e.target.name)
         const target = e.target;
         const name = target.name;
         const type = target.type;

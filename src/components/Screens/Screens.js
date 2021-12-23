@@ -4,7 +4,8 @@ import Header from "../Header/Header";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import * as consts from "../../utilities/consts"; 
+import * as consts from "../../utilities/consts";
+import GlobalLoading from "../../components/Loading/Global";
 
 const Main = styled.main`
         posititon: relative;
@@ -26,10 +27,11 @@ const Main = styled.main`
         }
         padding-bottom:${(props) => props.playerState.isPlayerFullMode && props.playerState.isPlayerOpen ? "calc(var(--player-height-size) + 30px)" : "30px"};
 `;
-const Screens = ({isPlayerFullMode, isPlayerOpen, closeSidebarOnMobile}) => {
+const Screens = ({isPlayerFullMode, isPlayerOpen, closeSidebarOnMobile, isAppLoading}) => {
     return (
         <Fragment>
             <Main playerState={{isPlayerFullMode, isPlayerOpen}} id="screens">
+                {isAppLoading && <GlobalLoading />}
                 <div className="modal--backdrop" onClick={() => closeSidebarOnMobile()}></div>
                 <Header />
                 <Routes />

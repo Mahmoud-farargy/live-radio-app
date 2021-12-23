@@ -97,6 +97,7 @@ body,
   --z-sidebar: 100;
   --z-backdrop: 80;
   --z-player: 250;
+  --z-global-loading: 90;
   --z-modal-backdrop: 300;
   --z-modal-inner: 350;
 }
@@ -277,7 +278,7 @@ a.active--nav--link.active--nav--link {
   }
 }
 // slidable lists
-#slidableList {
+#slidableList, #slidableListLoading {
   width: 100%;
   background-color: var(--homeBoxes-bg-clr);
   padding: 1.3rem 1.5rem;
@@ -286,6 +287,8 @@ a.active--nav--link.active--nav--link {
   min-height: 240px;
   overflow: hidden;
   min-width: 100px;
+}
+#slidableList{
   .slidableList--header {
     width: 100%;
     align-items: center;
@@ -345,6 +348,10 @@ a.active--nav--link.active--nav--link {
   @media only screen and (max-width: 670px) {
     padding: 1rem 0.4rem;
   }
+}
+#slidableListLoading{
+  display: grid;
+  place-content: center;
 }
 .primary__input {
   border: 2px solid var(--lighter-gray);
@@ -444,8 +451,8 @@ a.active--nav--link.active--nav--link {
                 text-transform: capitalize;
             }
             span.close__modal__btn{
-                position: absolute;
-                top: -10px;
+                position: fixed;
+                top: 10px;
                 right: 0;
                 font-weight: var(--font-weight-medium);
                 font-size: var(--font-size-x-large);
@@ -467,6 +474,30 @@ a.active--nav--link.active--nav--link {
             width: 600px;
         }
     }  
+}
+.stationsList--item--select{
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  vertical-align: text-top;
+  width: 30px;
+  height: 30px;
+  max-width: 200px;
+  color: inherit;
+  select{
+      cursor: pointer;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      appearance: none;
+      border:none;
+      opacity: 0;
+      color: inherit;
+      &:focus{
+          outline: none;
+      }
+  }
 }
 
 // --xx-- Global classes --xx--
@@ -568,5 +599,37 @@ div#routesContainer {
 @media only screen and (max-width: 300px) {
   section#suggestions #recommended .remomended--list {
     grid-template-columns: 100%;
+  }
+}
+
+
+// animations
+
+.global--loading{
+  position: fixed;
+  top:0;
+  left:0;
+  @keyframes spin {
+      to {
+          transform: rotateZ(360deg);
+      }
+  }
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  z-index: var(--z-global-loading);
+  justify-content: center;
+  align-items:center;
+  background: var(--ultra-white);
+  span {
+  display: block;
+  margin: 0 auto;
+  width:60px;
+  height: 60px;
+  border: 4px solid transparent;
+  border-top-color: var(--primary-clr);
+  border-radius: 50%;
+  animation: spin ease 1000ms infinite;
+  -webkit-animation: spin ease 1000ms infinite;
   }
 }

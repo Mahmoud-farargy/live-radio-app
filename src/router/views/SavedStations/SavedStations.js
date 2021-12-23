@@ -19,7 +19,7 @@ const SavedStations = ({savedList}) => {
         <Fragment>
             {
                 currentList && currentList.length > 0 ?
-                <StationsList list={currentList} title={listType}/>
+                <StationsList list={currentList} title={listType} areSavedStations={true}/>
                 :
                 <EmptyResults msg="No stations have been added yet." />
             }

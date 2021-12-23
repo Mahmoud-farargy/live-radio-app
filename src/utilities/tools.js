@@ -2,7 +2,6 @@ import { toast } from "react-toastify";
 import { localStorageBasicData } from "../info/localStorageSkeletonData";
 // Notify
 export const notify = (text, type) => {
-  console.log("notify", text, type)
     switch (type) {
       case "success":
         toast.success(text);
@@ -60,7 +59,6 @@ export const serialize = function(obj) {
 };
 
 export const getObjectFromQueries = (query) => {
-  console.log(query);
   return query ? (JSON.parse('{"' + decodeURI(query).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"').replace(/%2C_/g,", ") + '"}')) : "";
 };
 

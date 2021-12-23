@@ -9,16 +9,21 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store/index";
+import GlobalLoading from './components/Loading/Global';
+import PlayerContext from './components/PlayerContext/PlayerContext';
 import './i18n';
 
 ReactDOM.render(
-    <Provider store={store}>
+  <Provider store={store}>
+    <PlayerContext>
       <BrowserRouter>
-      <Suspense fallback="loading...">
+        <Suspense fallback={<GlobalLoading />}>
           <App />
-      </Suspense>
+        </Suspense>
       </BrowserRouter>
-    </Provider>
+    </PlayerContext>
+
+  </Provider>
   ,
   document.getElementById('app-root')
 );

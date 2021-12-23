@@ -1,5 +1,5 @@
 // actions and action creators
-export const CHANGE_AUDIO_LIST = "changeAudioList";
+export const CHANGE_AUDIO_PLAYING = "changeAudioPlayingState";
 export const CHANGE_PLAYER_MODE = "changePlayerMode";
 export const CHANGE_CURRENT_PLAYLIST = "changeCurrentPlaylist";
 export const CHANGE_CURRENT_ID = "changeCurrentID";

@@ -8,6 +8,18 @@
       text-transform: capitalize;
     }
   }
+  .modal__play__pause__btns{
+    width: 30px;
+    height: 30px;
+    padding: 0.2rem;
+    background-color: var(--primary-clr);
+    color: var(--ultra-white);
+    border-radius: 50%;
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+    margin: 0.5rem 0;
+  }
   .info--song--tags {
     margin-top: 0.4rem;
     overflow-x: auto;
