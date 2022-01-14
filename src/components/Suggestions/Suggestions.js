@@ -3,10 +3,12 @@ import { useHistory } from "react-router-dom";
 import * as Consts from "../../utilities/consts";
 import topTags from "../../info/topTags.json";
 import { hashtigify } from "../../utilities/tools";
+import { useTranslation } from "react-i18next";
 import "./Suggestions.scss";
 
 const Suggestions = () => {
     const history = useHistory();
+    const { t } = useTranslation();
     const [shuffledTags, setTagsArr] = useState();
     const list = Object.freeze([
         { name: "music", icon: "musical", id: "fhisofhoweq" },
@@ -46,7 +48,7 @@ const Suggestions = () => {
             <section id="suggestions">
                 <div id="recommended">
                     <div className="suggestions--box--header flex-row">
-                        <h4 className="list--name">Recommended for You</h4>
+                        <h4 className="list--name">{t("suggs.recommended_title")}</h4>
                     </div>
                     <ul className="remomended--list">
                         {
@@ -65,8 +67,8 @@ const Suggestions = () => {
                 </div>
                 <div id="featured">
                     <div className="suggestions--box--header flex-row">
-                        <h4 className="list--name">Popular Tags</h4>
-                        {/* <span className="see--all--btn">See all</span> */}
+                        <h4 className="list--name">{t("suggs.pop_tags_title")}</h4>
+                        {/* <span className="see--all--btn">{t("titles.see_all")}</span> */}
                     </div>
                     {shuffledTags && shuffledTags.length > 0 &&
                         <ul className="pop--tags--list">

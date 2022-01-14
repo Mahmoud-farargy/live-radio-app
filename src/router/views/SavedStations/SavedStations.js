@@ -5,8 +5,10 @@ import * as Consts from "../../../utilities/consts";
 import { useParams } from "react-router-dom";
 import EmptyResults from "../../../components/Generic/EmptyResults";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 const SavedStations = ({savedList}) => {
+    const { t } = useTranslation();
     const { listType } = useParams();
     const [currentList, setCurrentList] = useState([]);
     useEffect(() => {
@@ -21,7 +23,7 @@ const SavedStations = ({savedList}) => {
                 currentList && currentList.length > 0 ?
                 <StationsList list={currentList} title={listType} areSavedStations={true}/>
                 :
-                <EmptyResults msg="No stations have been added yet." />
+                <EmptyResults msg={t("empty_list_msg")} />
             }
             
         </Fragment>

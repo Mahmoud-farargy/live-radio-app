@@ -1,7 +1,9 @@
 import React from 'react';
 import { trimText } from "../../utilities/tools";
+import { useTranslation } from "react-i18next";
 
 const StationOptions = ({isRecentlyPlayed, isLiked, setInfoModal,item, onLikingUnlikingStation, removeFromHistory, btnIcon}) => {
+    const { t } = useTranslation();
     const onOptionsChange = (e) => {
         const val = e.target.value;
         switch(val){
@@ -26,14 +28,14 @@ const StationOptions = ({isRecentlyPlayed, isLiked, setInfoModal,item, onLikingU
     return (
         <span className="stationsList--item--select">
             <select value={"hiddenoption"} onChange={(e) => onOptionsChange(e)}>
-                <optgroup label={`Options for "${trimText(item.name, 10)}"`}>
-                    <option value="hiddenoption" hidden="hidden" disabled="disabled">Please select..</option>
-                    <option value="more_info">More Info about {trimText(item.name, 10)}</option>
-                    {isRecentlyPlayed && <option value="remove_from_history">Remove from play history</option>}
-                    <option value="visit_homepage">Visit Homepage</option>
-                    <option value="like_unlike">{isLiked? "Unlike" : "Like"}</option>
+                <optgroup label={`${t("station_options.options_for")}"${trimText(item.name, 10)}"`}>
+                    <option value="hiddenoption" hidden="hidden" disabled="disabled">{t("station_options.default_option")}..</option>
+                    <option value="more_info">{t("station_options.more_about")}{trimText(item.name, 10)}</option>
+                    {isRecentlyPlayed && <option value="remove_from_history">{t("station_options.remove_from_history")}</option>}
+                    <option value="visit_homepage">{t("station_options.visit_homepage")}</option>
+                    <option value="like_unlike">{isLiked? t("station_options.liking.unlike"): t("station_options.liking.like")}</option>
                 </optgroup>
-                <option>Cancel</option>
+                <option>{t("station_options.cancel")}</option>
             </select>
             {btnIcon}
         </span>

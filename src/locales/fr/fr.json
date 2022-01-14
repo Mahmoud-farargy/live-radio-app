@@ -1,3 +1,89 @@
 {
-    "self_introduction": "Hi, I'm"
+    "self_introduction": "Salut, je suis",
+    "about_me": "Un développeur front-end spécialisé dans Vue.js, React.js, Javascript et d'autres technologies. Vous pouvez visiter mon portfolio pour trouver d'autres projets sympas comme celui-ci",
+    "menu": {
+        "radio": "Radio",
+        "podcasts": "Podcasts",
+        "saved": "Enregistrée",
+        "recently_played": "Joué récemment",
+        "about": "Sur"
+    },
+    "menuList": {
+        "main": {"title": "principale", "description": ""},
+        "advanced_search": {"title": "Recherche Avancée", "description": "Rechercher certaines spécifications"},
+        "settings": {"title": "réglages", "description": {"pt1":"Ici, vous pouvez personnaliser ", "pt2": " selon vos besoins"}},
+        "hotkeys": {"title": "raccourcis clavier", "description": "Référence des raccourcis clavier"}
+    },
+    "inputPlaceholders": {
+        "searchBar": "Rechercher des radios"
+    },
+    "empty_list_msg": "Aucune station n'a encore été ajoutée.",
+    "no_match_msg": "Aucune station correspondante",
+    "advanced_search": {
+        "station_name": {"title" :"Nom de la station", "placeholder": "Gares par nom"},
+        "tags": {"title" :"Mots clés", "placeholder": "Ajoutez des balises et appuyez sur Entrée"},
+        "filters": {"title" :"Filtres", "placeholder": ""},
+        "sort_by": {"title" :"Trier par", "placeholder": "Trier par"},
+        "reverse_order_label": "Afficher les résultats dans l'ordre inverse",
+        "search_button_title": "Chercher",
+        "filter_default_labels":{
+            "all_languages": "Toutes les langues",
+            "all_countries": "Tous les pays",
+            "all_states": "Tous les États"
+        },
+        "sort_by_options":{
+            "defaultLabel": "Normale",
+            "votes": "Décompte des voix",
+            "name": "Nom",
+            "tag": "Étiqueter",
+            "country": "Pays",
+            "state": "État",
+            "language": "Langue",
+            "codec": "Codec",
+            "bitrate": "Débit",
+            "last_check_ok": "Dernière vérification OK",
+            "last_check_time": "Heure du dernier contrôle",
+            "click_count": "Nombre de clics",
+            "random": "Aléatoire"
+        }
+    },
+    "alerts":{
+        "saved": "Enregistré",
+        "already_added": "Cette balise a déjà été ajoutée"
+    },
+    "settings":{
+        "sleep_timer": {"title": "Minuterie de mise en veille", "description": "Arrête automatiquement le flux en cours après un certain nombre de minutes."},
+        "sleep_timeout": {"title": "Délai de mise en veille","description": "Arrêter la diffusion après (minute)"},
+        "https_only": {"title": "Requêtes HTTPS uniquement", "description":"Charger les requêtes https uniquement (plus sécurisé, moins de résultats)."},
+        "load_icons": {"title": "Charger les icônes", "description": "Icônes de station de chargement (si désactivé, l'application se chargera plus rapidement)."},
+        "change_langauge": {"title": "Changer de langue"},
+        "save_button_title": "Sauvegarder"
+    },
+    "hotkeys": {
+        "play_pause": {"title": "Jouer/pause", "description": "Démarrer ou mettre en pause la lecture de la dernière station sélectionnée."},
+        "volume_up": {"title": "Monter le son", "description": "Augmentez le volume de 10%."},
+        "volume_down": {"title": "Baisser le volume", "description": "Diminuer le volume de 10%."},
+        "prev_station": {"title": "Station précédente", "description": "Passer à la station précédente dans la liste actuelle."},
+        "nxt_station": {"title": "Prochaine station", "description": "Passer à la station suivante dans la liste actuelle.."},
+        "reload": {"title": "Recharger",  "description": "Recharger la station actuelle."}
+    },
+    "station_options": {
+        "default_option": "Veuillez sélectionner",
+        "options_for": "Options pour ",
+        "remove_from_history": "Supprimer de l'historique de jeu",
+        "more_about": "Plus d'informations sur ",
+        "visit_homepage": "Visitez la page d'accueil",
+        "liking": {"like": "Comme", "unlike": "dissemblable"},
+        "cancel": "Annuler"
+    },
+    "share_list":{
+        "title": {"pt1":"Partager" ,"pt2": "liste avec quelqu'un"}
+    },
+    "suggs": {
+        "recommended_title": "Recommandé pour vous",
+        "pop_tags_title": "Tags populaires"
+    },
+    "titles":{
+        "see_all": "Voir tout"
+    }
 }

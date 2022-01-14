@@ -15,10 +15,11 @@ import StationInfoModal from "../../Modal/StationInfo/StationInfo";
 import { AudioContext } from "../../PlayerContext/PlayerContext";
 import Loader from "react-loader-spinner";
 
-const SlidableListItem = ({ item, changeCurrentPlaylist, updateFavs,wholeList, storageCopy, currentStationId, isAudioPlaying }) => {
+const SlidableListItem = ({ item, changeCurrentPlaylist, updateFavs,wholeList, storageCopy, currentStationId, isAudioPlaying, isAudioBuffering }) => {
     const imgRef = useRef(null);
     const stationLocation = `${(item.state && item.country) ? item.state+", ": item.state}${item.country}`;
     const [isLiked, setLikingState] = useState(false);
+    const [isBuffering, setBuffering] = useState(true);
     const [isPlaying, setPlaying] = useState(false);
     const [isRecentlyPlayed, setRecentlyPlayed] = useState(false);
     const [openInfoModal, setInfoModal] = useState(false);
@@ -51,6 +52,9 @@ const SlidableListItem = ({ item, changeCurrentPlaylist, updateFavs,wholeList, s
             setPlaying(checkIfPlaying);
         }
     }, [currentStationId, item]);
+    useEffect(() => {
+        !isAudioBuffering && setBuffering(false);
+    },[isAudioBuffering]);
     const onLikingUnlikingStation = () => {
         if(isLiked){
             updateFavs({ type: "delete", itemId: item.stationuuid, destination: "favorites" });   
@@ -59,12 +63,12 @@ const SlidableListItem = ({ item, changeCurrentPlaylist, updateFavs,wholeList, s
         }
     } 
     const handleStationPlaying = () => {
-        if(isPlaying && isAudioPlaying){
-            pauseAudio();
-        }else{           
-            changeCurrentPlaylist({list: wholeList, currentStationId: item.stationuuid});
-            playAudio();  
-        }
+            if(isPlaying && isAudioPlaying){
+                !isAudioBuffering && pauseAudio();
+            }else{           
+                changeCurrentPlaylist({list: wholeList, currentStationId: item.stationuuid});
+                playAudio();  
+            }
     }
     const removeFromHistory = () => {
         updateFavs({ type: "delete", itemId: item.stationuuid, destination: "history" }); 
@@ -75,7 +79,7 @@ const SlidableListItem = ({ item, changeCurrentPlaylist, updateFavs,wholeList, s
             <li id="slidableListItem">
                 <div className="picture--container"> 
                     <div className="slidable--item--layout">
-                        <div className="slidable--item--layout--inner">
+                        <div className="slidable--item--layout--inner">   
                         <span className="slidable__item__options__btn option__btn">
                             <StationOptions
                                 isRecentlyPlayed={isRecentlyPlayed}
@@ -91,7 +95,7 @@ const SlidableListItem = ({ item, changeCurrentPlaylist, updateFavs,wholeList, s
                                 {isLiked ? <AiFillHeart className="slidable__item__fav__btn option__btn unlike"/> : <AiOutlineHeart className="slidable__item__fav__btn option__btn"/> }
                             </span>
                             <span onClick={() => handleStationPlaying()}>
-                                 {(isPlaying && isAudioPlaying) ? <BsFillPauseFill className="slidable__item__media__btn option__btn"/> : <BsPlayFill className="slidable__item__media__btn option__btn"/>}   
+                                 {(isPlaying && isAudioPlaying && !isAudioBuffering) ? <BsFillPauseFill className="slidable__item__media__btn option__btn"/> : <BsPlayFill className="slidable__item__media__btn option__btn"/>}   
                             </span>
                         </div>
                     </div>
@@ -101,16 +105,26 @@ const SlidableListItem = ({ item, changeCurrentPlaylist, updateFavs,wholeList, s
                         ref={imgRef}
                         loading="lazy"
                     />
-                    { (isPlaying && isAudioPlaying) &&
+                    { (isPlaying && isAudioPlaying && !isAudioBuffering) ?
                         <div className="music--anim--container">
                             <Loader
                             type="Audio"
+                            arialLabel="loading-indicator"
                             color="var(--primary-clr)"
                             height={60}
                             width={60} />  
                         </div>
-
-                        }
+                        :
+                        (isPlaying && isBuffering) &&
+                            <div className="music--anim--container">
+                                <Loader
+                                type="Rings"
+                                arialLabel="loading-indicator"
+                                color="var(--primary-clr)"
+                                height={60}
+                                width={60} />  
+                            </div>
+                    }
                 </div>
                 <div className="slidablelist--station--info">
                     <h5 className="station--name" title={item.name}>{trimText(item.name, 23)}</h5> 
@@ -123,7 +137,11 @@ const SlidableListItem = ({ item, changeCurrentPlaylist, updateFavs,wholeList, s
 SlidableListItem.propTypes = {
     item: PropTypes.object.isRequired,
     wholeList: PropTypes.array.isRequired,
-    changeCurrentPlaylist: PropTypes.func.isRequired
+    changeCurrentPlaylist: PropTypes.func.isRequired,
+    updateFavs: PropTypes.func.isRequired,
+    isAudioPlaying: PropTypes.bool.isRequired,
+    isAudioBuffering: PropTypes.bool.isRequired,
+    storageCopy: PropTypes.object.isRequired
 }
 SlidableListItem.defaultProps = {
     item: {},
@@ -133,7 +151,8 @@ const mapStateToProps = state => {
     return {
         currentStationId: state[consts.MAIN].currentStationId || "",
         storageCopy: state[consts.MAIN].localStorageCopy || {},
-        isAudioPlaying: state[consts.MAIN].isAudioPlaying || false
+        isAudioPlaying: state[consts.MAIN].isAudioPlaying || false,
+        isAudioBuffering: state[consts.MAIN].isAudioBuffering || false
     }
 }
 const mapDispatchToProps = dispatch => {

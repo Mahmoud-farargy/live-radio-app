@@ -22,7 +22,7 @@ const About = () => {
                         <div className="flex-column about-section-inner">
                             <h2>{t("self_introduction")} Mahmoud <br /> Farargy</h2>
 
-                            <p>A front end developer who is specialized in Vue.js, React.js, Javascript and other technologies. You can visit my portfolio to find more cool projects like this one <a target="_blank" rel="noopener noreferrer" href="https://mahmoudportfolio.netlify.app">Portfolio.</a></p>
+                            <p>{t("about_me")} <a target="_blank" rel="noopener noreferrer" href="https://mahmoudportfolio.netlify.app">Portfolio.</a></p>
                             <ul className="flex-row socials--links">
                                 {
                                     contactList && contactList.length > 0 &&

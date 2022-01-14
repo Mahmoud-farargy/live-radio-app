@@ -18,6 +18,7 @@ import { retry } from "../../utilities/RetryImport";
 import * as consts from "../../utilities/consts";
 import styled from "styled-components";
 import GlobalLoading from "../Loading/Global";
+import { useTranslation } from "react-i18next";
 
 const AdvancedSearch = lazy(() => retry(() => import("../AdvancedSearch/AdvancedSearch")));
 const Settings = lazy(() => retry(() => import("../Settings/Settings")));
@@ -31,17 +32,18 @@ const DIV = styled.div`
     }
 `;
 const Sidebar = ({ isPlayerFullMode, isPlayerOpen, closeSidebarOnMobile, isMenuExpanded }) => {
+    const { t } = useTranslation();
     // states
     const history = useHistory();
     const [searchVal, setSearchVal] = useState("");
     const menuList = Object.freeze([
-        {id: "oif98eubf", title: "main", icon: <CgMenuGridO/>, description: ""},
-        {id: "w0fun0ufg", title: "advanced search", icon: <RiSearchEyeLine/>, description: "Search for certain specifications"},
-        {id: "foiw9fy9w", title: "settings", icon: <FiSettings/>, description: `Here you may customize ${appConfig.title} to your needs`},
-        {id: "wouobwfgg", title: "hotkeys", icon: <BsKeyboard/>, description: "Hotkey reference"}
+        {id: "oif98eubf", title: t("menuList.main.title"), icon: <CgMenuGridO/>, description: ""},
+        {id: "w0fun0ufg", title: t("menuList.advanced_search.title"), icon: <RiSearchEyeLine/>, description: t("menuList.advanced_search.description")},
+        {id: "foiw9fy9w", title: t("menuList.settings.title"), icon: <FiSettings/>, description: `${t("menuList.settings.description.pt1")}${appConfig.title}${t("menuList.settings.description.pt2")}`},
+        {id: "wouobwfgg", title: t("menuList.hotkeys.title"), icon: <BsKeyboard/>, description: t("menuList.hotkeys.description")}
     ]);
     const [activeListItem, setActiveListItem] = useState({
-        id: "oif98eubf", title: "main", icon: <CgMenuGridO/>
+        id: "oif98eubf", title: t("menuList.main.title"), icon: <CgMenuGridO/>
     });
     // end states
     const clearSearch = () => {
@@ -63,7 +65,7 @@ const Sidebar = ({ isPlayerFullMode, isPlayerOpen, closeSidebarOnMobile, isMenuE
         setActiveListItem(item);
     } 
     const switchToMainSlide = useCallback(() => {
-        setActiveListItem({id: "oif98eubf", title: "main", icon: <CgMenuGridO/>, description: ""});
+        setActiveListItem({id: "oif98eubf", title: t("menuList.main.title"), icon: <CgMenuGridO/>, description: ""});
     },[]);
     useEffect(() => {
         if(isMenuExpanded){
@@ -79,7 +81,7 @@ const Sidebar = ({ isPlayerFullMode, isPlayerOpen, closeSidebarOnMobile, isMenuE
                     <div className="sidebar--inner">
                         <div className="search">
                             <form className="search-bar flex-row" onSubmit={(d) => onSubmission(d)}>
-                                <input className="search--input primary__input" type="text" name="search" value={searchVal} onChange={(e) => setSearchVal(e.target.value)} placeholder="Search radio stations.." spellCheck="yes" />
+                                <input className="search--input primary__input" type="text" name="search" value={searchVal} onChange={(e) => setSearchVal(e.target.value)} placeholder={`${t("inputPlaceholders.searchBar")}..`} spellCheck="yes" />
                                 <span className="search--toolkit flex-row">
                                     {searchVal !== "" && <span className="search__clear" onClick={() => clearSearch()}><MdClose /></span>}
                                     <button className="search--btn" type="submit"><BiSearch className="search--icon" /></button>
@@ -110,27 +112,27 @@ const Sidebar = ({ isPlayerFullMode, isPlayerOpen, closeSidebarOnMobile, isMenuE
                                     <ul onClick={(e) => detectClicking(e)}>
                                         <li><NavLink exact activeClassName="active--nav--link" to="/" >
                                             <IoMdRadio className="nav-item-icon" />
-                                            <span className="nav-item-name">Radio</span>
+                                            <span className="nav-item-name">{t("menu.radio")}</span>
                                         </NavLink>
                                         </li>
                                         <li><NavLink activeClassName="active--nav--link" to="/category?tag=podcast" >
                                             <MdPodcasts className="nav-item-icon" />
-                                            <span className="nav-item-name">Podcasts</span>
+                                            <span className="nav-item-name">{t("menu.podcasts")}</span>
                                         </NavLink>
                                         </li>
                                         <li><NavLink activeClassName="active--nav--link" to="/list/favorites" >
                                             <IoMdBookmark className="nav-item-icon" />
-                                            <span className="nav-item-name">Saved</span>
+                                            <span className="nav-item-name">{t("menu.saved")}</span>
                                         </NavLink>
                                         </li>
                                         <li><NavLink activeClassName="active--nav--link" to="/list/history" >
                                             <IoIosTime className="nav-item-icon" />
-                                            <span className="nav-item-name">Recently Played</span>
+                                            <span className="nav-item-name">{t("menu.recently_played")}</span>
                                         </NavLink>
                                         </li>
                                         <li><NavLink activeClassName="active--nav--link" to="/about" >
                                             <IoMdInformationCircle className="nav-item-icon" />
-                                            <span className="nav-item-name">About</span>
+                                            <span className="nav-item-name">{t("menu.about")}</span>
                                         </NavLink>
                                         </li>
                                     </ul> 

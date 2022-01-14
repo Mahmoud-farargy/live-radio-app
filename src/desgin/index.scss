@@ -112,7 +112,7 @@ body.darkTheme {
   --links-clr: #9595f3;
   --bluish-sky: #4e8bc4;
   --shadow-white: #666666;
-  --text-black: #d2d2d2;
+  --text-black: #d8d7d7;
   --text-dark-black: #dadada;
   --transparent-black: rgba(255, 255, 255, 0.1);
   --more-lighter-gray: #3d3b3b;
@@ -375,10 +375,7 @@ a.active--nav--link.active--nav--link {
     background-color: #fff;
   }
 }
-.items--wrapper{
-  overflow: hidden;
-}
-.items--inner--wrapper{
+.items--inner--wrapper, .items--wrapper{
   overflow-y: hidden;
 }
 .primary__btn {
@@ -486,6 +483,8 @@ a.active--nav--link.active--nav--link {
   max-width: 200px;
   color: inherit;
   select{
+      background-color: var(--homeBoxes-bg-clr);
+      color: var(--text-dark-black);
       cursor: pointer;
       position: absolute;
       width: 100%;
@@ -493,7 +492,6 @@ a.active--nav--link.active--nav--link {
       appearance: none;
       border:none;
       opacity: 0;
-      color: inherit;
       &:focus{
           outline: none;
       }
@@ -531,7 +529,7 @@ div#routesContainer {
         color: var(--ultra-white);
         padding: 0.2rem 0.4rem;
         border-radius: 0.3rem;
-        max-width: 100px;
+        max-width: 130px;
         white-space: nowrap;
         text-transform: capitalize;
         overflow: hidden;

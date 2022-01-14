@@ -5,8 +5,10 @@ import { localStorageBasicData } from "../../info/localStorageSkeletonData";
 
 const initialState = {
     isAudioPlaying: false,
+    isAudioBuffering: true,
     isPlayerFullMode: true,
     isPlayerOpen: false,
+    visitorLocation: {},
     currentStationId: "",
     currentPlaylist: {
         list: [],
@@ -29,10 +31,20 @@ export const mainReducer = (state = initialState, actions) => {
                 ...state,
                 isAudioPlaying: actions.playingState
             }
+        case actionTypes.CHANGE_AUDIO_BUFFERING:
+            return {
+                ...state,
+                isAudioBuffering: actions.bufferingState
+            }
         case actionTypes.CHANGE_PLAYER_MODE:
             return {
                 ...state,
                 isPlayerFullMode: actions.modeState
+            }
+        case actionTypes.CHANGE_VISITOR_LOCATION:
+            return {
+                ...state,
+                visitorLocation: actions.visitorInfo
             }
         case actionTypes.CHANGE_CURRENT_PLAYLIST:
             const { list, currentStationId } = actions.payload;

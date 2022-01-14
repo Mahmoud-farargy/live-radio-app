@@ -5,13 +5,15 @@ import * as actionTypes from "../../store/actions/actions";
 import * as Consts from "../../utilities/consts";
 import { notify } from "../../utilities/tools";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 const Settings = ({ updateMemo, localMemory, switchToMainSlide }) => {
+    const { t } = useTranslation();
     const [formState, setFormState] = useState({
         sleepTimer: false,
         sleepTimeout: 1,
         loadIcons: true,
-        httpsOnly: false,
+        httpsOnly: true,
         defaultVolume: 100,
         choosenLangauge: "en",
     });
@@ -42,6 +44,10 @@ const Settings = ({ updateMemo, localMemory, switchToMainSlide }) => {
         { id: "fu09ef0fw", name: "english", label: "English", code: "en" },
         { id: "ifuwfwgwh", name: "spanish", label: "Spanish", code: "es" },
         { id: "pgwug9pwr", name: "french", label: "French", code: "fr" },
+        { id: "w9yeghike", name: "chinese", label: "Chinese", code: "cn" },
+        { id: "powyighek", name: "german", label: "German", code: "de" },
+        { id: "opwhgegeg", name: "italian", label: "Italian", code: "it" },
+        { id: "poiegbguq", name: "indian", label: "Indian", code: "hi" },
     ])
     const onFormSubmission = (e) => {
         e.preventDefault();
@@ -56,7 +62,7 @@ const Settings = ({ updateMemo, localMemory, switchToMainSlide }) => {
                 choosenLangauge: formState.choosenLangauge
             }
             updateMemo({type: "set", newObject, destination: "settings"});
-            notify("Saved.", "success");
+            notify(`${t("alerts.saved")}.`, "success");
             switchToMainSlide();
         }
     };
@@ -64,24 +70,24 @@ const Settings = ({ updateMemo, localMemory, switchToMainSlide }) => {
     return (
         <form id="settings" onSubmit={(e) => onFormSubmission(e)}>
             <div className="settings--input--group">
-                <IosButton onCheckChange={onInputChange} val={{ value: formState.sleepTimer, name: "sleepTimer", description: "Stops the current stream automatically after a certain number of minutes." }} label="Sleep timer" />
+                <IosButton onCheckChange={onInputChange} val={{ value: formState.sleepTimer, name: "sleepTimer", description: t("settings.sleep_timer.description") }} label={t("settings.sleep_timer.title")} />
                 {
                     formState.sleepTimer &&
                     <div className="vertical--group flex-column">
-                        <label htmlFor="sleepTimeout">Stop stream after (min)</label>
-                        <input type="number" onChange={onInputChange} value={formState.sleepTimeout} name="sleepTimeout" placeholder="Sleep timeout" className="primary__input" min={1} max={200} />
+                        <label htmlFor="sleepTimeout">{t("settings.sleep_timeout.description")}</label>
+                        <input type="number" onChange={onInputChange} value={formState.sleepTimeout} name="sleepTimeout" placeholder={t("settings.sleep_timeout.title")} className="primary__input" min={1} max={200} />
                     </div>
                 }
             </div>
             <div className="settings--input--group">
-                <IosButton onCheckChange={onInputChange} val={{ value: formState.httpsOnly, name: "httpsOnly", description: "Load https requests only (more secure, less results)." }} label="HTTPS requests only" />
+                <IosButton onCheckChange={onInputChange} val={{ value: formState.httpsOnly, name: "httpsOnly", description: t("settings.https_only.description") }} label={t("settings.https_only.title")} />
             </div>
             <div className="settings--input--group">
-                <IosButton onCheckChange={onInputChange} val={{ value: formState.loadIcons, name: "loadIcons", description: "Load station icons (if turned off, the app will load faster)." }} label="Load icons" />
+                <IosButton onCheckChange={onInputChange} val={{ value: formState.loadIcons, name: "loadIcons", description: t("settings.load_icons.description") }} label={t("settings.load_icons.title")} />
             </div>
             <div className="settings--input--group">
                 <div className="settings--select--group flex-row">
-                    <label htmlFor="choosenLangauge">Change language</label>
+                    <label htmlFor="choosenLangauge">{t("settings.change_langauge.title")}</label>
                     <select onChange={onInputChange}  value={formState.choosenLangauge} name="choosenLangauge" id="choosenLangauge">
                         {
                             languageOptions && languageOptions.length > 0 &&
@@ -95,7 +101,7 @@ const Settings = ({ updateMemo, localMemory, switchToMainSlide }) => {
                 </div>
 
             </div>
-            <input type="submit" value="Save" className="primary__btn" />
+            <input type="submit" value={t("settings.save_button_title")} className="primary__btn" />
         </form>
     )
 }
