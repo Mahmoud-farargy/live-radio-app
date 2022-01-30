@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 const About = () => {
     const { t } = useTranslation();
     const contactList = Object.freeze([
-        {type: "github", title: "Github",url: "https://github.com/Mahmoud-farargy/instagram-clone", icon: (<ImGithub style={{ fontSize: "30px" }} />), id: "github"},
+        {type: "github", title: "Github",url: "https://github.com/Mahmoud-farargy", icon: (<ImGithub style={{ fontSize: "30px" }} />), id: "github"},
         {type: "gmail", title: "Email",url: "mailto:mahmoudfarargy9@gmail.com", icon: (<MdEmail style={{ fontSize: "35px" }} />), id: "gmail"},
         {type: "instagram", title: "Instagram",url: "https://www.instagram.com/codepugilist", icon: (<AiFillInstagram style={{ fontSize: "35px" }} />), id: "instagram"},
         {type: "codepen", title: "Code Pen",url: "https://codepen.io/mahmoud-farargy/pens/public", icon: (<AiFillCodepenCircle style={{ fontSize: "35px" }} />), id: "codepen"},
@@ -22,7 +22,7 @@ const About = () => {
                         <div className="flex-column about-section-inner">
                             <h2>{t("self_introduction")} Mahmoud <br /> Farargy</h2>
 
-                            <p>A front end developer who is specialized in Vue.js, React.js, Javascript and other technologies. You can visit my portfolio to find more cool projects like this one <a target="_blank" rel="noopener noreferrer" href="https://mahmoudportfolio.netlify.app">Portfolio.</a></p>
+                            <p>{t("about_me")} <a target="_blank" rel="noopener noreferrer" href="https://mahmoudportfolio.netlify.app">Portfolio.</a></p>
                             <ul className="flex-row socials--links">
                                 {
                                     contactList && contactList.length > 0 &&

@@ -71,7 +71,7 @@
         "default_option": "Please select",
         "options_for": "Options for ",
         "remove_from_history": "Remove from play history",
-        "more_about": "Playing now on ",
+        "more_about": "More Info about ",
         "visit_homepage": "Visit Homepage",
         "liking": {"like": "Like", "unlike": "Unlike"},
         "cancel": "Cancel"

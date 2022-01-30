@@ -11,8 +11,10 @@ import { ToastContainer } from "react-toastify";
 import { useTranslation } from 'react-i18next';
 import LostConnectivity from "./components/Modal/LostConnection/LostConnection";
 import { useLocation } from "react-router-dom";
+import { ipifyKey } from "./info/secretInfo";
+import Api from "./services/api";
 
-function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, localMemory }) {
+function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, changeVisitorLocation ,localMemory }) {
   const currlocation = useLocation();
   // refs
   const _isMounted = useRef(true);
@@ -24,13 +26,30 @@ function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, localMemo
   const { i18n } = useTranslation();
   // effects
   useEffect(() => {
+    Api()
+    .get(
+      `https://geo.ipify.org/api/v1?apiKey=${ipifyKey}`
+    ).then((res) => {
+      if(_isMounted.current){
+          const data = res.data;
+          if(data && data.location){
+            const { country = "", city = "" } = data.location;
+            (country && typeof country === "string") && changeVisitorLocation({
+              ip: data.ip || "",
+              city: city || "",
+              country: country || ""
+            });
+          } 
+      }
+    });
     window.addEventListener("load", () => setLoading(false));
     window.addEventListener('offline', ()=> setConnectivity(false));
     window.addEventListener('online', () => setConnectivity(true));
     changeTheme(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light");
-    // window.matchMedia('(prefers-color-scheme: dark)')?.addEventListener("change", e => {
-    //   changeTheme(e.matches ? "dark" : "light");
-    // });
+    const handleThemeChanging = (e) => {
+        changeTheme(e.matches ? "dark" : "light");
+    }
+    window.matchMedia('(prefers-color-scheme: dark)')?.addEventListener("change", handleThemeChanging);
     const newLocStorage = locStorage({ type: "get" });
   
     if (newLocStorage && Object.keys(newLocStorage).length > 0) { 
@@ -51,7 +70,7 @@ function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, localMemo
       window.addEventListener("load", () => {});
       window.removeEventListener('offline', () => {});
       window.removeEventListener('online', () => {});
-    // window.matchMedia('(prefers-color-scheme: dark)').removeEventListener(() => {});
+      window.matchMedia('(prefers-color-scheme: dark)').removeEventListener("change", handleThemeChanging);
     };
   }, []);
 
@@ -112,7 +131,8 @@ App.propTypes = {
   updateStoreWithLocalStorage: PropTypes.func.isRequired,
   currentTheme: PropTypes.string.isRequired,
   changeTheme: PropTypes.func.isRequired,
-  localMemory: PropTypes.object.isRequired
+  localMemory: PropTypes.object.isRequired,
+  changeVisitorLocation: PropTypes.func.isRequired
 }
 const mapStateToProps = state => {
   return {
@@ -123,7 +143,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     updateStoreWithLocalStorage: (payload) => dispatch({ type: actionTypes.UPDATE_MEMORY, payload }),
-    changeTheme: (val) => dispatch({ type: actionTypes.CHANGE_CURRENT_THEME, currTheme: val })
+    changeTheme: (val) => dispatch({ type: actionTypes.CHANGE_CURRENT_THEME, currTheme: val }),
+    changeVisitorLocation: (visitorInfo) => dispatch({ type: actionTypes.CHANGE_VISITOR_LOCATION, visitorInfo})
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(App);

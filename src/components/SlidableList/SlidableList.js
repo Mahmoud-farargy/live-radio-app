@@ -5,9 +5,10 @@ import SlidableListItem from "./SlidableListItem/SlidableListItem";
 import PropTypes from "prop-types";
 import { withStationsFetcher } from "../../components/HOC/withStationsFetcher";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import * as Consts from "../../utilities/consts";
 import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
-import { serialize } from "../../utilities/tools";
+import { serialize, trimText } from "../../utilities/tools";
 
 const SlidableList = ({ params, fetchStations, listTitle }) => {
   const [itemsPerSide, setItemsPerSlide] = useState(6);
@@ -18,6 +19,7 @@ const SlidableList = ({ params, fetchStations, listTitle }) => {
     loading: true
   });
   const history = useHistory();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (params && typeof params === "object") {
@@ -73,6 +75,7 @@ const SlidableList = ({ params, fetchStations, listTitle }) => {
         <div id="slidableListLoading">
           <Loader
             type="TailSpin"
+            arialLabel="loading-indicator"
             color="var(--gray)"
             height={70}
             width={70} />
@@ -80,8 +83,8 @@ const SlidableList = ({ params, fetchStations, listTitle }) => {
         : response && response.list.length > 0 &&
         <section id="slidableList">
           <div className="slidableList--header flex-row">
-            <h4 className="list--name">{listTitle || listName}</h4>
-            <span className="see--all--btn" onClick={() => directMeToCategoryPage()}>See All</span>
+            <h4 className="list--name"title={listTitle}>{trimText(listTitle || listName, 25)}</h4>
+            <span className="see--all--btn" onClick={() => directMeToCategoryPage()}>{t("titles.see_all")}</span>
           </div>
           <ul className="slidableList--ul">
             <Carousel
@@ -99,6 +102,7 @@ const SlidableList = ({ params, fetchStations, listTitle }) => {
               placeholderItem={
                 <Loader
                   type="TailSpin"
+                  arialLabel="loading-indicator"
                   color="var(--light-black)"
                   height={60}
                   width={60} />

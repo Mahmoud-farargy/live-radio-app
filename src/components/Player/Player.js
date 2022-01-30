@@ -1,12 +1,13 @@
 import React, { Fragment, PureComponent } from "react";
 import { connect } from "react-redux";
-import { notify } from "../../utilities/tools";
+import { notify, lowerString } from "../../utilities/tools";
 import ReactJkMusicPlayer from 'react-jinke-music-player';
 import * as actionTypes from "../../store/actions/actions";
 import * as consts from "../../utilities/consts"; 
 import PropTypes from "prop-types";
 import appConfig from "../../info/app-config.json";
 import { AudioContext } from "../PlayerContext/PlayerContext";
+
 class Player extends PureComponent {
     constructor(props){
         super(props);
@@ -105,8 +106,7 @@ class Player extends PureComponent {
     }
     onPlayerModeChange(mode){
         if(mode){
-            const lowerCasedMode = mode?.toLowerCase();
-            this.props.changePlayerMode(lowerCasedMode === "full" ? true : false);   
+            this.props.changePlayerMode(lowerString(mode) === "full" ? true : false);   
         }
     }
     getCurrentPlayingStation(x) {
@@ -122,30 +122,49 @@ class Player extends PureComponent {
     onPlaying(x){
         this.getCurrentPlayingStation(x);
         this.props.changePlayingState(true);
+        if(this.props.isAudioBuffering){
+            this.props.changeBufferingState(false); 
+        }
     }
     onPausing(){
         this.props.changePlayingState(false);
     }
 
     render(){
+        const { localMemory, currentPlaylist, isPlayerOpen } = this.props;
         return (
             <Fragment>
                  <ReactJkMusicPlayer 
                     getAudioInstance={(instance) => {
                         this.audioInstance = instance;
+                        this.audioInstance.addEventListener('waiting', () => {
+                            this.props.changePlayingState(false);
+                            this.props.changeBufferingState(false);
+                        });
+                        this.audioInstance.addEventListener("loadstart", () => {
+                            this.props.changeBufferingState(true);
+                        });
+                        this.audioInstance.addEventListener("loadedmetadata", () => {
+                            this.props.changeBufferingState(false);
+                        });
+                        this.audioInstance.addEventListener("error" , () => {
+                            if(this.props.isPlayerOpen){
+                                notify("Sorry, this station is not available. Try again later!","error")
+                            }
+                        })
                         this.context.onAudioInstanceChange(instance);
                     }}
                     showDownload={false}
                     showPlayMode={false}
                     onThemeChange={(e) => this.changeTheme(e)}
                     remove={false}
-                    locale="en_US"
+                    locale={localMemory?.settings.choosenLangauge === "cn" ? "zh_CN" :"en_US"}
                     theme="auto"
                     mode="full"
                     responsive={true}
                     play
                     onAudioVolumeChange={(e) => this.setState({currentVolumeLevel: e})}
-                    style={{display: `${!this.props.isPlayerOpen ?  "none": "block"}`}}
+                    style={{display: `${!isPlayerOpen ?  "none": "block"}`}}
                     className="player--container"
                     showMiniProcessBar={true}
                     clearPriorAudioLists={true}
@@ -154,7 +173,7 @@ class Player extends PureComponent {
                     onAudioPlay={(a) => this.onPlaying(a)}
                     onAudioEnded={() => this.onPausing()}
                     onAudioPause={() => this.onPausing()}
-                    // onAudioError={(e) => notify(e?.message || "Failed to play this radio station.","error")}
+                    loadAudioErrorPlayNext={false}
                     showLyric={false}
                     onPlayIndexChange={(e) => this.setState({currentPlayIndex:e})}
                     showDestroy={false}
@@ -162,7 +181,7 @@ class Player extends PureComponent {
                     volumeFade={{ fadeIn: 500, fadeOut: 500 }}
                     playIndex={this.state.currentPlayIndex || 0}
                     glassBg={true}
-                    audioLists={this.props.currentPlaylist?.list || []}
+                    audioLists={currentPlaylist?.list || []}
                 />
             </Fragment>
         )
@@ -173,11 +192,13 @@ Player.propTypes = {
     changeCurrentTheme: PropTypes.func.isRequired,
     changeCurrentID: PropTypes.func.isRequired,
     updateHistory: PropTypes.func.isRequired,
+    changeBufferingState: PropTypes.func.isRequired,
     currentPlaylist: PropTypes.object.isRequired,
     isPlayerOpen: PropTypes.bool.isRequired,
     currentStationId: PropTypes.string.isRequired,
     localMemory: PropTypes.object.isRequired,
-    isAudioPlaying: PropTypes.bool.isRequired
+    isAudioPlaying: PropTypes.bool.isRequired,
+    isAudioBuffering: PropTypes.bool.isRequired
 }
 const mapStateToProps = state => {
     return {
@@ -185,7 +206,8 @@ const mapStateToProps = state => {
         isPlayerOpen: state[consts.MAIN].isPlayerOpen,
         currentStationId: state[consts.MAIN].currentStationId || "",
         localMemory: state[consts.MAIN].localStorageCopy || {},
-        isAudioPlaying: state[consts.MAIN].isAudioPlaying || false
+        isAudioPlaying: state[consts.MAIN].isAudioPlaying || false,
+        isAudioBuffering: state[consts.MAIN].isAudioBuffering || false
     }
 }
 const mapDispatchToProps = dispatch => {
@@ -194,7 +216,8 @@ const mapDispatchToProps = dispatch => {
       changeCurrentID: (id) => dispatch({type: actionTypes.CHANGE_CURRENT_ID, id}),
       changeCurrentTheme: (val) => dispatch({type: actionTypes.CHANGE_CURRENT_THEME, currTheme: val}),
       updateHistory: (payload) => dispatch({ type: actionTypes.UPDATE_MEMORY, payload }),
-      changePlayingState: (playingState) => dispatch({type: actionTypes.CHANGE_AUDIO_PLAYING, playingState})
+      changePlayingState: (playingState) => dispatch({type: actionTypes.CHANGE_AUDIO_PLAYING, playingState}),
+      changeBufferingState: (bufferingState) => dispatch({type: actionTypes.CHANGE_AUDIO_BUFFERING, bufferingState})
     };
   };
 export default connect(mapStateToProps, mapDispatchToProps)(Player);

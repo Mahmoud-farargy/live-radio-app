@@ -79,3 +79,6 @@ export const hashtigify = (item) => {
 export const stringifyNumber = (num) => {
   return typeof num === "number" ? num.toLocaleString() : "";
 }
+
+export const lowerString = (str) => (str && typeof str === "string") ? (str.toLowerCase()): "";
+export const upperString = (str) => (str && typeof str === "string") ? (str.toUpperCase()): "";

@@ -1,3 +1,89 @@
 {
-    "self_introduction": "Hola, yo soy"
+    "self_introduction": "Hola, yo soy",
+    "about_me": "Un desarrollador front-end especializado en Vue.js, React.js, Javascript y otras tecnologías. Puedes visitar mi portafolio para encontrar más proyectos geniales como este.",
+    "menu": {
+        "radio": "Radio",
+        "podcasts": "Pódcasts",
+        "saved": "Salvado",
+        "recently_played": "Recientemente jugado",
+        "about": "Acerca de"
+    },
+    "menuList": {
+        "main": {"title": "principal", "description": ""},
+        "advanced_search": {"title": "Búsqueda Avanzada", "description": "Buscar determinadas especificaciones"},
+        "settings": {"title": "ajustes", "description": {"pt1":"Aquí puedes personalizarlo ", "pt2": " según sus necesidades"}},
+        "hotkeys": {"title": "botones rápido", "description": "Referencia de teclas de acceso rápido"}
+    },
+    "inputPlaceholders": {
+        "searchBar": "Buscar estaciones de radio"
+    },
+    "empty_list_msg": "Aún no se han agregado estaciones.",
+    "no_match_msg": "No hay estaciones coincidentes",
+    "advanced_search": {
+        "station_name": {"title" :"Nombre de estación", "placeholder": "Estaciones por nombre"},
+        "tags": {"title" :"Etiquetas", "placeholder": "Agregue etiquetas y presione enter..."},
+        "filters": {"title" :"Filtros", "placeholder": ""},
+        "sort_by": {"title" :"Ordenar por", "placeholder": "Ordenar por"},
+        "reverse_order_label": "Mostrar resultados en orden inverso",
+        "search_button_title": "Búsqueda",
+        "filter_default_labels":{
+            "all_languages": "Todos los idiomas",
+            "all_countries": "Todos los países",
+            "all_states": "Todos los Estados"
+        },
+        "sort_by_options":{
+            "defaultLabel": "Normal",
+            "votes": "Recuento de votos",
+            "name": "Nombre",
+            "tag": "Etiqueta",
+            "country": "País",
+            "state": "Estado",
+            "language": "Idioma",
+            "codec": "Códec",
+            "bitrate": "Bitrate",
+            "last_check_ok": "Última comprobación OK",
+            "last_check_time": "Hora de la última revisión",
+            "click_count": "Recuento de clics",
+            "random": "Aleatoria"
+        }
+    },
+    "alerts":{
+        "saved": "Salvado",
+        "already_added": "Esta etiqueta ya ha sido agregada"
+    },
+    "settings":{
+        "sleep_timer": {"title": "Tiempo de dormir", "description": "Detiene la transmisión actual automáticamente después de una cierta cantidad de minutos."},
+        "sleep_timeout": {"title": "Tiempo de espera para dormir","description": "Detener transmisión después de (minuto)"},
+        "https_only": {"title": "Solo solicitudes HTTPS", "description":"Cargar solo solicitudes HTTPS (más seguro, menos resultados)."},
+        "load_icons": {"title": "Cargar iconos", "description": "Cargue los íconos de la estación (si está apagado, la aplicación se cargará más rápido)."},
+        "change_langauge": {"title": "Cambiar idioma"},
+        "save_button_title": "Guardar"
+    },
+    "hotkeys": {
+        "play_pause": {"title": "Reproducir/pausar", "description": "Inicie o pause la reproducción de la estación seleccionada más recientemente."},
+        "volume_up": {"title": "Sube el volumen", "description": "Aumenta el volumen en un 10%."},
+        "volume_down": {"title": "Bajar volumen", "description": "Disminuir el volumen en un 10%."},
+        "prev_station": {"title": "Estación anterior", "description": "Cambiar a la emisora ​​anterior de la lista actual."},
+        "nxt_station": {"title": "Siguiente estacion", "description": "Cambiar a la siguiente estación de la lista actual."},
+        "reload": {"title": "Recargar",  "description": "Recargar la emisora ​​actual."}
+    },
+    "station_options": {
+        "default_option": "Por favor seleccione",
+        "options_for": "Opciones para ",
+        "remove_from_history": "Eliminar del historial de reproducción",
+        "more_about": "Más información sobre ",
+        "visit_homepage": "Visite la página de inicio",
+        "liking": {"like": "Me gusta", "unlike": "desemejante"},
+        "cancel": "Cancelar"
+    },
+    "share_list":{
+        "title": {"pt1":"Cuota" ,"pt2": "lista con alguien"}
+    },
+    "suggs": {
+        "recommended_title": "Recomendado para ti",
+        "pop_tags_title": "Etiquetas Populares"
+    },
+    "titles":{
+        "see_all": "Ver todo"
+    }
 }

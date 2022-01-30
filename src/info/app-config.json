@@ -1,5 +1,5 @@
 {
-    "title": "Soundex",
+    "title": "SoundEx",
     "description": "Listen to your favorite radio stations and podcasts",
     "author": "Mahmoud Farargy",
     "radioBrowser": "https://fr1.api.radio-browser.info/json",

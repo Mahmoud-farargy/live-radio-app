@@ -1,0 +1,89 @@
+{
+    "self_introduction": "你好我是",
+    "about_me": "专注于Vue.js、React.js、Javascript等技术的前端开发者。您可以访问我的投资组合以找到更多像这样的酷项目",
+    "menu": {
+        "radio": "收音机",
+        "podcasts": "播客",
+        "saved": "已保存",
+        "recently_played": "最近玩过",
+        "about": "关于"
+    },
+    "menuList": {
+        "main": {"title": "主要的", "description": ""},
+        "advanced_search": {"title": "高级搜索", "description": "搜索特定规格"},
+        "settings": {"title": "设置", "description": {"pt1":"在这里您可以自定义 ", "pt2": " 满足您的需求"}},
+        "hotkeys": {"title": "热键", "description": "热键参考"}
+    },
+    "inputPlaceholders": {
+        "searchBar": "搜索电台"
+    },
+    "empty_list_msg": "尚未添加任何电台.",
+    "no_match_msg": "没有匹配的电台",
+    "advanced_search": {
+        "station_name": {"title" :"站名", "placeholder": "站名"},
+        "tags": {"title" :"标签", "placeholder": "添加标签并按回车键..."},
+        "filters": {"title" :"过滤器", "placeholder": ""},
+        "sort_by": {"title" :"排序方式", "placeholder": "排序方式"},
+        "reverse_order_label": "以相反的顺序显示结果",
+        "search_button_title": "搜索",
+        "filter_default_labels":{
+            "all_languages": "所有语言",
+            "all_countries": "所有国家",
+            "all_states": "所有州"
+        },
+        "sort_by_options":{
+            "defaultLabel": "普通的",
+            "votes": "票数",
+            "name": "名称",
+            "tag": "标签",
+            "country": "国家",
+            "state": "状态",
+            "language": "语",
+            "codec": "编解码器",
+            "bitrate": "比特率",
+            "last_check_ok": "最后检查 OK",
+            "last_check_time": "最后检查时间",
+            "click_count": "点击次数",
+            "random": "随机的"
+        }
+    },
+    "alerts":{
+        "saved": "已保存",
+        "already_added": "此标签已添加"
+    },
+    "settings":{
+        "sleep_timer": {"title": "睡眠定时器", "description": "在一定分钟数后自动停止当前流."},
+        "sleep_timeout": {"title": "休眠超时","description": "在（分钟）后停止直播"},
+        "https_only": {"title": "仅 HTTPS 请求", "description":"仅加载 https 请求（更安全，结果更少."},
+        "load_icons": {"title": "加载图标", "description": "加载站图标（如果关闭，应用程序加载速度会更快）."},
+        "change_langauge": {"title": "改变语言"},
+        "save_button_title": "保存"
+    },
+    "hotkeys": {
+        "play_pause": {"title": "播放/暂停", "description": "开始或暂停播放最近选择的电台."},
+        "volume_up": {"title": "提高音量", "description": "将音量增加 10%."},
+        "volume_down": {"title": "音量减小", "description": "将音量降低 10%."},
+        "prev_station": {"title": "上一站", "description": "切换到当前列表中的上一个电台."},
+        "nxt_station": {"title": "下一站", "description": "切换到当前列表中的下一站."},
+        "reload": {"title": "重新加载",  "description": "重新加载当前站."}
+    },
+    "station_options": {
+        "default_option": "请选择",
+        "options_for": "选项 ",
+        "remove_from_history": "从播放历史中删除",
+        "more_about": "更多信息 ",
+        "visit_homepage": "访问主页",
+        "liking": {"like": "喜欢", "unlike": "不比"},
+        "cancel": "取消"
+    },
+    "share_list":{
+        "title": {"pt1":"分享" ,"pt2": "与某人一起列出"}
+    },
+    "suggs": {
+        "recommended_title": "为你推荐",
+        "pop_tags_title": "热门标签"
+    },
+    "titles":{
+        "see_all": "看到所有"
+    }
+}

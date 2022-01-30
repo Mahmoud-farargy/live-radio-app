@@ -2,9 +2,7 @@ import i18n from "i18next";
 import backend from "i18next-http-backend";
 import languageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
-import translationEn from "./locales/en/en.json";
-import translationEs from "./locales/es/es.json";
-import translationFr from "./locales/fr/fr.json";
+import { translationEn, translationEs, translationFr, translationCn, translationIt, translationDe, translationHi }from "./locales";
 
 const resources = {
     en: {
@@ -14,7 +12,19 @@ const resources = {
         translation: translationEs
     },
     fr: {
-        translation : translationFr
+        translation: translationFr
+    },
+    hi: {
+        translation: translationHi
+    },
+    cn: {
+        translation: translationCn
+    },
+    it: {
+        translation: translationIt
+    },
+    de: {
+        translation: translationDe
     }
 }
 
@@ -25,7 +35,7 @@ i18n.use(backend).use(languageDetector).use(initReactI18next).init({
     lng:"en",
     resources,
     detection: {
-        order: ["path","localStorage","cookie","htmlTag","queryString", ],
+        order: ["path", "localStorage", "cookie", "queryString", "htmlTag"],
         cache: ["cookie"]
     },
     interpolation: {

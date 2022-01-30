@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CreatableSelect from 'react-select/creatable';
-import { selectTheme } from "../../utilities/tools";
+import { selectTheme, notify, lowerString } from "../../utilities/tools";
+import PropTypes from "prop-types";
 
 const components = {
   DropdownIndicator: null,
@@ -20,7 +21,7 @@ export default class CreatableInputOnly extends Component{
       const { value } = this.state;
     if(prevState.value !== value){
         const { getTags } = this.props;
-        getTags(value?.map(el => typeof el.value === "string" ? el.value.toLowerCase()?.trim()?.split(" ")?.join("_") : el.value) || []);
+        getTags(value?.map(el => typeof el.value === "string" ? lowerString(el.value)?.trim()?.split(" ")?.join("_") : el.value) || []);
     }
   };
   handleChange = (value) => {
@@ -31,19 +32,20 @@ export default class CreatableInputOnly extends Component{
   };
   handleKeyDown = (event) => {
     const { inputValue, value } = this.state;
+    const { translate } = this.props;
     if (!inputValue) return;
-    const lowerCasedVal = inputValue.toLowerCase();
+    const lowerCasedVal = lowerString(inputValue);
     switch (event.key) {
       case 'Enter':
       case 'Tab': {
-            if(!value.some(word => word.value.toLowerCase() === lowerCasedVal)){
+            if(!value.some(word => lowerString(word.value) === lowerCasedVal)){
                 this.setState({
                     inputValue: '',
                     value: [...value, createOption(lowerCasedVal)],
                 });
             }else{
                 // edit this please
-                alert("This tag has already been added");
+                notify(`${translate("alerts.already_added")}.`, "error");
             }
             event.preventDefault();
         break;
@@ -54,6 +56,7 @@ export default class CreatableInputOnly extends Component{
   };
   render() {
     const { inputValue, value } = this.state;
+    const { placeholder } = this.props;
     return (
       <CreatableSelect
         components={components}
@@ -65,9 +68,14 @@ export default class CreatableInputOnly extends Component{
         onChange={this.handleChange}
         onInputChange={this.handleInputChange}
         onKeyDown={this.handleKeyDown}
-        placeholder="Add tags and press enter..."
+        placeholder={`${placeholder}...`}
         value={value}
       />
     );
   }
+}
+CreatableInputOnly.propTypes = {
+  getTags: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
+  translate: PropTypes.func.isRequired
 }

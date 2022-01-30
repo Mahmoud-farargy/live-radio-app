@@ -13,7 +13,7 @@ import { AudioContext } from "../../PlayerContext/PlayerContext";
 import { BsPlayFill, BsFillPauseFill} from "react-icons/bs";
 import Loader from "react-loader-spinner";
 
-const StationsListItem = ({ item, index, updateFavs, changeCurrentPlaylist, wholeList, currentStationId, isAudioPlaying, storageCopy }) => {
+const StationsListItem = ({ item, index, updateFavs, changeCurrentPlaylist, wholeList, currentStationId, isAudioPlaying, isAudioBuffering, storageCopy }) => {
     const imgRef = useRef(null);
     const stationLocation = `${(item.state && item.country) ? item.state + ", " : item.state}${item.country}`;
     const [isPlaying, setPlaying] = useState(false);
@@ -63,12 +63,12 @@ const StationsListItem = ({ item, index, updateFavs, changeCurrentPlaylist, whol
         updateFavs({ type: "delete", itemId: item.stationuuid, destination: "history" }); 
     }
     const handleStationPlaying = () => {
-        if(isPlaying && isAudioPlaying){
-            pauseAudio();
-        }else{
-            changeCurrentPlaylist({list: wholeList, currentStationId: item.stationuuid});
-            playAudio();
-        }
+            if(isPlaying && isAudioPlaying){
+                !isAudioBuffering && pauseAudio();
+            }else{
+                changeCurrentPlaylist({list: wholeList, currentStationId: item.stationuuid});
+                playAudio();
+            }
     }
     return (
         <Fragment>
@@ -78,14 +78,15 @@ const StationsListItem = ({ item, index, updateFavs, changeCurrentPlaylist, whol
             <li id="stationsListItem" onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)} className={`${isPlaying ? "active--station" : ""}`}>
                 <div className="stationsList--item--inner flex-row">
                     <div className="stationsList--item--left" onClick={() => handleStationPlaying()}>
-                        <span className="station--number" >{ isHoveredOn ?  ((isPlaying && isAudioPlaying)  ? <BsFillPauseFill className="stations__item__media__btn"/> : <BsPlayFill className="stations__item__media__btn"/>) : (isPlaying && isAudioPlaying) ?
+                        <span className="station--number" >{ isHoveredOn ?  ((isPlaying && isAudioPlaying && !isAudioBuffering)  ? <BsFillPauseFill className="stations__item__media__btn"/> : <BsPlayFill className="stations__item__media__btn"/>) : (isPlaying && isAudioPlaying && !isAudioBuffering) ?
                         <Loader
                             type="Audio"
+                            arialLabel="loading-indicator"
                             color="var(--ultra-white)"
                             height={15}
                             width={15} /> :`${index + 1}` }</span>
                         <img
-                            src={item.favicon}
+                            src={defaultImg}
                             alt={item.name || "station"}
                             ref={imgRef}
                             loading="lazy"
@@ -125,7 +126,8 @@ const mapStateToProps = state => {
     return {
         currentStationId: state[consts.MAIN].currentStationId || "",
         storageCopy: state[consts.MAIN].localStorageCopy,
-        isAudioPlaying: state[consts.MAIN].isAudioPlaying || false
+        isAudioPlaying: state[consts.MAIN].isAudioPlaying || false,
+        isAudioBuffering: state[consts.MAIN].isAudioBuffering || false
     }
 }
 const mapDispatchToProps = dispatch => {

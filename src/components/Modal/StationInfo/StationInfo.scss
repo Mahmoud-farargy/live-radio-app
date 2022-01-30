@@ -1,4 +1,5 @@
 #stationInfoModal {
+  position: relative;
   .into--top {
     padding: 0.2rem 0 0.5rem 0;
     border-bottom: 2px solid var(--light-gray);
@@ -6,19 +7,39 @@
       font-size: var(--font-size-medium);
       font-weight: var(--font-weight-heavy);
       text-transform: capitalize;
+      color: var(--primary-clr);
     }
   }
-  .modal__play__pause__btns{
+  .info--current--song{
+    min-height: 40px;
+    position: relative;
+    .station__info__loader{
+        text-align: center;
+        position: absolute;
+        top:50%;
+        left:50%;
+        transform: translate(-50%, -50%);
+    }
+  }
+  .info--top--btns{
     width: 30px;
     height: 30px;
     padding: 0.2rem;
-    background-color: var(--primary-clr);
     color: var(--ultra-white);
     border-radius: 50%;
     cursor: pointer;
     display: grid;
     place-content: center;
-    margin: 0.5rem 0;
+    margin: 1.5rem 0 0.5rem;
+  }
+  .modal__play__pause__btns{
+    @extend .info--top--btns;
+    background-color: var(--primary-clr);
+  }
+  .reload__btn{
+    @extend .info--top--btns;
+    background-color: var(--dark-yellow);
+    margin-left: 0.5rem;
   }
   .info--song--tags {
     margin-top: 0.4rem;
@@ -49,6 +70,7 @@
     .social__item {
       display: flex;
       align-items: center;
+      width: max-content;
     }
     p {
       margin-bottom: 0.4rem;
@@ -141,7 +163,7 @@
       color: #fff;
     }
     .post-song--stats .post--song--stat--item {
-      color: #dbdbdb;
+      color: #adadad;
     }
     .post-song--stats .post--song--tags {
       align-items: center;

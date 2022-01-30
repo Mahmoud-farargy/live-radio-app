@@ -18,10 +18,12 @@ class PlayerContext extends Component {
         this.audioInstance = instance;
     }
     playAudio() {
-        (this.audioInstance && this.props.isPlayerOpen) && this.audioInstance.play();
+        const {isAudioBuffering, isPlayerOpen} = this.props;
+        (!isAudioBuffering && isPlayerOpen && this.audioInstance) && this.audioInstance.play();
     }
     pauseAudio() {
-        (this.audioInstance && this.props.isPlayerOpen) && this.audioInstance.pause();
+        const {isAudioPlaying, isAudioBuffering, isPlayerOpen} = this.props;
+        (isAudioPlaying && !isAudioBuffering && this.audioInstance && isPlayerOpen) && this.audioInstance.pause();
     }
     render() {
         return (
@@ -38,6 +40,8 @@ class PlayerContext extends Component {
 const mapStateToProps = state => {
     return {
         isPlayerOpen: state[consts.MAIN].isPlayerOpen,
+        isAudioPlaying: state[consts.MAIN].isAudioPlaying || false,
+        isAudioBuffering: state[consts.MAIN].isAudioBuffering || false
     }
 }
 export default connect( mapStateToProps )(PlayerContext);

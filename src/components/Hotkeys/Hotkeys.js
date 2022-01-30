@@ -1,14 +1,16 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import "./hotKeys.scss";
 
 const Hotkeys = () => {
+    const { t } = useTranslation();
     const keysList = Object.freeze([
-        {id: "fhsifhous", name: "Play/pause",btnKey: "Space", desciption: "Start or pause playing the most recently selected station."},
-        {id: "ow9if98nf", name: "Volume up",btnKey: "+", desciption: "Increase the volume by 10%."},
-        {id: "ofiw8fowf", name: "Volume down",btnKey: "-", desciption: "Decrease the volume by 10%."},
-        {id: "e7tfwojgw", name: "Previous station",btnKey: "P", desciption: "Switch to the previous station in the current list."},
-        {id: "woigu9wgh", name: "Next station",btnKey: "N", desciption: "Switch to the next station in the current list."},
-        {id: "948gheoij", name: "Reload",btnKey: "R", desciption: "Reload the current station."},
+        {id: "fhsifhous", name: t("hotkeys.play_pause.title"), btnKey: "Space", desciption: t("hotkeys.play_pause.description")},
+        {id: "ow9if98nf", name: t("hotkeys.volume_up.title"), btnKey: "+", desciption: t("hotkeys.volume_up.description")},
+        {id: "ofiw8fowf", name: t("hotkeys.volume_down.title"), btnKey: "-", desciption: t("hotkeys.volume_down.description")},
+        {id: "e7tfwojgw", name: t("hotkeys.prev_station.title"), btnKey: "P", desciption: t("hotkeys.prev_station.description")},
+        {id: "woigu9wgh", name: t("hotkeys.nxt_station.title"), btnKey: "N", desciption: t("hotkeys.nxt_station.description")},
+        {id: "948gheoij", name: t("hotkeys.reload.title"), btnKey: "R", desciption: t("hotkeys.reload.description")},
     ]);
     return (
         <>

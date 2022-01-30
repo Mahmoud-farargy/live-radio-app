@@ -5,53 +5,55 @@ import MultiInputSelect from "../../components/formInputs/MultiTextInput";
 import CreatableSelect from 'react-select/creatable';
 import { IoMdPricetag } from "react-icons/io";
 import { BiStation } from "react-icons/bi";
-import { selectTheme } from "../../utilities/tools";
+import { selectTheme, lowerString, upperString } from "../../utilities/tools";
 import api from "../../services/api";
 import * as consts from "../../utilities/consts";
 import { useHistory } from "react-router-dom";
 import countriesListJSON from "../../info/countriesList.json";
 import { serialize } from "../../utilities/tools";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 import IosButton from "../../components/formInputs/IosButton";
 import "./AdvancedSearch.scss";
 
 const AdvancedSearch = ({closeSidebarOnMobile}) => {
     const history = useHistory();
     const _isMounted = useRef(true);
+    const { t } = useTranslation();
     // selected option
     const [formState, setFormState] = useState({
         tags: [],
-        country: { value: "all countries", label: "All countries", name: "country" },
-        state: { value: "all states", label: "All states", name: "state" },
-        language: { value: "all languages", label: "All languages", name: "language" },
-        order: { value: "normal", label: "Normal", name: "order" },
+        country: { value: "all countries", label: t("advanced_search.filter_default_labels.all_countries"), name: "country" },
+        state: { value: "all states", label: t("advanced_search.filter_default_labels.all_states"), name: "state" },
+        language: { value: "all languages", label: t("advanced_search.filter_default_labels.all_languages"), name: "language" },
+        order: { value: "normal", label: t("advanced_search.sort_by_options.defaultLabel"), name: "order" },
         reverse: true,
         stationName: ""
     });
     // options
     const [languageOptions, setLanguagesOption] = useState(
-        { list: [{ value: "all countries", label: "All languages", name: "language" }], isLoading: false }
+        { list: [{ value: "all languages", label: t("advanced_search.filter_default_labels.all_languages"), name: "language" }], isLoading: false }
         );
     const [countriesOptions, setCountriesOption] = useState(
-        { list: [{ value: "all countries", label: "All countries", name: "country" }], isLoading: false }
+        { list: [{ value: "all countries", label: t("advanced_search.filter_default_labels.all_countries"), name: "country" }], isLoading: false }
         );
     const [statesOptions, setStatesOption]= useState(
-        { list: [{ value: "all states", label: "All states", name: "state" }], isLoading: false }
+        { list: [{ value: "all states", label: t("advanced_search.filter_default_labels.all_states"), name: "state" }], isLoading: false }
         );
     const ordersOptions = {
-            list: [{ value: "normal", label: "Normal", name: "order" },
-            { value: "votes", label: "Votes", name: "order" },
-            { value: "name", label: "Names", name: "order" },
-            { value: "tag", label: "Tags", name: "order" },
-            { value: "country", label: "Countries", name: "order" },
-            { value: "state", label: "States", name: "order" },
-            { value: "language", label: "Languages", name: "order" },
-            { value: "codec", label: "Codecs", name: "order" },
-            { value: "bitrate", label: "Bitrates", name: "order" },
-            { value: "lastcheckok", label: "Last Check Ok", name: "order" },
-            { value: "lastchecktime", label: "Last Check Times", name: "order" },
-            { value: "clickcount", label: "Click Counts", name: "order" },
-            { value: "random", label: "random", name: "order" }]
+            list: [{ value: "normal", label: t("advanced_search.sort_by_options.defaultLabel"), name: "order" },
+            { value: "votes", label: t("advanced_search.sort_by_options.votes"), name: "order"},
+            { value: "name", label: t("advanced_search.sort_by_options.name"), name: "order"},
+            { value: "tag", label: t("advanced_search.sort_by_options.tag"), name: "order"},
+            { value: "country", label: t("advanced_search.sort_by_options.country"), name: "order"},
+            { value: "state", label: t("advanced_search.sort_by_options.state"), name: "order"},
+            { value: "language", label: t("advanced_search.sort_by_options.language"), name: "order"},
+            { value: "codec", label: t("advanced_search.sort_by_options.codec"), name: "order"},
+            { value: "bitrate", label: t("advanced_search.sort_by_options.bitrate"), name: "order"},
+            { value: "lastcheckok", label: t("advanced_search.sort_by_options.last_check_ok"), name: "order"},
+            { value: "lastchecktime", label:  t("advanced_search.sort_by_options.last_check_time"), name: "order"},
+            { value: "clickcount", label: t("advanced_search.sort_by_options.click_count"), name: "order"},
+            { value: "random", label: t("advanced_search.sort_by_options.random"), name: "order"}]
             , isLoading: false
         };
     const getSingular = (plural) => {
@@ -70,22 +72,13 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
         return res && res.length > 0 &&
             res.map((item) => {
                 if (item && item.hasOwnProperty("name") && typeof item.name === "string") {
-                    if(keyName === "countries"){
-                        return {
-                            value: item.name,
-                            label: countriesListJSON.filter(el => el.code === item.name).pop()?.name || item.name,
-                            name: getSingular(keyName)
-                        }   
-                    }else{
-                        return {
-                            value: item.name,
-                            label: item.name,
-                            name: getSingular(keyName)
-                        }   
+                    return {
+                        value: item.name,
+                        label: keyName === "countries" ? (countriesListJSON.filter(el => upperString(el.code) === upperString(item.name)).pop()?.name || item.name) : item.name,
+                        name: getSingular(keyName)
                     }
-                  
                 } else {
-                    return "";
+                    return {};
                 }
             });
     }
@@ -96,16 +89,16 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
                 
                 switch(keyName){
                     case "countries":
-                        setCountriesOption({list: [{ value: `all ${keyName}`, label: `All ${keyName}`, name: getSingular(keyName) }, ...formattedResponse.sort((a,b) => b.value - a.value )], isLoading: false});
+                        setCountriesOption({list: [{ value: `all ${keyName}`, label: t("advanced_search.filter_default_labels.all_countries"), name: getSingular(keyName) }, ...formattedResponse.sort((a,b) => b.value - a.value )], isLoading: false});
                     break;
                     case "languages":                        
-                        setLanguagesOption({list: [{ value: `all ${keyName}`, label: `All ${keyName}`, name: getSingular(keyName) }, ...formattedResponse], isLoading: false});
+                        setLanguagesOption({list: [{ value: `all ${keyName}`, label: t("advanced_search.filter_default_labels.all_languages"), name: getSingular(keyName) }, ...formattedResponse], isLoading: false});
                     break;
                     case "states":
-                        setStatesOption({list: [{ value: `all ${keyName}`, label: `All ${keyName}`, name: getSingular(keyName) }, ...formattedResponse], isLoading: false});
+                        setStatesOption({list: [{ value: `all ${keyName}`, label: t("advanced_search.filter_default_labels.all_states"), name: getSingular(keyName) }, ...formattedResponse], isLoading: false});
                     break;
                     default:
-                        setCountriesOption({list: [{ value: `all ${keyName}`, label: `All ${keyName}`, name: getSingular(keyName) }, ...formattedResponse], isLoading: false});
+                        setCountriesOption({list: [{ value: `all ${keyName}`, label: t("advanced_search.filter_default_labels.all_countries"), name: getSingular(keyName) }, ...formattedResponse], isLoading: false});
                 }
             }
         }
@@ -118,6 +111,7 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
                 }
             }).catch(() => {
                 if(_isMounted.current){
+                    console.error();
                     // changeOptions({ key: "countries", overridekey: { list: [], isLoading: false } });
                 }
             });    
@@ -151,7 +145,7 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
         if(Object.values(formState).some(el => el !== undefined)){
                 if(typeof formState !== "object") return ;
                 const newVal = (val) => {
-                    const newValue = typeof val === "string" ? val?.toLowerCase() : val;
+                    const newValue = typeof val === "string" ? lowerString(val) : val;
                     return (newValue === undefined || newValue === "all countries" || newValue === "all states" || newValue === "all languages" || newValue === "normal") ? "" : newValue;
                 }
                
@@ -191,15 +185,15 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
         <div id="advancedSearch">
                 <form className="advanced--search--form" onSubmit={(k) => onFormSubmission(k)}>
                     <div className="search--input--group">
-                        <span className="input--label flex-row"><BiStation /> <h5>Station Name:</h5></span>
-                        <input type="text" onChange={(e) => onInputChange({name: "stationName", value: e.target.value, type: "text"})} name="stationName" value={formState.stationName} className="primary__input" placeholder="Stations by name" />
+                        <span className="input--label flex-row"><BiStation /> <h5>{t("advanced_search.station_name.title")}:</h5></span>
+                        <input type="text" onChange={(e) => onInputChange({name: "stationName", value: e.target.value, type: "text"})} name="stationName" value={formState.stationName} className="primary__input" placeholder={t("advanced_search.station_name.placeholder")} />
                     </div>
                     <div className="search--input--group">
-                        <span className="input--label flex-row"><IoMdPricetag /> <h5>Tags:</h5></span>
-                        <MultiInputSelect getTags={getTags} />
+                        <span className="input--label flex-row"><IoMdPricetag /> <h5>{t("advanced_search.tags.title")}:</h5></span>
+                        <MultiInputSelect getTags={getTags} placeholder={t("advanced_search.tags.placeholder")} translate={t} />
                     </div>
                     <div className="search--input--group search--filters">
-                        <span className="input--label flex-row"><MdFilterAlt /> <h5>Filters:</h5></span>
+                        <span className="input--label flex-row"><MdFilterAlt /> <h5>{t("advanced_search.filters.title")}:</h5></span>
                         <div className="search--select--input">
                             <CreatableSelect
                                 isClearable={false}
@@ -239,7 +233,7 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
                         </div>
                     </div>
                     <div className="search--input--group">
-                        <span className="input--label flex-row"><FaSort /> <h5>Sort by:</h5></span>
+                        <span className="input--label flex-row"><FaSort /> <h5>{t("advanced_search.sort_by.title")}:</h5></span>
                         <div className="search--select--input">
                             <CreatableSelect
                                 isClearable={false}
@@ -247,16 +241,16 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
                                 onChange={onInputChange}
                                 theme={selectTheme}
                                 value={formState.order}
-                                placeholder="Sort by"
+                                placeholder={t("advanced_search.sort_by.placeholder")}
                                 defaultValue="Normal"
                                 isLoading={ordersOptions.isLoading}
                                 options={ordersOptions.list}
                             />
                         </div>
-                        <IosButton onIOSChange={onInputChange} val={{value: formState.reverse, name: "reverse"}} label="Show results in reverse order" />
+                        <IosButton onIOSChange={onInputChange} val={{value: formState.reverse, name: "reverse"}} label={t("advanced_search.reverse_order_label")} />
                     </div>
                     <button className="primary__btn" type="submit">
-                        Search
+                        {t("advanced_search.search_button_title")}
                     </button>
                 </form>
         </div>

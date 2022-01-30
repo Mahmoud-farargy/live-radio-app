@@ -18,7 +18,7 @@ const Main = styled.main`
             z-index: var(--z-header);
             background-color: var(--ultra-white);
             transition: background-color 0.3s linear;
-            position: fixed;
+            position: sticky;
             top:0;
         }
         .modal--backdrop{

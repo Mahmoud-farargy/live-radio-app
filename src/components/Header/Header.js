@@ -3,6 +3,7 @@ import "./Header.scss";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdArrowDropleftCircle, IoMdArrowDroprightCircle  } from "react-icons/io";
 import { Link, useHistory } from "react-router-dom";
+import appConfig from "../../info/app-config.json";
 const Header = () => {
     const history = useHistory();
     const navigate = (direction) => {
@@ -15,7 +16,7 @@ const Header = () => {
                     <GiHamburgerMenu />
                 </label> 
                 <span className="logo--txt">
-                    <Link to="/">SoundEx</Link>
+                    <Link to="/" className="logo__text">{appConfig.title}</Link>
                 </span>
                 <div className="navigation--container flex-row">
                     <span onClick={() => navigate(-1)}><IoMdArrowDropleftCircle /></span>

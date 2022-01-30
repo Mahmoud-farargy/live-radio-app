@@ -1,6 +1,5 @@
 import React, { PureComponent } from "react";
-import { notify } from "../../utilities/tools";
-import { serialize } from "../../utilities/tools";
+import { notify, serialize, lowerString } from "../../utilities/tools";
 import PropTypes from "prop-types";
 import api from "../../services/api";
 import { connect } from "react-redux";
@@ -20,7 +19,7 @@ export const withStationsFetcher = WrappedComponent => {
             const { localMemory } = this.props;
             const availableKeys = ["language", "languageExact", "tag", "tagExact", "reverse", "order", "name", "nameExact", "country", "countryExact", "countryCode", "state", "stateExact", "tagList", "codec", "bitrateMin", "bitrateMax", "is_https"];
             return new Promise((resolve, reject) => {
-                if (rest ? (typeof rest === "object" && Object.keys(rest).every(key => availableKeys.some(el => el.toLowerCase() === key.toLowerCase()))) : true) {
+                if (rest ? (typeof rest === "object" && Object.keys(rest).every(key => availableKeys.some(el => lowerString(el) === lowerString(key)))) : true) {
                     const mainObject = {
                         ...rest,
                         hideBroken: true,

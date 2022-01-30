@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import * as consts from "../../utilities/consts";
 import { BsShareFill } from "react-icons/bs";
 import ShareList from "../Modal/ShareList/ShareList";
+import { useTranslation } from "react-i18next";
 
 
 const OuterContainer = styled.div`
@@ -29,6 +30,9 @@ const OuterContainer = styled.div`
                 justify-content: space-between;
                 .list--name{
                     margin:0;
+                }
+                svg{
+                    color: var(--text-black);
                 }
                 button.social__share__btn{
                     display: grid;
@@ -70,6 +74,7 @@ const OuterContainer = styled.div`
 
 const StationsList = ({ list, loading, isPlayerFullMode, isPlayerOpen, title, areSavedStations }) => {
     const [ isSocialModalOpen, setSocialModalOpenning ] = useState(false);
+    const { t } = useTranslation();
     return (
         <Auxiliary>
             {isSocialModalOpen && <ShareList listName={title} setSocialModalOpenning={setSocialModalOpenning} isSocialModalOpen={isSocialModalOpen} listLink={window.location.href}/>}
@@ -91,7 +96,7 @@ const StationsList = ({ list, loading, isPlayerFullMode, isPlayerOpen, title, ar
                                 )
                             })
                             :
-                            <EmptyResults msg="No matching stations" />
+                            <EmptyResults msg={t("no_match_msg")} />
                         }
                     </ul>
                     :

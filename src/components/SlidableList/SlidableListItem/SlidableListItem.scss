@@ -23,6 +23,7 @@
             color: var(--gray);
             padding: 0.4rem;
             display: block;
+            z-index: 15;
             transition: 0.250s ease-in;
             transition-property: visibility, opacity;
             border-radius: var(--radius) ;
