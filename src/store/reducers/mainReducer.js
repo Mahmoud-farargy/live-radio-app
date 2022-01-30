@@ -54,7 +54,7 @@ export const mainReducer = (state = initialState, actions) => {
                     return {
                         name: item.name,
                         musicSrc: (item.urlResolved || item.url),
-                        cover: item.favicon || defaultImg,
+                        cover: defaultImg,
                         duration: 7200,
                         singer: item.country,
                         id: item.stationuuid

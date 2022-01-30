@@ -86,7 +86,7 @@ const StationsListItem = ({ item, index, updateFavs, changeCurrentPlaylist, whol
                             height={15}
                             width={15} /> :`${index + 1}` }</span>
                         <img
-                            src={item.favicon}
+                            src={defaultImg}
                             alt={item.name || "station"}
                             ref={imgRef}
                             loading="lazy"

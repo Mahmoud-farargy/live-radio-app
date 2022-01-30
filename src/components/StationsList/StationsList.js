@@ -31,6 +31,9 @@ const OuterContainer = styled.div`
                 .list--name{
                     margin:0;
                 }
+                svg{
+                    color: var(--text-black);
+                }
                 button.social__share__btn{
                     display: grid;
                     place-content:center;

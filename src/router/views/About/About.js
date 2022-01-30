@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 const About = () => {
     const { t } = useTranslation();
     const contactList = Object.freeze([
-        {type: "github", title: "Github",url: "https://github.com/Mahmoud-farargy/instagram-clone", icon: (<ImGithub style={{ fontSize: "30px" }} />), id: "github"},
+        {type: "github", title: "Github",url: "https://github.com/Mahmoud-farargy", icon: (<ImGithub style={{ fontSize: "30px" }} />), id: "github"},
         {type: "gmail", title: "Email",url: "mailto:mahmoudfarargy9@gmail.com", icon: (<MdEmail style={{ fontSize: "35px" }} />), id: "gmail"},
         {type: "instagram", title: "Instagram",url: "https://www.instagram.com/codepugilist", icon: (<AiFillInstagram style={{ fontSize: "35px" }} />), id: "instagram"},
         {type: "codepen", title: "Code Pen",url: "https://codepen.io/mahmoud-farargy/pens/public", icon: (<AiFillCodepenCircle style={{ fontSize: "35px" }} />), id: "codepen"},

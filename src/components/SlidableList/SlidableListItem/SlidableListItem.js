@@ -100,7 +100,7 @@ const SlidableListItem = ({ item, changeCurrentPlaylist, updateFavs,wholeList, s
                         </div>
                     </div>
                     <img
-                        src={item.favicon}
+                        src={defaultImg}
                         alt={item.name || "station"}
                         ref={imgRef}
                         loading="lazy"

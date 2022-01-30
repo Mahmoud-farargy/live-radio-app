@@ -30,7 +30,7 @@ const StationOptions = ({isRecentlyPlayed, isLiked, setInfoModal,item, onLikingU
             <select value={"hiddenoption"} onChange={(e) => onOptionsChange(e)}>
                 <optgroup label={`${t("station_options.options_for")}"${trimText(item.name, 10)}"`}>
                     <option value="hiddenoption" hidden="hidden" disabled="disabled">{t("station_options.default_option")}..</option>
-                    <option value="more_info">{t("station_options.more_about")}{trimText(item.name, 10)}</option>
+                    <option value="more_info">{t("station_options.more_about")}"{trimText(item.name, 10)}"</option>
                     {isRecentlyPlayed && <option value="remove_from_history">{t("station_options.remove_from_history")}</option>}
                     <option value="visit_homepage">{t("station_options.visit_homepage")}</option>
                     <option value="like_unlike">{isLiked? t("station_options.liking.unlike"): t("station_options.liking.like")}</option>
