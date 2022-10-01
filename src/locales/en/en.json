@@ -54,7 +54,7 @@
     "settings":{
         "sleep_timer": {"title": "Sleep timer", "description": "Stops the current stream automatically after a certain number of minutes."},
         "sleep_timeout": {"title": "Sleep timeout","description": "Stop stream after (min)"},
-        "https_only": {"title": "HTTPS requests only", "description":"Load https requests only (more secure, fewer results)."},
+        "https_only": {"title": "HTTPS requests only", "description":"Load https requests only (more secure but fewer results)."},
         "load_icons": {"title": "Load icons", "description": "Load station icons (if turned off, the app will load faster)."},
         "change_langauge": {"title": "Change language"},
         "save_button_title": "Save"
