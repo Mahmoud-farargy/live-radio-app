@@ -2,6 +2,6 @@
     "title": "SoundEx",
     "description": "Listen to your favorite radio stations and podcasts",
     "author": "Mahmoud Farargy",
-    "radioBrowser": "https://fr1.api.radio-browser.info/json",
+    "radioBrowser": "https://de1.api.radio-browser.info/json",
     "lyricsOvh": "https://api.lyrics.ovh"
 }
