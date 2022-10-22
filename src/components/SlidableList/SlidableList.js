@@ -95,7 +95,6 @@ const SlidableList = ({ params, fetchStations, listTitle }) => {
               firstAndLastGutter={true}
               enablePlaceholder={true}
               gutter={4}
-              disableSwipe={true}
               outsideChevron={false}
               slidesToScroll={3}
               chevronWidth={25}
@@ -107,7 +106,7 @@ const SlidableList = ({ params, fetchStations, listTitle }) => {
                   height={60}
                   width={60} />
               }
-              classes={{ wrapper: "items--wrapper", itemsWrapper: "items--inner--wrapper" }}
+              classes={{ wrapper: "wrapper", itemsWrapper: "items--wrapper", itemsInnerWrapper: "items--inner--wrapper" }}
               rightChevron={<button aria-label="Scroll right" className="slidablelist--right--arrow">
                 <IoIosArrowDroprightCircle />
               </button>}

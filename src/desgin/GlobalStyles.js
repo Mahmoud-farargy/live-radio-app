@@ -235,10 +235,24 @@ const GlobalStyles = createGlobalStyle`
     ul.slidableList--ul {
       padding: 0;
       list-style: none;
-      width: 100%;
-      display: block;
+      width:100%;
       position: relative;
+      overflow-x:auto;
       overflow-y: hidden;
+      max-width: 100vw;
+      align-items:center;
+      margin-bottom:0;
+      min-height: 50px;
+      align-content: flex-start;
+      transition: all 0.5 ease-in;
+      &::-webkit-scrollbar{
+          width:0;
+          display: none;
+      };
+      white-space: nowrap;
+      .react-multi-carousel-list{
+          align-items: flex-start;
+      }
       .slidablelist--right--arrow,
       .slidablelist--left--arrow {
         top: 50%;
@@ -284,6 +298,12 @@ const GlobalStyles = createGlobalStyle`
     }
     @media only screen and (max-width: 670px) {
       padding: 1rem 0.4rem;
+      ul.slidableList--ul {
+        .slidablelist--right--arrow,
+        .slidablelist--left--arrow {
+          display: none;
+        }
+      }
     }
   }
   #slidableListLoading{
@@ -312,7 +332,11 @@ const GlobalStyles = createGlobalStyle`
       background-color: #fff;
     }
   }
-  .items--inner--wrapper, .items--wrapper{
+
+  .items--wrapper, .wrapper{
+   overflow-x: hidden;
+  }
+  .wrapper, .items--wrapper, .wrapper{
     overflow-y: hidden;
   }
   .primary__btn {
