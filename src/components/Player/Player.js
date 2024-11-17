@@ -7,6 +7,7 @@ import * as consts from "../../utilities/consts";
 import PropTypes from "prop-types";
 import appConfig from "../../info/app-config.json";
 import { AudioContext } from "../PlayerContext/PlayerContext";
+import Locale from "react-jinke-music-player/lib/config/locale";
 
 class Player extends PureComponent {
     constructor(props){
@@ -17,6 +18,7 @@ class Player extends PureComponent {
         this.state = {
            currentPlayIndex: 0,
            currentVolumeLevel: 1,
+           currentAudioObj: {}
         }
         this.onPlayerModeChange = this.onPlayerModeChange.bind(this);
     }
@@ -65,14 +67,15 @@ class Player extends PureComponent {
 
     }
     componentDidUpdate(prevProps, prevState){
-        if(prevProps.currentPlaylist!== this.props.currentPlaylist){
+        if(prevProps.currentPlaylist !== this.props.currentPlaylist){
             setTimeout(() => this.setState({currentPlayIndex:this.props.currentPlaylist?.activeIndex}),400);
         }
         if(prevProps.currentStationId !== this.props.currentStationId){
             const currIdx = this.props.currentPlaylist?.list?.map(el => el.id).indexOf(this.props.currentStationId);
           
             if(currIdx !== -1){
-                  this.props.updateHistory({ type: "add", item: this.props.currentPlaylist?.oldList?.[currIdx], destination: "history" });
+                const currItem = this.props.currentPlaylist?.oldList?.[currIdx];
+                this.props.updateMemo({ type: "add", item: currItem, destination: "history" });
             } 
         }
         if(prevState.currentVolumeLevel !== this.state.currentVolumeLevel){
@@ -86,8 +89,10 @@ class Player extends PureComponent {
                         this.sleepElTimeout.current = setTimeout(() => {
                         if(this._isMounted){
                             if(this.props.isAudioPlaying){
-                                this.audioInstance.pause(); 
+                                this.audioInstance.pause();
                                 notify(`${settings.sleepTimeout} ${settings.sleepTimeout > 1 ? "mins are" : " min is"} over. The stream has been stopped.`); 
+                                const newObject = {...settings, sleepTimer: false};
+                                this.props.updateMemo({type: "set", newObject, destination: "settings"});
                             }
                             clearTimeout(this.sleepElTimeout.current);
                         }
@@ -106,7 +111,9 @@ class Player extends PureComponent {
     }
     onPlayerModeChange(mode){
         if(mode){
-            this.props.changePlayerMode(lowerString(mode) === "full" ? true : false);   
+            const isFullMode = lowerString(mode) === "full";
+            isFullMode && this.blinkingDotOnTheTitle('auto');
+            this.props.changePlayerMode(isFullMode ? true : false);   
         }
     }
     getCurrentPlayingStation(x) {
@@ -116,20 +123,48 @@ class Player extends PureComponent {
         }
     }
 
+    blinkingDotOnTheTitle(operation){
+        const titleEl = document.querySelector('.audio-title');
+        if(!this.state.currentAudioObj || !titleEl){
+            return;
+        }
+        const currTitle = `${this.state.currentAudioObj.name} ${this.state.currentAudioObj.singer ? `- ${this.state.currentAudioObj.singer}` : ''}`
+        titleEl.innerHTML = `
+            <span class="player_title-lg">           
+                <span>${currTitle || ""}</span>
+                ${operation === 'add' || (operation === 'auto' && this.props.isAudioPlaying) ? `<span>
+                <span class="ring-container">
+                    <span class="ringring"></span>
+                    <span class="circle"></span>
+                </span>
+                </span>` : ''}
+            </span>
+
+            `.trim();
+    }
     changeTheme(currTheme){
         this.props.changeCurrentTheme(currTheme);
     }
-    onPlaying(x){
-        this.getCurrentPlayingStation(x);
+    onPlaying(audioInfo){       
+        this.setState({
+            currentAudioObj: audioInfo
+        }, () => {
+            this.blinkingDotOnTheTitle('add');
+        })
+        this.getCurrentPlayingStation(audioInfo);
         this.props.changePlayingState(true);
         if(this.props.isAudioBuffering){
-            this.props.changeBufferingState(false); 
+            this.props.changeBufferingState({state: false, id: ""}); 
         }
     }
-    onPausing(){
+    onPausing(audioInfo){
+        this.setState({
+            currentAudioObj: audioInfo
+        }, () => {
+            this.blinkingDotOnTheTitle('remove');
+        })
         this.props.changePlayingState(false);
     }
-
     render(){
         const { localMemory, currentPlaylist, isPlayerOpen } = this.props;
         return (
@@ -139,13 +174,13 @@ class Player extends PureComponent {
                         this.audioInstance = instance;
                         this.audioInstance.addEventListener('waiting', () => {
                             this.props.changePlayingState(false);
-                            this.props.changeBufferingState(false);
+                            this.props.changeBufferingState({state: false, id: ""}); 
                         });
                         this.audioInstance.addEventListener("loadstart", () => {
-                            this.props.changeBufferingState(true);
+                            this.props.changeBufferingState({state: true, id: this.props.currentPlaylist?.list[this.state.currentPlayIndex]?.id});
                         });
                         this.audioInstance.addEventListener("loadedmetadata", () => {
-                            this.props.changeBufferingState(false);
+                            this.props.changeBufferingState({state: false, id: ""});
                         });
                         this.audioInstance.addEventListener("error" , () => {
                             if(this.props.isPlayerOpen){
@@ -158,21 +193,23 @@ class Player extends PureComponent {
                     showPlayMode={false}
                     onThemeChange={(e) => this.changeTheme(e)}
                     remove={false}
-                    locale={localMemory?.settings.choosenLangauge === "cn" ? "zh_CN" :"en_US"}
+                    locale={localMemory?.settings.choosenLangauge === "cn" ? Locale.zh_CN : Locale.en_US}
                     theme="auto"
                     mode="full"
                     responsive={true}
+                    showMediaSession={true}
                     play
                     onAudioVolumeChange={(e) => this.setState({currentVolumeLevel: e})}
                     style={{display: `${!isPlayerOpen ?  "none": "block"}`}}
-                    className="player--container"
+                    className="player--container live__mode"
+                    defaultPlayMode="singleLoop"
                     showMiniProcessBar={true}
                     clearPriorAudioLists={true}
                     defaultVolume={this.state.currentVolumeLevel}
                     onModeChange={(e) => this.onPlayerModeChange(e)}
-                    onAudioPlay={(a) => this.onPlaying(a)}
-                    onAudioEnded={() => this.onPausing()}
-                    onAudioPause={() => this.onPausing()}
+                    onAudioPlay={(audioInfo) => this.onPlaying(audioInfo)}
+                    onAudioEnded={(audioInfo) => this.onPausing(audioInfo)}
+                    onAudioPause={(audioInfo) => this.onPausing(audioInfo)}
                     loadAudioErrorPlayNext={false}
                     showLyric={false}
                     onPlayIndexChange={(e) => this.setState({currentPlayIndex:e})}
@@ -191,7 +228,7 @@ Player.propTypes = {
     changePlayerMode: PropTypes.func.isRequired,
     changeCurrentTheme: PropTypes.func.isRequired,
     changeCurrentID: PropTypes.func.isRequired,
-    updateHistory: PropTypes.func.isRequired,
+    updateMemo: PropTypes.func.isRequired,
     changeBufferingState: PropTypes.func.isRequired,
     currentPlaylist: PropTypes.object.isRequired,
     isPlayerOpen: PropTypes.bool.isRequired,
@@ -207,7 +244,7 @@ const mapStateToProps = state => {
         currentStationId: state[consts.MAIN].currentStationId || "",
         localMemory: state[consts.MAIN].localStorageCopy || {},
         isAudioPlaying: state[consts.MAIN].isAudioPlaying || false,
-        isAudioBuffering: state[consts.MAIN].isAudioBuffering || false
+        isAudioBuffering: state[consts.MAIN].currentBufferingAudio?.state || false
     }
 }
 const mapDispatchToProps = dispatch => {
@@ -215,7 +252,7 @@ const mapDispatchToProps = dispatch => {
       changePlayerMode: (val) => dispatch({type: actionTypes.CHANGE_PLAYER_MODE, modeState: val}),
       changeCurrentID: (id) => dispatch({type: actionTypes.CHANGE_CURRENT_ID, id}),
       changeCurrentTheme: (val) => dispatch({type: actionTypes.CHANGE_CURRENT_THEME, currTheme: val}),
-      updateHistory: (payload) => dispatch({ type: actionTypes.UPDATE_MEMORY, payload }),
+      updateMemo: (payload) => dispatch({ type: actionTypes.UPDATE_MEMORY, payload }),
       changePlayingState: (playingState) => dispatch({type: actionTypes.CHANGE_AUDIO_PLAYING, playingState}),
       changeBufferingState: (bufferingState) => dispatch({type: actionTypes.CHANGE_AUDIO_BUFFERING, bufferingState})
     };

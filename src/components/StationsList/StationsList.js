@@ -83,7 +83,7 @@ const StationsList = ({ list, loading, isPlayerFullMode, isPlayerOpen, title, ar
                     !loading ?
                     <ul id="stationsList">
                         <div className="stations--list--header flex-row">
-                          {list?.length > 0 &&<h4 className="list--name">{title}</h4>}  
+                          {list?.length > 0 && title ? <h4 className="list--name">{title}</h4> : <span />}  
                             {(!areSavedStations && list?.length > 0) && <button onClick={() => setSocialModalOpenning(true)} title="Share this list" className="social__share__btn">
                                 <BsShareFill />
                             </button>}

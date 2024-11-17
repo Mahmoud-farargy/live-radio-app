@@ -5,7 +5,7 @@ import { localStorageBasicData } from "../../info/localStorageSkeletonData";
 
 const initialState = {
     isAudioPlaying: false,
-    isAudioBuffering: true,
+    currentBufferingAudio: {},
     isPlayerFullMode: true,
     isPlayerOpen: false,
     visitorLocation: {},
@@ -34,7 +34,7 @@ export const mainReducer = (state = initialState, actions) => {
         case actionTypes.CHANGE_AUDIO_BUFFERING:
             return {
                 ...state,
-                isAudioBuffering: actions.bufferingState
+                currentBufferingAudio: actions.bufferingState || {}
             }
         case actionTypes.CHANGE_PLAYER_MODE:
             return {
@@ -55,7 +55,7 @@ export const mainReducer = (state = initialState, actions) => {
                         name: item.name,
                         musicSrc: (item.urlResolved || item.url),
                         cover: defaultImg,
-                        duration: 7200,
+                        duration: 0,
                         singer: item.country,
                         id: item.stationuuid
                     }
@@ -63,7 +63,8 @@ export const mainReducer = (state = initialState, actions) => {
                 return {
                     ...state,
                     currentPlaylist: { list: newList, activeIndex: activeIndex >= 0 ? activeIndex : 0, oldList: list },
-                    ...(!state.isPlayerOpen && { isPlayerOpen: true })
+                    ...(!state.isPlayerOpen && { isPlayerOpen: true }),
+                    currentBufferingAudio: {state: true, id: currentStationId},
                 }
 
             } else {

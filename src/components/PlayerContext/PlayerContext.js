@@ -41,7 +41,7 @@ const mapStateToProps = state => {
     return {
         isPlayerOpen: state[consts.MAIN].isPlayerOpen,
         isAudioPlaying: state[consts.MAIN].isAudioPlaying || false,
-        isAudioBuffering: state[consts.MAIN].isAudioBuffering || false
+        isAudioBuffering: state[consts.MAIN].currentBufferingAudio?.state || false
     }
 }
 export default connect( mapStateToProps )(PlayerContext);

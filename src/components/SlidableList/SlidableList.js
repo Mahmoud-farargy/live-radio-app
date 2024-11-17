@@ -9,8 +9,9 @@ import { useTranslation } from "react-i18next";
 import * as Consts from "../../utilities/consts";
 import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
 import { serialize, trimText } from "../../utilities/tools";
+import { connect } from "react-redux";
 
-const SlidableList = ({ params, fetchStations, listTitle }) => {
+const SlidableList = ({ params, fetchStations, listTitle, currentBufferingAudio }) => {
   const [itemsPerSide, setItemsPerSlide] = useState(6);
   const [activeItemIndex, setActiveItemIndex] = useState(0);
   const [listName, setListName] = useState("");
@@ -43,7 +44,9 @@ const SlidableList = ({ params, fetchStations, listTitle }) => {
     setListName(params?.tag ? params.tag : "");
     const currWidth = +window.innerWidth || +document.documentElement.clientWidth;
     // Responsive reel items count
-    if (currWidth >= 3000) {
+    if (currWidth >= 3500) {
+      setItemsPerSlide(7);
+    }else if (currWidth >= 3000) {
       // Large Desktop
       setItemsPerSlide(6);
     } else if (currWidth >= 1366) {
@@ -115,7 +118,7 @@ const SlidableList = ({ params, fetchStations, listTitle }) => {
               </button>}
             >
               {response.list?.map((item, i) => {
-                return item && (<SlidableListItem key={item.stationuuid || i} item={item} wholeList={response.list} />)
+                return item && (<SlidableListItem key={item.stationuuid || i} isAudioBuffering={currentBufferingAudio?.state && currentBufferingAudio?.id && (currentBufferingAudio?.id === item.stationuuid)} item={item} wholeList={response.list} />)
               })}
             </Carousel>
 
@@ -133,4 +136,9 @@ SlidableList.propTypes = {
 SlidableList.defaultProps = {
   params: {}
 }
-export default withStationsFetcher(memo(SlidableList));
+const mapStateToProps = state => {
+  return {
+    currentBufferingAudio: state[Consts.MAIN].currentBufferingAudio || {}
+  }
+}
+export default connect(mapStateToProps)(withStationsFetcher( memo(SlidableList)));

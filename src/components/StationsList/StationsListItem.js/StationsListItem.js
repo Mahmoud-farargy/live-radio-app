@@ -92,7 +92,7 @@ const StationsListItem = ({ item, index, updateFavs, changeCurrentPlaylist, whol
                             loading="lazy"
                         />
                         <div className="stationsList--item--info">
-                            <h5 title={item.name} className="station--name">{trimText(item.name, 20)}</h5>
+                            <h5 title={item.name} className="station--name">{trimText(item.name, 300)}</h5>
                             <span title={stationLocation} className="station--location">{trimText(stationLocation, 20)}</span>
                         </div>
                     </div>
@@ -127,7 +127,7 @@ const mapStateToProps = state => {
         currentStationId: state[consts.MAIN].currentStationId || "",
         storageCopy: state[consts.MAIN].localStorageCopy,
         isAudioPlaying: state[consts.MAIN].isAudioPlaying || false,
-        isAudioBuffering: state[consts.MAIN].isAudioBuffering || false
+        isAudioBuffering: state[consts.MAIN].currentBufferingAudio?.state || false
     }
 }
 const mapDispatchToProps = dispatch => {

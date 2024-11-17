@@ -33,7 +33,7 @@ const Category = ({ fetchStations }) => {
 
     return (
         <Fragment>
-            <StationsList list={response?.results} loading={response?.loading} title={currentQueries?.get("tag") || currentQueries?.get("name") || "Search"}/>
+            <StationsList list={response?.results} loading={response?.loading} title={currentQueries?.get("tag") || (currentQueries?.get("name") ? `"${currentQueries?.get("name")}"` : "")}/>
         </Fragment>
     )
 }

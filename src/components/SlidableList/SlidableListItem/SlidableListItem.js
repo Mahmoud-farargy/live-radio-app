@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useContext } from "react";
+import React, { useRef, useEffect, useState, useContext, useMemo } from "react";
 import Auxiliary from "../../HOC/Auxiliary";
 import "./SlidableListItem.scss";
 import defaultImg from "../../../desgin/Assets/radio.jpg";
@@ -19,8 +19,6 @@ const SlidableListItem = ({ item, changeCurrentPlaylist, updateFavs,wholeList, s
     const imgRef = useRef(null);
     const stationLocation = `${(item.state && item.country) ? item.state+", ": item.state}${item.country}`;
     const [isLiked, setLikingState] = useState(false);
-    const [isBuffering, setBuffering] = useState(true);
-    const [isPlaying, setPlaying] = useState(false);
     const [isRecentlyPlayed, setRecentlyPlayed] = useState(false);
     const [openInfoModal, setInfoModal] = useState(false);
     const { playAudio, pauseAudio } = useContext( AudioContext );
@@ -46,15 +44,7 @@ const SlidableListItem = ({ item, changeCurrentPlaylist, updateFavs,wholeList, s
             storageCopy.history?.length > 0 && setRecentlyPlayed(storageCopy.history.some(el => el.stationuuid === item.stationuuid)); 
         }
     },[storageCopy, item.stationuuid]);
-    useEffect(() => {
-        if (item.stationuuid) {
-            const checkIfPlaying = currentStationId === item.stationuuid;
-            setPlaying(checkIfPlaying);
-        }
-    }, [currentStationId, item]);
-    useEffect(() => {
-        !isAudioBuffering && setBuffering(false);
-    },[isAudioBuffering]);
+    const isPlaying = useMemo(() => (currentStationId === item.stationuuid), [currentStationId, item]);
     const onLikingUnlikingStation = () => {
         if(isLiked){
             updateFavs({ type: "delete", itemId: item.stationuuid, destination: "favorites" });   
@@ -67,7 +57,7 @@ const SlidableListItem = ({ item, changeCurrentPlaylist, updateFavs,wholeList, s
                 !isAudioBuffering && pauseAudio();
             }else{           
                 changeCurrentPlaylist({list: wholeList, currentStationId: item.stationuuid});
-                playAudio();  
+                playAudio();
             }
     }
     const removeFromHistory = () => {
@@ -115,7 +105,7 @@ const SlidableListItem = ({ item, changeCurrentPlaylist, updateFavs,wholeList, s
                             width={60} />  
                         </div>
                         :
-                        (isPlaying && isBuffering) &&
+                        (isPlaying && isAudioBuffering) &&
                             <div className="music--anim--container">
                                 <Loader
                                 type="Rings"
@@ -152,7 +142,7 @@ const mapStateToProps = state => {
         currentStationId: state[consts.MAIN].currentStationId || "",
         storageCopy: state[consts.MAIN].localStorageCopy || {},
         isAudioPlaying: state[consts.MAIN].isAudioPlaying || false,
-        isAudioBuffering: state[consts.MAIN].isAudioBuffering || false
+        isAudioBuffering: state[consts.MAIN].currentBufferingAudio?.state || false
     }
 }
 const mapDispatchToProps = dispatch => {

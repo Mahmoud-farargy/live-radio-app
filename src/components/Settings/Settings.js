@@ -17,8 +17,9 @@ const Settings = ({ updateMemo, localMemory, switchToMainSlide }) => {
         defaultVolume: 100,
         choosenLangauge: "en",
     });
+    const savedSettings = localMemory.settings;
     useEffect(() => {
-        const savedSettings = localMemory.settings;
+       
         if(savedSettings && Object.keys(savedSettings).length >0) {
             let stateCopy = JSON.parse(JSON.stringify(formState));
             Object.keys(stateCopy).forEach((key) => (
@@ -26,7 +27,7 @@ const Settings = ({ updateMemo, localMemory, switchToMainSlide }) => {
             ));
           setFormState(stateCopy);
         }
-    },[]);
+    },[savedSettings]);
     const onInputChange = (e) => {
         const target = e.target;
         const name = target.name;
