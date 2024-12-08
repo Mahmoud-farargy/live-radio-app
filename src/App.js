@@ -53,15 +53,13 @@ function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, changeVis
     Api()
     .get(ipapiURL).then((res) => {
       if(_isMounted.current){
-          const data = res.data;
-          if(data && data.country_code){
-            const { country_code = "", city = "", ip = "" } = data;
-            (country_code && typeof country_code === "string") && changeVisitorLocation({
-              ip: ip,
-              city: city,
-              country: country_code
-            });
-          } 
+          const data = res?.data;
+          const { country_code = "", city = "", ip = "" } = data || {};
+          (country_code && typeof country_code === "string") && changeVisitorLocation({
+            ip: ip,
+            city: city,
+            country: country_code
+          });
       }
     });
     window.addEventListener("load", () => setLoading(false));
