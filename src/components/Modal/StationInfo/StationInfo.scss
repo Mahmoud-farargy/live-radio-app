@@ -74,6 +74,7 @@
     }
     p {
       margin-bottom: 0.4rem;
+      transition: filter 0.3s linear;
       svg {
         font-size: inherit;
         margin-right: 0.4rem;
@@ -83,7 +84,6 @@
         font-size: inherit;
         color: var(--text-black);
       }
-      transition: filter 0.3s linear;
       &:hover {
         filter: brightness(1.3);
       }

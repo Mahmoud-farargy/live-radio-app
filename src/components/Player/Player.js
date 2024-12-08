@@ -25,7 +25,7 @@ class Player extends PureComponent {
     static contextType = AudioContext;
     componentDidMount(){
         document.onkeydown = (clickedKey) => {
-            if(document.activeElement.tagName !== "INPUT" && ((window.innerWidth || document.documentElement.clientWidth) >= 670)){
+            if(document.activeElement.tagName !== "INPUT"){
                 switch(clickedKey.code){
                     case "Space":
                         clickedKey.preventDefault();
@@ -82,11 +82,10 @@ class Player extends PureComponent {
             this.audioInstance.volume = this.state.currentVolumeLevel;
         }
         if((prevProps.localMemory?.settings !== this.props.localMemory?.settings) || (prevProps.isAudioPlaying !== this.props.isAudioPlaying)){
-            const settings = this.props.localMemory?.settings
-            if(settings){
-                if(settings.sleepTimer && settings.sleepTimeout > 0){
-                    if(this.props.isAudioPlaying){
-                        this.sleepElTimeout.current = setTimeout(() => {
+            const settings = this.props.localMemory?.settings;
+            if(settings?.sleepTimer && settings.sleepTimeout > 0){
+                if(this.props.isAudioPlaying){
+                    this.sleepElTimeout.current = setTimeout(() => {
                         if(this._isMounted){
                             if(this.props.isAudioPlaying){
                                 this.audioInstance.pause();
@@ -96,13 +95,12 @@ class Player extends PureComponent {
                             }
                             clearTimeout(this.sleepElTimeout.current);
                         }
-                        }, settings.sleepTimeout * 60000); 
-                    }else{
-                        clearTimeout(this.sleepElTimeout.current);
-                    }
+                    }, settings.sleepTimeout * 60000); 
+                }else{
+                    clearTimeout(this.sleepElTimeout.current);
+                }
 
-                } 
-            }
+            } 
         }
     }
     componentWillUnmount(){

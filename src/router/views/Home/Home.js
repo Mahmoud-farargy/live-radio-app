@@ -27,7 +27,7 @@ const Home = ({visitorLocation}) => {
                 <SlidableList params={{countrycode: visitorLocation.country, reverse: true}}
                 listTitle={`Local stations from ${(countriesListJSON.filter(el => upperString(el.code) === upperString(visitorLocation.country)).pop()?.name || visitorLocation.country)}`}/>
             }
-             <SlidableList params={{tag: getRandomList(),order: "random"}}
+             <SlidableList params={{tag: getRandomList(), order: "random"}}
             />
             <Suggestions />
              <SlidableList params={{tag:  getRandomList(), order: "random"}}

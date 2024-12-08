@@ -15,6 +15,7 @@
         }
         $right-spacing: 0.6rem;
         .stationsList--item--left{
+            flex: 1;
             cursor: pointer;
             .station--number{
                 width: 20px;
@@ -23,12 +24,20 @@
                 color: var(--text-black);
                 margin-right: $right-spacing;
             }
+            .image--container {
+                display: inline-block;
+                width: 2.813rem;
+                height: 2.813rem;
+                margin-right: $right-spacing;
+            }
             img{
-                width: 45px;
-                height: 45px;
+                width: 2.813rem;
+                height: 2.813rem;
                 object-fit: cover;
                 border-radius: 5px;
-                margin-right: $right-spacing;
+                vertical-align: middle;
+                margin: 0;
+                display: inline-block;
             }
             .stations__item__media__btn{
                 font-size: var(--font-size-large);
@@ -76,10 +85,19 @@
 } 
 li.active--station#stationsListItem{
     background-color: var(--primary-clr);
+    $inner-text-clr: #ffffff;
+    color: var($inner-text-clr);
+    svg:not(.favIcon){
+        color: var($inner-text-clr);
+        fill: var($inner-text-clr);
+    }
+    .stationsList--item--left .station--number{
+        color: var($inner-text-clr);
+    }
     .station--name{
-         color: #424242;
+         color: var($inner-text-clr);
     }
     .station--location{
-        color: var(--quaternary-clr);
+        color: #f0f0f0;
     }
 }

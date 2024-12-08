@@ -2,7 +2,6 @@ import React, { Fragment, useRef, useEffect, useState, memo, useContext } from "
 import "./StationsListItem.scss";
 import defaultImg from "../../../desgin/Assets/radio.jpg";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { trimText } from "../../../utilities/tools";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import * as actionTypes from "../../../store/actions/actions";
 import { connect } from "react-redux";
@@ -85,23 +84,26 @@ const StationsListItem = ({ item, index, updateFavs, changeCurrentPlaylist, whol
                             color="var(--ultra-white)"
                             height={15}
                             width={15} /> :`${index + 1}` }</span>
-                        <img
-                            src={defaultImg}
-                            alt={item.name || "station"}
-                            ref={imgRef}
-                            loading="lazy"
-                        />
+                        <span className="image--container">
+                            <img
+                                src={defaultImg}
+                                alt={item.name || "station"}
+                                ref={imgRef}
+                                loading="lazy"
+                            />  
+                        </span>
+
                         <div className="stationsList--item--info">
-                            <h5 title={item.name} className="station--name">{trimText(item.name, 300)}</h5>
-                            <span title={stationLocation} className="station--location">{trimText(stationLocation, 20)}</span>
+                            <h5 title={item.name} className="station--name ellipsis-x1">{item.name}</h5>
+                            <span title={stationLocation} className="station--location ellipsis-x1">{stationLocation}</span>
                         </div>
                     </div>
                     <div className="stationsList--item--actions">
                         <span onClick={() => onLikingUnlikingStation()} className="stationsList--item--like">
                             {
                                 isLiked ?
-                                    <AiFillHeart className="unlike" /> :
-                                    <AiOutlineHeart className="like" />
+                                    <AiFillHeart className="unlike favIcon" /> :
+                                    <AiOutlineHeart className="like favIcon" />
                             }
 
                         </span>

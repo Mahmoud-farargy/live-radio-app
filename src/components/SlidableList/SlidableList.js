@@ -28,9 +28,9 @@ const SlidableList = ({ params, fetchStations, listTitle, currentBufferingAudio 
         ...response,
         loading: true
       });
-      fetchStations({ ...params, limit: 8 }).then((res) => {
+      fetchStations({ ...params, limit: 8 }).then(({data}) => {
         setResponse({
-          list: res,
+          list: data,
           loading: false
         });
       }).catch(() => {

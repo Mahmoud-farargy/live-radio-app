@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import "./About.scss";
 import { ImGithub } from "react-icons/im";
 import { MdEmail } from "react-icons/md";
+import { portfolioURL } from "../../../info/app-config.json"; 
 import { AiFillInstagram, AiFillCodepenCircle } from "react-icons/ai";
 import { useTranslation } from "react-i18next";
 
@@ -22,7 +23,7 @@ const About = () => {
                         <div className="flex-column about-section-inner">
                             <h2>{t("self_introduction")} Mahmoud <br /> Farargy</h2>
 
-                            <p>{t("about_me")} <a target="_blank" rel="noopener noreferrer" href="https://mahmoudportfolio.netlify.app">Portfolio.</a></p>
+                            <p>{t("about_me")} <a target="_blank" rel="noopener noreferrer" href={portfolioURL}>Portfolio.</a></p>
                             <ul className="flex-row socials--links">
                                 {
                                     contactList && contactList.length > 0 &&
@@ -37,7 +38,6 @@ const About = () => {
                                     })
                                 }
                             </ul>
-
                         </div>
                     </div>
                 </div>

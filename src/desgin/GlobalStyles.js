@@ -35,23 +35,34 @@ const GlobalStyles = createGlobalStyle`
   // themes
   body.darkTheme {
     --gray: #262626;
-    --ultra-white: #000000;
-    --seconday-clr: #1a1e22;
+    --ultra-white: #121212;
+    --seconday-clr: #1e1e1e;
     --light-gray: #161616;
-    --ultra-black: #fff;
+    --ultra-black: #EDEDED;
     --light-black: #999999;
     --links-clr: #9595f3;
     --bluish-sky: #4e8bc4;
     --shadow-white: #666666;
     --text-black: #d8d7d7;
-    --text-dark-black: #dadada;
+    --text-dark-black: #e0e0e0;
     --transparent-black: rgba(255, 255, 255, 0.1);
-    --more-lighter-gray: #3d3b3b;
+    --more-lighter-gray: #1c1c1c;
     --quaternary-clr: #dadada;
-    --homeBoxes-bg-clr: #000000;
+    --homeBoxes-bg-clr: #121212;
     --dark-yellow: rgb(182, 176, 93);
     --lighter-gray: #666666;
+    --pill-bg-color: #2a6045;
+    --pill-text-color: #e5e5e5;
+    --player-bg: rgb(18, 18, 18, 0.75);
+    --borders-clr: #333;
   }
+  body.darkTheme {
+    background-color: var(--ultra-white);
+    .react-jinke-music-player-main .music-player-panel {
+      background-color: var(--player-bg);
+    }
+  }
+
   body.darkTheme img {
     filter: brightness(90%);
   }
@@ -62,7 +73,7 @@ const GlobalStyles = createGlobalStyle`
     background-color: var(--quaternary-clr);
   }
   body.darkTheme {
-    #slidableList, ul#stationsList{
+    #slidableList, #stationsList{
       box-shadow: 0px 10px 30px -15px rgba(0, 0, 0, 0.2);
     }
   }
@@ -105,6 +116,13 @@ const GlobalStyles = createGlobalStyle`
   .flex-row {
     display: flex;
     flex-direction: row;
+  }
+  .ellipsis-x1{
+    -webkit-line-clamp:1;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    white-space: normal;
   }
   .player_title-lg{
     display: flex;
@@ -182,7 +200,7 @@ const GlobalStyles = createGlobalStyle`
   }
   .player--container.react-jinke-music-player-main.light-theme
     .music-player-panel {
-    border-top-color: var(--lighter-gray);
+    border-top-color: var(--borders-clr);
   }
   a.active--nav--link.active--nav--link {
     background-color: var(--primary-clr) !important;
@@ -193,13 +211,6 @@ const GlobalStyles = createGlobalStyle`
     }
   }
   
-  .station--name,
-  .station--location {
-    text-transform: capitalize;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
   .station--name {
     font-weight: var(--font-weight);
     font-size: var(--font-size-small);
@@ -362,6 +373,9 @@ const GlobalStyles = createGlobalStyle`
     text-align: center;
     text-transform: uppercase;
     font-size: var(--font-size-medium);
+    span{
+      color: #fff;
+    }
     &:hover {
       filter: brightness(1.1);
     }
@@ -476,7 +490,18 @@ const GlobalStyles = createGlobalStyle`
     width: 15px;
     height: 15px;
 }
-
+.load--more__button__container {
+  margin-top: 1rem;
+  padding: 0 1rem;
+  button {
+    padding: 1rem;
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--primary-clr);
+  }
+}
 .ring-container .circle {
     width: 8px;
     height: 8px;
@@ -578,7 +603,7 @@ const GlobalStyles = createGlobalStyle`
   }
   // 670px and less
   @media only screen and (max-width: 670px) {
-    ul#stationsList {
+    #stationsList {
       padding: 1.3rem 0.4rem;
     }
     #recommended,

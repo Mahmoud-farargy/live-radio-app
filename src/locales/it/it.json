@@ -1,89 +1,89 @@
 {
-    "self_introduction": "Hi, I'm",
-    "about_me": "A front-end developer who is specialized in Vue.js, React.js, Javascript, and other technologies. You can visit my portfolio to find more cool projects like this one",
+    "self_introduction": "Ciao, sono",
+    "about_me": "Un sviluppatore front-end specializzato in Vue.js, React.js, Javascript e altre tecnologie. Puoi visitare il mio portfolio per trovare altri progetti interessanti come questo",
     "menu": {
         "radio": "Radio",
-        "podcasts": "Podcasts",
-        "saved": "Saved",
-        "recently_played": "Recently Played",
-        "about": "About"
+        "podcasts": "Podcast",
+        "saved": "Salvato",
+        "recently_played": "Riprodotti di recente",
+        "about": "Chi sono"
     },
     "menuList": {
-        "main": {"title": "main", "description": ""},
-        "advanced_search": {"title": "advanced search", "description": "Search for certain specifications"},
-        "settings": {"title": "settings", "description": {"pt1":"Here you may customize ", "pt2": " to your needs"}},
-        "hotkeys": {"title": "hotkeys", "description": "Hotkey reference"}
+        "main": {"title": "Principale", "description": ""},
+        "advanced_search": {"title": "Ricerca avanzata", "description": "Cerca per specifiche particolari"},
+        "settings": {"title": "Impostazioni", "description": {"pt1":"Qui puoi personalizzare ", "pt2": " in base alle tue esigenze"}},
+        "hotkeys": {"title": "Scorciatoie da tastiera", "description": "Riferimento delle scorciatoie da tastiera"}
     },
     "inputPlaceholders": {
-        "searchBar": "Search radio stations"
+        "searchBar": "Cerca stazioni radio"
     },
-    "empty_list_msg": "No stations have been added yet.",
-    "no_match_msg": "No matching stations",
+    "empty_list_msg": "Nessuna stazione aggiunta ancora.",
+    "no_match_msg": "Nessuna stazione corrispondente",
     "advanced_search": {
-        "station_name": {"title" :"Station Name", "placeholder": "Stations by name"},
-        "tags": {"title" :"Tags", "placeholder": "Add tags and press enter..."},
-        "filters": {"title" :"Filters", "placeholder": ""},
-        "sort_by": {"title" :"Sort by", "placeholder": "Sort by"},
-        "reverse_order_label": "Show results in reverse order",
-        "search_button_title": "Search",
+        "station_name": {"title" :"Nome della stazione", "placeholder": "Stazioni per nome"},
+        "tags": {"title" :"Tag", "placeholder": "Aggiungi tag e premi invio..."},
+        "filters": {"title" :"Filtri", "placeholder": ""},
+        "sort_by": {"title" :"Ordina per", "placeholder": "Ordina per"},
+        "reverse_order_label": "Mostra risultati in ordine inverso",
+        "search_button_title": "Cerca",
         "filter_default_labels":{
-            "all_languages": "All languages",
-            "all_countries": "All countries",
-            "all_states": "All states"
+            "all_languages": "Tutte le lingue",
+            "all_countries": "Tutti i paesi",
+            "all_states": "Tutti gli stati"
         },
         "sort_by_options":{
-            "defaultLabel": "Normal",
-            "votes": "Vote count",
-            "name": "Name",
+            "defaultLabel": "Normale",
+            "votes": "Numero di voti",
+            "name": "Nome",
             "tag": "Tag",
-            "country": "Country",
-            "state": "State",
-            "language": "Language",
+            "country": "Paese",
+            "state": "Stato",
+            "language": "Lingua",
             "codec": "Codec",
             "bitrate": "Bitrate",
-            "last_check_ok": "Last check OK",
-            "last_check_time": "Last check time",
-            "click_count": "Click count",
-            "random": "Random"
+            "last_check_ok": "Ultima verifica OK",
+            "last_check_time": "Ultima verifica",
+            "click_count": "Numero di clic",
+            "random": "Casuale"
         }
     },
     "alerts":{
-        "saved": "Saved",
-        "already_added": "This tag has already been added"
+        "saved": "Salvato",
+        "already_added": "Questo tag è già stato aggiunto"
     },
     "settings":{
-        "sleep_timer": {"title": "Sleep timer", "description": "Stops the current stream automatically after a certain number of minutes."},
-        "sleep_timeout": {"title": "Sleep timeout","description": "Stop stream after (min)"},
-        "https_only": {"title": "HTTPS requests only", "description":"Load https requests only (more secure, fewer results)."},
-        "load_icons": {"title": "Load icons", "description": "Load station icons (if turned off, the app will load faster)."},
-        "change_langauge": {"title": "Change language"},
-        "save_button_title": "Save"
+        "sleep_timer": {"title": "Timer di sospensione", "description": "Ferma automaticamente lo stream dopo un determinato numero di minuti."},
+        "sleep_timeout": {"title": "Timeout di sospensione","description": "Ferma lo stream dopo (min)"},
+        "https_only": {"title": "Solo richieste HTTPS", "description":"Carica solo richieste HTTPS (più sicuro, meno risultati)."},
+        "load_icons": {"title": "Carica icone", "description": "Carica le icone delle stazioni (se disattivato, l'app si carica più velocemente)."},
+        "change_langauge": {"title": "Cambia lingua"},
+        "save_button_title": "Salva"
     },
     "hotkeys": {
-        "play_pause": {"title": "Play/pause", "description": "Start or pause playing the most recently selected station."},
-        "volume_up": {"title": "Volume up", "description": "Increase the volume by 10%."},
-        "volume_down": {"title": "Volume down", "description": "Decrease the volume by 10%."},
-        "prev_station": {"title": "Previous station", "description": "Switch to the previous station in the current list."},
-        "nxt_station": {"title": "Next station", "description": "Switch to the next station in the current list."},
-        "reload": {"title": "Reload",  "description": "Reload the current station."}
+        "play_pause": {"title": "Play/Pause", "description": "Avvia o metti in pausa la stazione selezionata di recente."},
+        "volume_up": {"title": "Aumenta volume", "description": "Aumenta il volume del 10%."},
+        "volume_down": {"title": "Abbassa volume", "description": "Abbassa il volume del 10%."},
+        "prev_station": {"title": "Stazione precedente", "description": "Passa alla stazione precedente nella lista attuale."},
+        "nxt_station": {"title": "Stazione successiva", "description": "Passa alla stazione successiva nella lista attuale."},
+        "reload": {"title": "Ricarica",  "description": "Ricarica la stazione corrente."}
     },
     "station_options": {
-        "default_option": "Please select",
-        "options_for": "Options for ",
-        "remove_from_history": "Remove from play history",
-        "more_about": "More Info about ",
-        "visit_homepage": "Visit Homepage",
-        "liking": {"like": "Like", "unlike": "Unlike"},
-        "cancel": "Cancel"
+        "default_option": "Seleziona",
+        "options_for": "Opzioni per ",
+        "remove_from_history": "Rimuovi dalla cronologia",
+        "more_about": "Più informazioni su ",
+        "visit_homepage": "Visita la homepage",
+        "liking": {"like": "Mi piace", "unlike": "Non mi piace"},
+        "cancel": "Annulla"
     },
     "share_list":{
-        "title": {"pt1":"Share" ,"pt2": "list with someone"}
+        "title": {"pt1":"Condividi" ,"pt2": "lista con qualcuno"}
     },
     "suggs": {
-        "recommended_title": "Recommended for You",
-        "pop_tags_title": "Popular Tags"
+        "recommended_title": "Consigliato per te",
+        "pop_tags_title": "Tag popolari"
     },
     "titles":{
-        "see_all": "See all"
+        "see_all": "Vedi tutto"
     }
 }

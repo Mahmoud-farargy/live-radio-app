@@ -57,7 +57,7 @@
         "https_only": {"title": "HTTPS requests only", "description":"Load https requests only (more secure but fewer results)."},
         "load_icons": {"title": "Load icons", "description": "Load station icons (if turned off, the app will load faster)."},
         "change_langauge": {"title": "Change language"},
-        "save_button_title": "Save"
+        "save_button_title": "Apply"
     },
     "hotkeys": {
         "play_pause": {"title": "Play/pause", "description": "Start or pause playing the most recently selected station."},

@@ -1,11 +1,10 @@
-import React, { useRef, useEffect, useState, useContext, useMemo } from "react";
+import React, { useRef, useEffect, useState, useContext, useMemo, memo } from "react";
 import Auxiliary from "../../HOC/Auxiliary";
 import "./SlidableListItem.scss";
 import defaultImg from "../../../desgin/Assets/radio.jpg";
 import { connect } from "react-redux";
 import * as actionTypes from "../../../store/actions/actions";
 import PropTypes from "prop-types";
-import { trimText } from "../../../utilities/tools";
 import { VscEllipsis } from "react-icons/vsc";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { BsPlayFill, BsFillPauseFill} from "react-icons/bs";
@@ -117,8 +116,8 @@ const SlidableListItem = ({ item, changeCurrentPlaylist, updateFavs,wholeList, s
                     }
                 </div>
                 <div className="slidablelist--station--info">
-                    <h5 className="station--name" title={item.name}>{trimText(item.name, 23)}</h5> 
-                    <span className="station--location" title={stationLocation}>{trimText(stationLocation,23)}</span>   
+                    <h5 className="station--name ellipsis-x1" title={item.name}>{item.name}</h5> 
+                    <span className="station--location ellipsis-x1" title={stationLocation}>{stationLocation}</span>   
                 </div>
             </li>
         </Auxiliary>
@@ -151,4 +150,4 @@ const mapDispatchToProps = dispatch => {
         updateFavs: (payload) => dispatch({ type: actionTypes.UPDATE_MEMORY, payload }),
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(SlidableListItem);
+export default connect(mapStateToProps, mapDispatchToProps)(memo(SlidableListItem));

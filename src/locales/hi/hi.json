@@ -1,89 +1,89 @@
 {
-    "self_introduction": "Hi, I'm",
-    "about_me": "A front-end developer who is specialized in Vue.js, React.js, Javascript, and other technologies. You can visit my portfolio to find more cool projects like this one",
+    "self_introduction": "नमस्ते, मैं हूँ",
+    "about_me": "एक फ्रंट-एंड डेवलपर जो Vue.js, React.js, Javascript और अन्य तकनीकों में विशेषज्ञ है। आप मेरा पोर्टफोलियो देख सकते हैं और ऐसे और शानदार प्रोजेक्ट्स पा सकते हैं जैसे यह",
     "menu": {
-        "radio": "Radio",
-        "podcasts": "Podcasts",
-        "saved": "Saved",
-        "recently_played": "Recently Played",
-        "about": "About"
+        "radio": "रेडियो",
+        "podcasts": "पॉडकास्ट",
+        "saved": "सहेजा हुआ",
+        "recently_played": "हाल ही में खेला गया",
+        "about": "के बारे में"
     },
     "menuList": {
-        "main": {"title": "main", "description": ""},
-        "advanced_search": {"title": "advanced search", "description": "Search for certain specifications"},
-        "settings": {"title": "settings", "description": {"pt1":"Here you may customize ", "pt2": " to your needs"}},
-        "hotkeys": {"title": "hotkeys", "description": "Hotkey reference"}
+        "main": {"title": "मुख्य", "description": ""},
+        "advanced_search": {"title": "उन्नत खोज", "description": "कुछ विशिष्टताओं के लिए खोजें"},
+        "settings": {"title": "सेटिंग्स", "description": {"pt1":"यहाँ आप ", "pt2": " को अपनी जरूरतों के अनुसार कस्टमाइज़ कर सकते हैं"}},
+        "hotkeys": {"title": "हॉटकीज़", "description": "हॉटकी संदर्भ"}
     },
     "inputPlaceholders": {
-        "searchBar": "Search radio stations"
+        "searchBar": "रेडियो स्टेशनों की खोज करें"
     },
-    "empty_list_msg": "No stations have been added yet.",
-    "no_match_msg": "No matching stations",
+    "empty_list_msg": "अभी तक कोई स्टेशन जोड़ा नहीं गया है।",
+    "no_match_msg": "कोई मेल खाने वाले स्टेशन नहीं",
     "advanced_search": {
-        "station_name": {"title" :"Station Name", "placeholder": "Stations by name"},
-        "tags": {"title" :"Tags", "placeholder": "Add tags and press enter..."},
-        "filters": {"title" :"Filters", "placeholder": ""},
-        "sort_by": {"title" :"Sort by", "placeholder": "Sort by"},
-        "reverse_order_label": "Show results in reverse order",
-        "search_button_title": "Search",
+        "station_name": {"title" :"स्टेशन का नाम", "placeholder": "नाम से स्टेशन खोजें"},
+        "tags": {"title" :"टैग्स", "placeholder": "टैग्स जोड़ें और एंटर दबाएँ..."},
+        "filters": {"title" :"फ़िल्टर", "placeholder": ""},
+        "sort_by": {"title" :"सॉर्ट करें", "placeholder": "सॉर्ट करें"},
+        "reverse_order_label": "परिणामों को उलटे क्रम में दिखाएँ",
+        "search_button_title": "खोजें",
         "filter_default_labels":{
-            "all_languages": "All languages",
-            "all_countries": "All countries",
-            "all_states": "All states"
+            "all_languages": "सभी भाषाएँ",
+            "all_countries": "सभी देश",
+            "all_states": "सभी राज्य"
         },
         "sort_by_options":{
-            "defaultLabel": "Normal",
-            "votes": "Vote count",
-            "name": "Name",
-            "tag": "Tag",
-            "country": "Country",
-            "state": "State",
-            "language": "Language",
-            "codec": "Codec",
-            "bitrate": "Bitrate",
-            "last_check_ok": "Last check OK",
-            "last_check_time": "Last check time",
-            "click_count": "Click count",
-            "random": "Random"
+            "defaultLabel": "सामान्य",
+            "votes": "वोट्स की संख्या",
+            "name": "नाम",
+            "tag": "टैग",
+            "country": "देश",
+            "state": "राज्य",
+            "language": "भाषा",
+            "codec": "कोडेक",
+            "bitrate": "बिटरेट",
+            "last_check_ok": "अंतिम जांच ठीक है",
+            "last_check_time": "अंतिम जांच समय",
+            "click_count": "क्लिक संख्या",
+            "random": "यादृच्छिक"
         }
     },
     "alerts":{
-        "saved": "Saved",
-        "already_added": "This tag has already been added"
+        "saved": "सहेजा गया",
+        "already_added": "यह टैग पहले ही जोड़ा जा चुका है"
     },
     "settings":{
-        "sleep_timer": {"title": "Sleep timer", "description": "Stops the current stream automatically after a certain number of minutes."},
-        "sleep_timeout": {"title": "Sleep timeout","description": "Stop stream after (min)"},
-        "https_only": {"title": "HTTPS requests only", "description":"Load https requests only (more secure, fewer results)."},
-        "load_icons": {"title": "Load icons", "description": "Load station icons (if turned off, the app will load faster)."},
-        "change_langauge": {"title": "Change language"},
-        "save_button_title": "Save"
+        "sleep_timer": {"title": "सोने का टाइमर", "description": "कुछ मिनटों के बाद वर्तमान स्ट्रीम को स्वचालित रूप से रोकता है।"},
+        "sleep_timeout": {"title": "सोने का टाइमआउट","description": "स्ट्रीम को (मिनटों में) बंद करें"},
+        "https_only": {"title": "केवल HTTPS अनुरोध", "description":"केवल HTTPS अनुरोध लोड करें (अधिक सुरक्षित, कम परिणाम)।"},
+        "load_icons": {"title": "आइकॉन्स लोड करें", "description": "स्टेशन आइकॉन्स लोड करें (अगर बंद किया गया हो, तो ऐप तेजी से लोड होगा)।"},
+        "change_langauge": {"title": "भाषा बदलें"},
+        "save_button_title": "सहेजें"
     },
     "hotkeys": {
-        "play_pause": {"title": "Play/pause", "description": "Start or pause playing the most recently selected station."},
-        "volume_up": {"title": "Volume up", "description": "Increase the volume by 10%."},
-        "volume_down": {"title": "Volume down", "description": "Decrease the volume by 10%."},
-        "prev_station": {"title": "Previous station", "description": "Switch to the previous station in the current list."},
-        "nxt_station": {"title": "Next station", "description": "Switch to the next station in the current list."},
-        "reload": {"title": "Reload",  "description": "Reload the current station."}
+        "play_pause": {"title": "प्ले/पॉज", "description": "सबसे हाल ही में चुने गए स्टेशन को चालू या रोकें।"},
+        "volume_up": {"title": "वॉल्यूम बढ़ाएं", "description": "वॉल्यूम को 10% बढ़ाएं।"},
+        "volume_down": {"title": "वॉल्यूम घटाएं", "description": "वॉल्यूम को 10% घटाएं।"},
+        "prev_station": {"title": "पिछला स्टेशन", "description": "वर्तमान सूची में पिछले स्टेशन पर स्विच करें।"},
+        "nxt_station": {"title": "अगला स्टेशन", "description": "वर्तमान सूची में अगले स्टेशन पर स्विच करें।"},
+        "reload": {"title": "रिलोड",  "description": "वर्तमान स्टेशन को फिर से लोड करें।"}
     },
     "station_options": {
-        "default_option": "Please select",
-        "options_for": "Options for ",
-        "remove_from_history": "Remove from play history",
-        "more_about": "More Info about ",
-        "visit_homepage": "Visit Homepage",
-        "liking": {"like": "Like", "unlike": "Unlike"},
-        "cancel": "Cancel"
+        "default_option": "कृपया चयन करें",
+        "options_for": "के लिए विकल्प",
+        "remove_from_history": "वृद्धि इतिहास से हटाएं",
+        "more_about": "के बारे में अधिक जानकारी",
+        "visit_homepage": "होमपेज पर जाएं",
+        "liking": {"like": "पसंद करें", "unlike": "नापसंद करें"},
+        "cancel": "रद्द करें"
     },
     "share_list":{
-        "title": {"pt1":"Share" ,"pt2": "list with someone"}
+        "title": {"pt1":"साझा करें" ,"pt2": "किसी से सूची"}
     },
     "suggs": {
-        "recommended_title": "Recommended for You",
-        "pop_tags_title": "Popular Tags"
+        "recommended_title": "आपके लिए अनुशंसित",
+        "pop_tags_title": "लोकप्रिय टैग्स"
     },
     "titles":{
-        "see_all": "See all"
+        "see_all": "सभी देखें"
     }
 }

@@ -31,7 +31,6 @@
     "sass": "^1.77.8",
     "styled-components": "^5.3.3",
     "web-vitals": "^0.2.4",
-    "webpack": "^4.44.2",
     "workbox-background-sync": "^5.1.3",
     "workbox-broadcast-update": "^5.1.3",
     "workbox-cacheable-response": "^5.1.3",

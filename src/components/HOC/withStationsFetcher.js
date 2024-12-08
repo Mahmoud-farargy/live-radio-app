@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import api from "../../services/api";
 import { connect } from "react-redux";
 import * as Consts from "../../utilities/consts";
+import { pageLimit } from "../../info/app-config.json";
+
 
 export const withStationsFetcher = WrappedComponent => {
 
@@ -23,13 +25,20 @@ export const withStationsFetcher = WrappedComponent => {
                     const mainObject = {
                         ...rest,
                         hideBroken: true,
-                        limit: limit || 100,
+                        limit: limit || pageLimit || 50,
                         offset: offset || 0,
                         is_https: (localMemory.settings && typeof localMemory.settings.httpsOnly === "boolean") ? localMemory.settings.httpsOnly : true,
                     }
                     api().get(`/stations/search?${serialize(mainObject)}`).then((res) => {
+                        
                         if (this._isMounted) {
-                            const receievedData = (res?.data ? (res.data?.filter(item => parseInt(item.ssl_error) === 0)) : []);
+                            const filteredData = (res.data?.filter(item => parseInt(item.ssl_error) === 0));
+                            const lengthBeforeFitlering = res.data?.length;
+                            const newObject = {
+                                data: filteredData,
+                                length: lengthBeforeFitlering,
+                            };
+                            const receievedData = (res?.data ? newObject : {});
                             resolve(receievedData);
                         }
                     }).catch((err) => {

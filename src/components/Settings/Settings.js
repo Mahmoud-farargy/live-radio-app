@@ -6,6 +6,7 @@ import * as Consts from "../../utilities/consts";
 import { notify } from "../../utilities/tools";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
+import { BsCheck } from 'react-icons/bs';
 
 const Settings = ({ updateMemo, localMemory, switchToMainSlide }) => {
     const { t } = useTranslation();
@@ -102,7 +103,10 @@ const Settings = ({ updateMemo, localMemory, switchToMainSlide }) => {
                 </div>
 
             </div>
-            <input type="submit" value={t("settings.save_button_title")} className="primary__btn" />
+            <button type="submit" className="primary__btn flex-row flex-nowrap align-items-center">
+                <BsCheck size={20}/>
+                <span>{t("settings.save_button_title")}</span>
+            </button>
         </form>
     )
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback, useState} from 'react';
+import React, { useEffect, useRef, useCallback, useState, memo} from 'react';
 import Screens from "./components/Screens/Screens";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Player from "./components/Player/Player";
@@ -11,7 +11,8 @@ import { ToastContainer } from "react-toastify";
 import { useTranslation } from 'react-i18next';
 import LostConnectivity from "./components/Modal/LostConnection/LostConnection";
 import { useLocation } from "react-router-dom";
-import { ipifyKey } from "./info/secretInfo";
+import { googleAnalyticsKey } from "./info/secretInfo";
+import { portfolioURL, ipapiURL } from "./info/app-config.json";
 import Api from "./services/api";
 
 function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, changeVisitorLocation ,localMemory }) {
@@ -26,18 +27,39 @@ function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, changeVis
   const { i18n } = useTranslation();
   // effects
   useEffect(() => {
+     // xxx Google analytics xxx
+    const trackingId = googleAnalyticsKey;
+    if (!trackingId) {
+      console.warn('Google Analytics tracking ID is not defined.');
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
+    document.head.appendChild(script);
+
+    script.onload = () => {
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', trackingId);
+    };
+    // xxx Google analytics end xxx
+
     Api()
-    .get(
-      `https://geo.ipify.org/api/v1?apiKey=${ipifyKey}`
-    ).then((res) => {
+    .get(ipapiURL).then((res) => {
       if(_isMounted.current){
           const data = res.data;
-          if(data && data.location){
-            const { country = "", city = "" } = data.location;
-            (country && typeof country === "string") && changeVisitorLocation({
-              ip: data.ip || "",
-              city: city || "",
-              country: country || ""
+          if(data && data.country_code){
+            const { country_code = "", city = "", ip = "" } = data;
+            (country_code && typeof country_code === "string") && changeVisitorLocation({
+              ip: ip,
+              city: city,
+              country: country_code
             });
           } 
       }
@@ -65,7 +87,7 @@ function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, changeVis
       "border: 1px dashed;" 
   ].join(";") 
     console.log(`%c Hi 👋 ! Glad you made it down here. Welcome to a console.log() adventure.`, consoleStyles);
-    console.log('%c If you like Soundex, I suggest you see more projects on my portfolio: https://mahmoud-farargy.web.app. Kiss from me 😘', 'background: #ee11cc; color: #eee; font-size: 15px');
+    console.log(`%c If you like Soundex, I suggest you see more projects on my portfolio: ${portfolioURL}. Kiss from me 😘`, 'background: #ee11cc; color: #eee; font-size: 15px');
     return () => {
       window.addEventListener("load", () => {});
       window.removeEventListener('offline', () => {});
@@ -147,4 +169,4 @@ const mapDispatchToProps = dispatch => {
     changeVisitorLocation: (visitorInfo) => dispatch({ type: actionTypes.CHANGE_VISITOR_LOCATION, visitorInfo})
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(memo(App));

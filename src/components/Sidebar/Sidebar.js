@@ -51,8 +51,8 @@ const Sidebar = ({ isPlayerFullMode, isPlayerOpen, closeSidebarOnMobile, isMenuE
     };
     const onSubmission = (d) => {
         d.preventDefault();
-        history.push(`${consts.SEARCH}?${serialize({ name: searchVal })}`);
-        clearSearch();
+        history.push(`${consts.SEARCH}?${serialize({ name: searchVal, order: 'clickcount' })}`);
+        // clearSearch();
         closeSidebarOnMobile();
     }
     const detectClicking = (x) => {

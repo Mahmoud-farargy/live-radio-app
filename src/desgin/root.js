@@ -15,25 +15,28 @@ const root = css`
   --height-header: 50px;
   /* colors */
   --primary-clr: #31c27c; //10%
-  --seconday-clr: #f1f1f1; //60%
+  --seconday-clr: #f5f5f5; //60%
   --tertiary-clr: #2f2a34; //20%
   --quaternary-clr: #ffffff; //10%
   --dark-gray: #545057;
   --ultra-white: #fff;
-  --ultra-black: #000;
+  --ultra-black: #171717;
   --gray: #dbdbdb;
   --light-gray: #bababa;
   --homeBoxes-bg-clr: #fbfcff;
   --lighter-gray: #e4e4e4;
   --more-lighter-gray: #efefef;
   --text-gray: #74706b;
-  --text-black: #4a525f;
+  --text-black: #171717;
   --text-dark-black: #363636;
   --dark-green: rgb(64, 150, 100);
   --light-red: #ed4956;
   --light-primary-clr: rgba(49, 194, 124, 0.12);
   --transparent-black: rgba(0, 0, 0, 0.1);
   --dark-yellow: rgb(66, 62, 3);
+  --pill-bg-color: #fff;
+  --pill-text-color: "#333333";
+  --borders-clr: #eaeaea;
   // letter spacing
   --spacing: 0.25rem;
   // border radius
