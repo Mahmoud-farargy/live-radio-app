@@ -66,7 +66,7 @@ const Sidebar = ({ isPlayerFullMode, isPlayerOpen, closeSidebarOnMobile, isMenuE
     } 
     const switchToMainSlide = useCallback(() => {
         setActiveListItem({id: "oif98eubf", title: t("menuList.main.title"), icon: <CgMenuGridO/>, description: ""});
-    },[]);
+    },[t]);
     useEffect(() => {
         if(isMenuExpanded){
             switchToMainSlide();
@@ -93,7 +93,7 @@ const Sidebar = ({ isPlayerFullMode, isPlayerOpen, closeSidebarOnMobile, isMenuE
                                         menuList && menuList.length > 0 
                                         && menuList.map(menuItem => {
                                             return (
-                                                <li onClick={() => handleMenuItemClicking(menuItem)} key={menuItem.id} className={`${activeListItem.id === menuItem.id ? "active--menu--item" : ""} menu__section__item`} data-title={menuItem.title}>{menuItem.icon}</li>
+                                                <li onClick={() => handleMenuItemClicking(menuItem)} key={menuItem.id} className={`${activeListItem.id === menuItem.id ? "active--menu--item" : ""} menu__section__item tooltip`} data-title={menuItem.title}>{menuItem.icon}</li>
                                             )
                                         })
                                     }  
@@ -106,31 +106,33 @@ const Sidebar = ({ isPlayerFullMode, isPlayerOpen, closeSidebarOnMobile, isMenuE
                             <h5 className='current--active--menu--title'>{activeListItem?.title}</h5>
                             <small className='current--active--menu--title'>{activeListItem?.description}</small>
                             <div className="current--active--menu--inner">
+                                {/* Todo: turn this into switch statements */}
                                 {
                                     activeListItem.id === consts.menuIds.main ?
                                     // main menu
+                                    // Todo: turn this into an array
                                     <ul onClick={(e) => detectClicking(e)}>
-                                        <li><NavLink exact activeClassName="active--nav--link" to="/" >
+                                        <li title={t("menu.radio")} data-title={t("menu.radio")} className="tooltip"><NavLink exact activeClassName="active--nav--link" to="/" >
                                             <IoMdRadio className="nav-item-icon" />
                                             <span className="nav-item-name">{t("menu.radio")}</span>
                                         </NavLink>
                                         </li>
-                                        <li><NavLink activeClassName="active--nav--link" to="/category?tag=podcast" >
+                                        <li title={t("menu.podcasts")} data-title={t("menu.podcasts")} className="tooltip"><NavLink activeClassName="active--nav--link" to="/category?tag=podcast" >
                                             <MdPodcasts className="nav-item-icon" />
                                             <span className="nav-item-name">{t("menu.podcasts")}</span>
                                         </NavLink>
                                         </li>
-                                        <li><NavLink activeClassName="active--nav--link" to="/list/favorites" >
+                                        <li title={t("menu.saved")} data-title={t("menu.saved")} className="tooltip"><NavLink activeClassName="active--nav--link" to="/list/favorites" >
                                             <IoMdBookmark className="nav-item-icon" />
                                             <span className="nav-item-name">{t("menu.saved")}</span>
                                         </NavLink>
                                         </li>
-                                        <li><NavLink activeClassName="active--nav--link" to="/list/history" >
+                                        <li title={t("menu.recently_played")} data-title={t("menu.recently_played")} className="tooltip"><NavLink activeClassName="active--nav--link" to="/list/history" >
                                             <IoIosTime className="nav-item-icon" />
                                             <span className="nav-item-name">{t("menu.recently_played")}</span>
                                         </NavLink>
                                         </li>
-                                        <li><NavLink activeClassName="active--nav--link" to="/about" >
+                                        <li title={t("menu.about")} data-title={t("menu.about")} className="tooltip"><NavLink activeClassName="active--nav--link" to="/about" >
                                             <IoMdInformationCircle className="nav-item-icon" />
                                             <span className="nav-item-name">{t("menu.about")}</span>
                                         </NavLink>

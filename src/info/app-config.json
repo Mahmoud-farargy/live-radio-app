@@ -2,7 +2,7 @@
     "title": "SoundEx",
     "description": "Listen to your favorite radio stations and podcasts",
     "author": "Mahmoud Farargy",
-    "radioBrowser": "https://de1.api.radio-browser.info/json",
+    "radioBrowserUrls": ["https://nl1.api.radio-browser.info/json", "https://de2.api.radio-browser.info/json", "https://de1.api.radio-browser.info/json"],
     "lyricsOvh": "https://api.lyrics.ovh",
     "pageLimit": 50,
     "portfolioURL": "https://mahmoudfarargy.vercel.app",

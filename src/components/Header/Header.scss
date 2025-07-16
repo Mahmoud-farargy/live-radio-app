@@ -40,7 +40,7 @@ header#header{
             margin-right: 0.2rem;
             padding: 0.5rem 0.5rem;
             text-align: center;
-            cursor: pointer; 
+            cursor: ew-resize; 
             color: var(--ultra-black);
             font-size: var(--font-size-large);
         }
@@ -56,7 +56,6 @@ header#header{
     @media only screen and (max-width: 780px) {
         .menu--btn{
             display: inline-block;
-            background-color: var(--primary-clr);
             border-radius: 50%;
             color: var(--ultra-white);
             margin: 0 0.6rem 0 0.6rem;

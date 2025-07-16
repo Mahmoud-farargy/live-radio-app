@@ -34,8 +34,8 @@ const StationsListItem = ({ item, index, updateFavs, changeCurrentPlaylist, whol
     }, []);
     useEffect(() => {
         if(storageCopy){
-            storageCopy.favorites?.length > 0 && setLikingState(storageCopy.favorites.some(el => el.stationuuid === item.stationuuid));
-            storageCopy.history?.length > 0 && setRecentlyPlayed(storageCopy.history.some(el => el.stationuuid === item.stationuuid)); 
+            setLikingState(storageCopy?.favorites?.some(el => el.stationuuid === item.stationuuid));
+            setRecentlyPlayed(storageCopy?.history?.some(el => el.stationuuid === item.stationuuid)); 
         }
     },[storageCopy, item.stationuuid]);
     useEffect(() => {

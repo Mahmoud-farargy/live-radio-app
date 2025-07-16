@@ -23,52 +23,71 @@ const SlidableList = ({ params, fetchStations, listTitle, currentBufferingAudio 
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (params && typeof params === "object") {
-      setResponse({
-        ...response,
-        loading: true
-      });
-      fetchStations({ ...params, limit: 8 }).then(({data}) => {
-        setResponse({
-          list: data,
-          loading: false
+  if (params && typeof params === "object" && params !== null) {
+      setActiveItemIndex(0);
+      setResponse((prev) => ({
+        ...prev,
+        loading: true,
+      }));
+
+      fetchStations({ ...params, limit: 8 })
+        .then(({ data }) => {
+          setResponse({
+            list: data,
+            loading: false,
+          });
+        })
+        .catch(() => {
+          setResponse((prev) => ({
+            ...prev,
+            loading: false,
+          }));
         });
-      }).catch(() => {
-        setResponse({
-          ...response,
-          loading: false
-        });
-      });
     }
 
     setListName(params?.tag ? params.tag : "");
-    const currWidth = +window.innerWidth || +document.documentElement.clientWidth;
-    // Responsive reel items count
-    if (currWidth >= 3500) {
-      setItemsPerSlide(7);
-    }else if (currWidth >= 3000) {
-      // Large Desktop
-      setItemsPerSlide(6);
-    } else if (currWidth >= 1366) {
-      // Laptop
-      setItemsPerSlide(5);
-    } else if (currWidth >= 1024) {
-      // Tablet
-      setItemsPerSlide(4);
-    } else if (currWidth >= 464) {
-      // Mobile
-      setItemsPerSlide(3);
-    } else if (currWidth >= 350) {
-      // Small Mobile
-      setItemsPerSlide(2);
-    } else if (currWidth >= 250) {
-      // Smaller Mobile
-      setItemsPerSlide(1);
-    } else {
-      // Less than usual
-      setItemsPerSlide(1);
-    }
+  }, [params, fetchStations]);
+
+  useEffect(() => {
+    const ITEM_GUTTER = 12;
+    const MIN_ITEMS = 1;
+    const MAX_ITEMS = 9;
+
+    const handleResize = () => {
+        const viewportWidth =
+          window.innerWidth || document.documentElement.clientWidth;
+        const ITEM_WIDTH = viewportWidth <= 540 ? 140 : 200;
+
+        const availableWidth = viewportWidth - 40;
+        const calculatedItems = Math.floor(
+          availableWidth / (ITEM_WIDTH + ITEM_GUTTER)
+        );
+
+        const itemsToShow = Math.max(
+          MIN_ITEMS,
+          Math.min(MAX_ITEMS, calculatedItems)
+        );
+        setItemsPerSlide(itemsToShow);
+      };
+
+      let timeout;
+      const debouncedResize = () => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          handleResize();
+        }, 150);
+      };
+
+      handleResize();
+      window.addEventListener("resize", debouncedResize);
+
+      return () => {
+        clearTimeout(timeout);
+        window.removeEventListener("resize", debouncedResize);
+      };
+
   }, []);
+
   const directMeToCategoryPage = () => {
     history.push(`${Consts.CATEGORY}?${serialize({ ...params })}`);
   }

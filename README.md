@@ -49,6 +49,9 @@ Give me a star if you like it. ⭐
 
 ## Available Scripts
 
+### `export NODE_OPTIONS=--openssl-legacy-provider`
+Runs the app in legacy mode
+(if an 'ERR_OSSL_EVP_UNSUPPORTED' error is encountered)
 ### `npm start`
 
 Runs the app in the development mode.<br />

@@ -20,8 +20,8 @@ const Header = () => {
                     <Link to="/" className="logo__text">{appConfig.title}</Link>
                 </span>
                 <div className="navigation--container flex-row">
-                    <span onClick={() => navigate(-1)} className={`${!location.key ? 'disabled' :''}`.trim()}><IoMdArrowDropleftCircle /></span>
-                    <span onClick={() => navigate(1)}><IoMdArrowDroprightCircle/></span>
+                    <span onClick={() => navigate(-1)} className={`tooltip ${!location.key ? 'disabled' :''}`.trim()} data-title="Next"><IoMdArrowDropleftCircle /></span>
+                    <span onClick={() => navigate(1)}  className="tooltip" data-title="Prev"><IoMdArrowDroprightCircle/></span>
                 </div>
             </div>
         </header>

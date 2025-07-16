@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useContext, useMemo, memo } from "react";
+import React, { useRef, useEffect, useState, useContext, useCallback, useMemo, memo } from "react";
 import Auxiliary from "../../HOC/Auxiliary";
 import "./SlidableListItem.scss";
 import defaultImg from "../../../desgin/Assets/radio.jpg";
@@ -39,29 +39,31 @@ const SlidableListItem = ({ item, changeCurrentPlaylist, updateFavs,wholeList, s
 
     useEffect(() => {
         if(storageCopy){
-            storageCopy.favorites?.length > 0 && setLikingState(storageCopy.favorites.some(el => el.stationuuid === item.stationuuid));
-            storageCopy.history?.length > 0 && setRecentlyPlayed(storageCopy.history.some(el => el.stationuuid === item.stationuuid)); 
+            setLikingState(storageCopy?.favorites?.some(el => el.stationuuid === item.stationuuid));
+            setRecentlyPlayed(storageCopy?.history?.some(el => el.stationuuid === item.stationuuid)); 
         }
     },[storageCopy, item.stationuuid]);
     const isPlaying = useMemo(() => (currentStationId === item.stationuuid), [currentStationId, item]);
-    const onLikingUnlikingStation = () => {
+    const onLikingUnlikingStation = useCallback(() => {
         if(isLiked){
             updateFavs({ type: "delete", itemId: item.stationuuid, destination: "favorites" });   
         }else{
             updateFavs({ type: "add", item, destination: "favorites" });   
         }
-    } 
-    const handleStationPlaying = () => {
+    }, [isLiked, updateFavs, item]);
+
+    const handleStationPlaying = useCallback(() => {
             if(isPlaying && isAudioPlaying){
                 !isAudioBuffering && pauseAudio();
             }else{           
                 changeCurrentPlaylist({list: wholeList, currentStationId: item.stationuuid});
                 playAudio();
             }
-    }
-    const removeFromHistory = () => {
+    }, [isPlaying, isAudioPlaying, isAudioBuffering, pauseAudio, playAudio, changeCurrentPlaylist, wholeList, item.stationuuid]);
+
+    const removeFromHistory = useCallback(() => {
         updateFavs({ type: "delete", itemId: item.stationuuid, destination: "history" }); 
-    }
+    }, [updateFavs, item.stationuuid]);
     return(
         <Auxiliary>
             {openInfoModal && <StationInfoModal isModalOpen={openInfoModal} setModalOpenning={setInfoModal} itemObject={item} handleStationPlaying={handleStationPlaying} isAudioPlaying={isAudioPlaying} isPlaying={isPlaying} />}
