@@ -65,7 +65,8 @@
         "volume_down": {"title": "Abbassa volume", "description": "Abbassa il volume del 10%."},
         "prev_station": {"title": "Stazione precedente", "description": "Passa alla stazione precedente nella lista attuale."},
         "nxt_station": {"title": "Stazione successiva", "description": "Passa alla stazione successiva nella lista attuale."},
-        "reload": {"title": "Ricarica",  "description": "Ricarica la stazione corrente."}
+        "reload": {"title": "Ricarica",  "description": "Ricarica la stazione corrente."},
+        "favorite_unfavorite": {"title": "Preferito/Rimuovi", "description": "Aggiungi o rimuovi la stazione corrente dai preferiti."}
     },
     "station_options": {
         "default_option": "Seleziona",

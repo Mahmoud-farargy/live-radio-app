@@ -6,6 +6,7 @@
     .switch__inner{
       align-items: center;
       justify-content: space-between;
+      width: 100%;
     } 
     small{
       padding-top: 0.6rem;
@@ -13,7 +14,6 @@
     .switch {
     visibility: hidden;
     position: absolute;
-    // margin-left: -9999px;
   }
   
   .switch + label {
@@ -100,7 +100,14 @@
     margin-left: 40px;
     background-color: var(--primary-clr);
   }
-
+    .switch__title{
+      width: 100%;
+    }
+    .switch__input {
+      width: max-content;
+      display: flex;
+      justify-content: end;
+    }
   }
   
 

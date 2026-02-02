@@ -1,11 +1,12 @@
-import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import StationsList from "../../../components/StationsList/StationsList";
 import { withStationsFetcher } from "../../../components/HOC/withStationsFetcher";
 import { useQuery } from "../../../utilities/customHooks/useQuery";
 import { getObjectFromQueries } from "../../../utilities/tools";
-import { pageLimit } from "../../../info/app-config.json";
+import appInfo from "../../../info/app-config";
 
 const Category = ({ fetchStations }) => {
+    const { pageLimit } = appInfo;
     const currentPage = useRef(0);
     const currentQueries = useQuery();
 
@@ -62,14 +63,14 @@ const Category = ({ fetchStations }) => {
     }
 
     return (
-        <Fragment>
-            <StationsList list={response?.results} loading={response?.loading} title={currentQueries?.get("tag") || (currentQueries?.get("name") ? `"${currentQueries?.get("name")}"` : "")}/>
+        <div className="page-container">
+            <StationsList list={response?.results} loading={response?.loading} title={currentQueries?.get("tag") || (currentQueries?.get("name") ? `"${currentQueries?.get("name")}"` : "")} areSavedStations={false}/>
             <div className="load--more__button__container">
                 {isLoadingMoreItemsAllowed ? <button onClick={loadMoreStations}>
                     { response.isLoadingMore ? 'Loading More...' : 'Load More' }
                 </button> : null}
             </div>
-        </Fragment>
+        </div>
     )
 }
 export default withStationsFetcher(Category);

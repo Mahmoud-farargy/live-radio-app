@@ -65,7 +65,8 @@
         "volume_down": {"title": "Baisser le volume", "description": "Diminuer le volume de 10%."},
         "prev_station": {"title": "Station précédente", "description": "Passer à la station précédente dans la liste actuelle."},
         "nxt_station": {"title": "Prochaine station", "description": "Passer à la station suivante dans la liste actuelle.."},
-        "reload": {"title": "Recharger",  "description": "Recharger la station actuelle."}
+        "reload": {"title": "Recharger",  "description": "Recharger la station actuelle."},
+        "favorite_unfavorite": {"title": "Ajouter/Retirer des favoris", "description": "Ajouter ou retirer la station actuelle des favoris."}
     },
     "station_options": {
         "default_option": "Veuillez sélectionner",

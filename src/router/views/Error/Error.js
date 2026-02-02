@@ -1,12 +1,11 @@
 import React from "react";
-import Auxiliary from "../../../components/HOC/Auxiliary";
 import "./Error.scss";
 import { Link } from "react-router-dom";
-import appConfig from "../../../info/app-config.json";
+import appConfig from "../../../info/app-config";
 
 const Error = () => {
     return(
-        <Auxiliary>
+      <div className="page-container">
             <div id="errorRoute">
                 <div className="error--route--inner flex-column">
                     <h2>Sorry, this page isn't available.</h2>
@@ -14,7 +13,7 @@ const Error = () => {
                     <Link to="/" className="primary__btn">Go back to {appConfig.title}</Link>
                 </div>
             </div>
-        </Auxiliary>
+        </div>
     )
 }
 

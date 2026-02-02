@@ -1,68 +1,92 @@
-import React, { useEffect }from 'react';
-import ModalPKG from "react-modal";
-import Auxiliary from '../HOC/Auxiliary';
-import PropTypes from "prop-types";
+import React, { useEffect, useCallback } from "react"
+import PropTypes from "prop-types"
+import { createPortal } from "react-dom"
 
-const Modal = ({label, isDismissible, isModalOpen, onModalChange, children}) =>{
-    const customStyles = {
-        content : {
-          position              : "fixed",
-          top                   : '50%',
-          left                  : '50%',
-          right                 : 'auto',
-          bottom                : 'auto',
-          marginRight           : '-50%',
-          transform             : 'translate(-50%, -50%)',
-          overflow              : "hidden",
-          minHeight             : "100px"
-        }
-      };
-    useEffect (() => {
-        document.body.style.overflow = "hidden";
-        return () => {
-         document.body.style.overflow = "visible";
-        };
-    }, []);
-    const closeModal = () => {
-        if(isDismissible && typeof onModalChange === "function"){
-            onModalChange(false);
-        }
+const modalRoot =
+  document.getElementById("modal-root") ||
+  (() => {
+    const el = document.createElement("div")
+    el.id = "modal-root"
+    document.body.appendChild(el)
+    return el
+  })()
+
+const Modal = ({
+  label = "",
+  isDismissible = true,
+  isModalOpen,
+  onModalChange,
+  children,
+}) => {
+  const closeModal = useCallback(() => {
+    if (isDismissible && typeof onModalChange === "function") {
+      onModalChange(false)
     }
-    return (
-        <Auxiliary>
-            <div id="modal">
-                <ModalPKG
-                    ariaHideApp={false}
-                    isOpen={isModalOpen}
-                    style={customStyles}
-                    contentLabel={label}
-                    onRequestClose={() => closeModal()}
-                    >
-                    <header className="modal__header">
-                        <strong>{label}</strong>
-                        {isDismissible && <span className="close__modal__btn" onClick={() => closeModal()}>&times;</span>}
-                    </header>
-                    <article className="modal--inner">
-                        {children}
-                    </article>
-                </ModalPKG>
-            </div>
-        </Auxiliary>
-    )
+  }, [isDismissible, onModalChange])
+
+  useEffect(() => {
+    if (!isModalOpen) return
+
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+
+    return () => {
+      document.body.style.overflow = originalOverflow
+    }
+  }, [isModalOpen])
+
+  useEffect(() => {
+    if (!isModalOpen) return
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        closeModal()
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown)
+    return () => document.removeEventListener("keydown", handleKeyDown)
+  }, [isModalOpen, closeModal])
+
+  if (!isModalOpen) return null
+
+  return createPortal(
+    <div id="modal">
+      <div className="modal-backdrop" onClick={closeModal}>
+        <div
+          className="modal-container"
+          role="dialog"
+          aria-modal="true"
+          aria-label={label}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <header className="modal-header">
+            <strong className="modal-title ellipsis-x1">{label}</strong>
+            {isDismissible && (
+              <button
+                className="modal-close"
+                aria-label="Close modal"
+                onClick={closeModal}
+              >
+                ×
+              </button>
+            )}
+          </header>
+
+          <div className="modal-body">{children}</div>
+        </div>
+      </div>
+    </div>,
+    modalRoot,
+  )
 }
+
 Modal.propTypes = {
-    label: PropTypes.string,
-    isDismissible: PropTypes.bool,
-    isModalOpen: PropTypes.bool.isRequired,
-    onModalChange: PropTypes.func.isRequired,
-    children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node
-    ]).isRequired
+  label: PropTypes.string,
+  isDismissible: PropTypes.bool,
+  isModalOpen: PropTypes.bool.isRequired,
+  onModalChange: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
 }
-Modal.defaultProps = {
-    label: "",
-    isDismissible: true,
-    isModalOpen: false,
-}
-export default Modal;
+
+export default Modal

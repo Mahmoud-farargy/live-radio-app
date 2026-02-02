@@ -1,56 +1,36 @@
 import axios from "axios";
-import { radioBrowserUrls, lyricsOvh } from "../info/app-config.json";
+import appInfo from "../info/app-config";
+const { radioBrowserUrls } = appInfo;
 
-const API = (urlBaseType) => {
-    // let currentAttemptsNum = (radioBrowserUrls?.length - 1) || 0;
-    // const runApi = () => {
-    //     const activeRadioBrowserUrl = radioBrowserUrls[currentAttemptsNum]; 
-    //     const axiosInstance = axios.create({
-    //         baseURL: urlBaseType === "lyricsovh" ? lyricsOvh : activeRadioBrowserUrl,
-    //         headers: {
-    //             Accept: "application/json",
-    //             "Content-Type": "application.json"
-    //         }
-    //     })
-    //     axios.defaults.timeout = 60000;
-    //     axiosInstance.interceptors.request.use(request => {
-    //         if(request.data){
-    //             return request
-    //         }else{
-    //             if(currentAttemptsNum > 0){
-    //                 currentAttemptsNum = currentAttemptsNum - 1;
-    //                 return runApi()
-    //             }else{
-    //                 return Promise.reject();
-    //             }
-    //         }
-    //     }, err => {
-    //         // if(currentAttemptsNum > 0){
-    //         //     currentAttemptsNum = currentAttemptsNum - 1;
-    //         //     return runApi()
-    //         // }else{
-    //         //     return Promise.reject(err);
-    //         // }
-    //         // return attemptsNums > 0 ? runApi() : Promise.reject(err);
-    //     })
-    //     return axiosInstance;  
-    // };
-    // return runApi();
+let currentBaseURL = radioBrowserUrls[1];
 
-    const axiosInstance = axios.create({
-        baseURL: urlBaseType === "lyricsovh" ? lyricsOvh : radioBrowserUrls[1],
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application.json"
-        }
-    })
-    axios.defaults.timeout = 60000;
-    axiosInstance.interceptors.request.use(request => {
-        return request;
-    }, err => {
-        return Promise.reject(err);
-    })
-    return axiosInstance;
-}
+export const setBaseURL = (urlBaseType = radioBrowserUrls[1]) => {
+  currentBaseURL = urlBaseType;
+};
+
+const API = () => {
+  const axiosInstance = axios.create({
+    baseURL: currentBaseURL,
+    timeout: 50000,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+
+  axiosInstance.interceptors.request.use(
+    (request) => request,
+    (err) => Promise.reject(err)
+  );
+
+  axiosInstance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      return Promise.resolve({ data: null });
+    }
+  );
+
+  return axiosInstance;
+};
 
 export default API;

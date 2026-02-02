@@ -4,11 +4,11 @@ import { FaSort } from "react-icons/fa";
 import MultiInputSelect from "../../components/formInputs/MultiTextInput";
 import CreatableSelect from 'react-select/creatable';
 import { IoMdPricetag } from "react-icons/io";
-import { BiStation } from "react-icons/bi";
+import { BiStation, BiSearch } from "react-icons/bi";
 import { selectTheme, lowerString, upperString } from "../../utilities/tools";
 import api from "../../services/api";
 import * as consts from "../../utilities/consts";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import countriesListJSON from "../../info/countriesList.json";
 import { serialize } from "../../utilities/tools";
 import PropTypes from "prop-types";
@@ -17,7 +17,7 @@ import IosButton from "../../components/formInputs/IosButton";
 import "./AdvancedSearch.scss";
 
 const AdvancedSearch = ({closeSidebarOnMobile}) => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const _isMounted = useRef(true);
     const { t } = useTranslation();
     // selected option
@@ -112,7 +112,6 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
             }).catch(() => {
                 if(_isMounted.current){
                     console.error();
-                    // changeOptions({ key: "countries", overridekey: { list: [], isLoading: false } });
                 }
             });    
         }
@@ -159,7 +158,7 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
                     ...(formState.stationName && {name: formState.stationName})
                 }
                 if(Object.keys(newObject).length > 0){
-                    history.push(`${consts.SEARCH}?${serialize(newObject)}`);
+                    navigate(`${consts.SEARCH}?${serialize(newObject)}`);
                 }
                 
                 closeSidebarOnMobile();
@@ -196,6 +195,7 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
                         <span className="input--label flex-row"><MdFilterAlt /> <h5>{t("advanced_search.filters.title")}:</h5></span>
                         <div className="search--select--input">
                             <CreatableSelect
+                                classNamePrefix="app-select"
                                 isClearable={false}
                                 name="country"
                                 onChange={onInputChange}
@@ -208,6 +208,7 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
                         </div>
                         <div className="search--select--input">
                             <CreatableSelect
+                                classNamePrefix="app-select"
                                 isClearable={false}
                                 name="state"
                                 onChange={onInputChange}
@@ -221,6 +222,7 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
                         </div>
                         <div className="search--select--input">
                             <CreatableSelect
+                                classNamePrefix="app-select"
                                 isClearable={false}
                                 name="language"
                                 onChange={onInputChange}
@@ -236,6 +238,7 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
                         <span className="input--label flex-row"><FaSort /> <h5>{t("advanced_search.sort_by.title")}:</h5></span>
                         <div className="search--select--input">
                             <CreatableSelect
+                                classNamePrefix="app-select"
                                 isClearable={false}
                                 name="order"
                                 onChange={onInputChange}
@@ -245,11 +248,13 @@ const AdvancedSearch = ({closeSidebarOnMobile}) => {
                                 defaultValue="Normal"
                                 isLoading={ordersOptions.isLoading}
                                 options={ordersOptions.list}
+                                menuPlacement="top"
                             />
                         </div>
                         <IosButton onIOSChange={onInputChange} val={{value: formState.reverse, name: "reverse"}} label={t("advanced_search.reverse_order_label")} />
                     </div>
-                    <button className="primary__btn" type="submit">
+                    <button className="primary__btn flex-row flex-nowrap align-items-center" type="submit">
+                        <BiSearch size={20}/>
                         {t("advanced_search.search_button_title")}
                     </button>
                 </form>

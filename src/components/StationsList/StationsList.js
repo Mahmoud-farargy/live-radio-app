@@ -1,17 +1,43 @@
-import React, { memo, useState } from "react";
+import React, { Fragment, lazy, memo, useContext, useMemo, useState, Suspense } from "react";
 import Auxiliary from "../HOC/Auxiliary";
 import StationsListItem from "./StationsListItem.js/StationsListItem";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import EmptyResults from "../Generic/EmptyResults";
+import EmptyResults from "../UI/EmptyResults";
 import PropTypes from "prop-types";
 import * as consts from "../../utilities/consts";
 import { BsShareFill } from "react-icons/bs";
-import ShareList from "../Modal/ShareList/ShareList";
 import { useTranslation } from "react-i18next";
+import { AudioContext } from "../PlayerContext/PlayerContext";
 
+const  ShareList = lazy(() => import("../Modal/ShareList/ShareList"));
 
 const OuterContainer = styled.div`
+        #stationsSectionHeader{
+            margin: 0.1rem 0 0.8rem 0;
+            width: 100%;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            .list--name{
+                margin:0;
+            }
+            svg{
+                color: var(--text-black);
+            }
+            button.social__share__btn{
+                display: grid;
+                place-content:center;
+                border:none;
+                background: transparent;
+                padding: 0.4rem 0.5rem;
+                cursor: pointer;
+                border-radius: 5px;
+                &:hover{
+                    background-color: var(--light-primary-clr);
+                }
+            }
+        }
         ul#stationsList{
             width: 100%;
             list-style: none;
@@ -22,31 +48,6 @@ const OuterContainer = styled.div`
             margin-top: 1.3rem;
             border-radius: 0.5rem;
             overflow: hidden;
-            .stations--list--header{
-                margin: 0.1rem 0 0.8rem 0;
-                width: 100%;
-                flex-wrap: wrap;
-                align-items: center;
-                justify-content: space-between;
-                .list--name{
-                    margin:0;
-                }
-                svg{
-                    color: var(--text-black);
-                }
-                button.social__share__btn{
-                    display: grid;
-                    place-content:center;
-                    border:none;
-                    background: transparent;
-                    padding: 0.4rem 0.5rem;
-                    cursor: pointer;
-                    border-radius: 5px;
-                    &:hover{
-                        background-color: var(--light-primary-clr);
-                    }
-                }
-            }
         }
         .list--loading{
             @keyframes spin {
@@ -54,7 +55,7 @@ const OuterContainer = styled.div`
                     transform: rotateZ(360deg);
                 }
             }
-            height: calc(100vh - var(--height-header) - ${(props) => props.playerState.isPlayerFullMode && props.playerState.isPlayerOpen ? "var(--player-height-size)": "0px"});
+            height: calc(100vh - var(--height-header) - ${({$playerState}) => $playerState.isPlayerFullMode && $playerState.isPlayerOpen ? "var(--player-height-size)": "0px"});
             width: 100%;
             justify-content: center;
             align-items:center;
@@ -72,33 +73,69 @@ const OuterContainer = styled.div`
         }
 `;
 
-const StationsList = ({ list, loading, isPlayerFullMode, isPlayerOpen, title, areSavedStations }) => {
-    const [ isSocialModalOpen, setSocialModalOpenning ] = useState(false);
+const StationsList = ({ list = [], loading = false, isPlayerFullMode = true, isPlayerOpen = false, title = "", areSavedStations = false }) => {
+    const [ isSocialModalOpen, setSocialModalOpening ] = useState(false);
     const { t } = useTranslation();
+    const { toggleStationPlaying, toggleStationLiking } = useContext( AudioContext );
+
+    const itemMap = useMemo(() => new Map(list.map(i => [i.id, i])),[list]);
+
+    const onListClick = (event) => {
+    const element = event.target.closest("[data-item-id]");
+    if(!element) return;
+    const elementId = element.dataset.itemId
+    if(!elementId) return;
+    const item = itemMap.get(elementId);
+    if(!item) return;
+
+    const actionType = event.target.closest("[data-action]")?.dataset.action;
+
+    switch(actionType){
+      case "toggleLiking": 
+        const isLiked = !!+element.dataset.liked;
+        toggleStationLiking({item, isLiked});
+
+      break;
+      case "togglePlaying":
+        toggleStationPlaying({list, itemId: elementId});
+
+      break;
+      default: {
+        return {}
+      }
+    }
+  }
+
     return (
         <Auxiliary>
-            {isSocialModalOpen && <ShareList listName={title} setSocialModalOpenning={setSocialModalOpenning} isSocialModalOpen={isSocialModalOpen} listLink={window.location.href}/>}
-            <OuterContainer playerState={{isPlayerFullMode, isPlayerOpen}} className="stationsList--outer--container">
+            <Suspense fallback={<div>Loading...</div>}>
+                {isSocialModalOpen && <ShareList listName={title} setSocialModalOpening={setSocialModalOpening} isSocialModalOpen={isSocialModalOpen} shareUrl={window.location.href}/>}
+            </Suspense>
+
+            <OuterContainer $playerState={{isPlayerFullMode, isPlayerOpen}} className="stationsList--outer--container">
                 {
                     !loading ?
-                    <ul id="stationsList">
-                        <div className="stations--list--header flex-row">
+                    <Fragment>
+                        <div id="stationsSectionHeader" className="flex-row">
                           {list?.length > 0 && title ? <h4 className="list--name">{title}</h4> : <span />}  
-                            {(!areSavedStations && list?.length > 0) && <button onClick={() => setSocialModalOpenning(true)} title="Share this list" className="social__share__btn">
+                            {(!areSavedStations && list?.length > 0) && <button onClick={() => setSocialModalOpening(true)} title="Share this list" className="social__share__btn">
                                 <BsShareFill />
                             </button>}
                         </div>
-                        
-                        {
-                            list && list.length > 0 ? list.map((item, idx) => {
-                                return item && (
-                                    <StationsListItem item={item} key={item.id || idx} index={idx} wholeList={list}/>
-                                )
-                            })
-                            :
-                            <EmptyResults msg={t("no_match_msg")} />
-                        }
-                    </ul>
+                        <ul id="stationsList" onClick={onListClick}>
+                            {
+                                list && list.length > 0 ? list.map((item, index) => {
+                                    return item && (
+                                        <StationsListItem item={item} key={item.stationuuid} index={index} wholeList={list} areSavedStations={false}/>
+                                    )
+                                })
+                                :
+                                <EmptyResults msg={t("no_match_msg")} />
+                            }  
+                        </ul>
+
+
+                    </Fragment>
                     :
                     <div className="list--loading flex-column">
                         <span></span>
@@ -110,18 +147,10 @@ const StationsList = ({ list, loading, isPlayerFullMode, isPlayerOpen, title, ar
 };
 StationsList.propTypes = {
     list: PropTypes.array.isRequired,
-    loading: PropTypes.bool.isRequired,
     isPlayerFullMode: PropTypes.bool.isRequired,
     isPlayerOpen:  PropTypes.bool.isRequired,
     title:  PropTypes.string.isRequired,
     areSavedStations: PropTypes.bool.isRequired,
-}
-StationsList.defaultProps ={
-    list: [],
-    loading: false,
-    title: "",
-    isPlayerFullMode: true,
-    areSavedStations: false
 }
 const mapStateToProps = state => {
     return {
@@ -129,4 +158,5 @@ const mapStateToProps = state => {
         isPlayerOpen: state[consts.MAIN].isPlayerOpen,
     }
 }
+
 export default connect(mapStateToProps)(memo(StationsList));

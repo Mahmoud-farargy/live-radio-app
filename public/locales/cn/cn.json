@@ -65,7 +65,8 @@
         "volume_down": {"title": "音量减小", "description": "将音量降低 10%."},
         "prev_station": {"title": "上一站", "description": "切换到当前列表中的上一个电台."},
         "nxt_station": {"title": "下一站", "description": "切换到当前列表中的下一站."},
-        "reload": {"title": "重新加载",  "description": "重新加载当前站."}
+        "reload": {"title": "重新加载",  "description": "重新加载当前站."},
+        "favorite_unfavorite": {"title": "收藏/取消收藏", "description": "将当前电台添加到收藏或取消收藏。"}
     },
     "station_options": {
         "default_option": "请选择",

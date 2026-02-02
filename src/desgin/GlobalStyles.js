@@ -47,7 +47,8 @@ const GlobalStyles = createGlobalStyle`
     --text-dark-black: #e0e0e0;
     --transparent-black: rgba(255, 255, 255, 0.1);
     --more-lighter-gray: #1c1c1c;
-    --quaternary-clr: #dadada;
+    --quaternary-clr: #1e1e1e;
+    --dark-gray: #e5e5e5;
     --homeBoxes-bg-clr: #121212;
     --dark-yellow: rgb(182, 176, 93);
     --lighter-gray: #666666;
@@ -55,6 +56,17 @@ const GlobalStyles = createGlobalStyle`
     --pill-text-color: #e5e5e5;
     --player-bg: rgb(18, 18, 18, 0.75);
     --borders-clr: #333;
+    --text-gray: #92908e;
+
+    /* inputs */
+    --select-bg: #1e1e1e;
+    --select-bg-menu: #1a1a1a;
+    --select-border: #2a2a2a;
+    --select-border-focus: #3ea6ff;
+    --select-option-hover: #242424;
+    --select-option-selected: #2d2d2d;
+    --select-text: #e5e5e5;
+    --select-text-muted: #9ca3af;
   }
   body.darkTheme {
     background-color: var(--ultra-white);
@@ -73,8 +85,63 @@ const GlobalStyles = createGlobalStyle`
     background-color: var(--quaternary-clr);
   }
   body.darkTheme {
-    #slidableList, #stationsList{
+    .slidableList, #stationsList{
       box-shadow: 0px 10px 30px -15px rgba(0, 0, 0, 0.2);
+    }
+    .app-select__control{
+      background-color: var(--select-bg);
+      border: 1px solid var(--select-border);
+      min-height: 42px;
+      box-shadow: none;
+      &:hover{
+        border-color: var(--select-border-focus);
+      }
+    }
+    .app-select__control--is-focused {
+      border-color: var(--select-border-focus);
+      box-shadow: none;
+    }
+    .app-select__single-value {
+      color: var(--select-text);
+    }
+
+    .app-select__input-container {
+      color: var(--select-text);
+    }
+
+    .app-select__input {
+      color: var(--select-text);
+    }
+    .app-select__placeholder {
+      color: var(--select-text-muted);
+    }
+    .app-select__menu {
+      background-color: var(--select-bg-menu);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .app-select__option {
+      color: var(--select-text);
+      cursor: pointer;
+    }
+
+    .app-select__option--is-focused {
+      background-color: var(--select-option-hover);
+    }
+
+    .app-select__option--is-selected {
+      background-color: var(--select-option-selected);
+    }
+    .app-select__dropdown-indicator {
+      color: var(--select-text-muted);
+    }
+
+    .app-select__dropdown-indicator:hover {
+      color: var(--select-border-focus);
+    }
+
+    .app-select__indicator-separator {
+      display: none;
     }
   }
   // Global classes
@@ -193,6 +260,9 @@ const GlobalStyles = createGlobalStyle`
   .player--container.react-jinke-music-player-main .music-player-panel {
     border-top: 1px transparent solid;
   }
+  .react-jinke-music-player-main .music-player-panel .panel-content .img-rotate{
+    animation: none;
+  }
   .react-jinke-music-player-main
     .react-jinke-music-player-mobile-header-right
     svg {
@@ -208,6 +278,9 @@ const GlobalStyles = createGlobalStyle`
     .nav-item-icon,
     .nav-item-name {
       color: inherit;
+    }
+    .nav-item-name{
+      white-space: nowrap;
     }
   }
   
@@ -239,7 +312,7 @@ const GlobalStyles = createGlobalStyle`
     }
   }
   // slidable lists
-  #slidableList, #slidableListLoading {
+  .slidableList, #slidableListLoading {
     width: 100%;
     background-color: var(--homeBoxes-bg-clr);
     padding: 1.3rem 1.5rem;
@@ -249,7 +322,7 @@ const GlobalStyles = createGlobalStyle`
     overflow: hidden;
     min-width: 100px;
   }
-  #slidableList{
+  .slidableList{
     .slidableList--header {
       width: 100%;
       align-items: center;
@@ -257,57 +330,52 @@ const GlobalStyles = createGlobalStyle`
       margin-bottom: 1.5rem;
     }
     ul.slidableList--ul {
-      padding: 0;
       list-style: none;
-      width:100%;
-      position: relative;
-      overflow-x:auto;
-      overflow-y: hidden;
-      max-width: 100vw;
-      align-items:center;
-      margin-bottom:0;
-      min-height: 50px;
-      align-content: flex-start;
-      transition: all 0.5 ease-in;
       &::-webkit-scrollbar{
           width:0;
           display: none;
       };
-      white-space: nowrap;
-      .react-multi-carousel-list{
-          align-items: flex-start;
-      }
-      .slidablelist--right--arrow,
-      .slidablelist--left--arrow {
+    }
+    .slidablelist--right--arrow{
+      right: -1.6rem;
+    }
+    .slidablelist--left--arrow{
+      left: -1.6rem;
+    }
+    .slidablelist--right--arrow,
+    .slidablelist--left--arrow {
         top: 50%;
+        z-index: 1;
         transform: translate(0, -50%);
         position: absolute;
         background: 0 0;
         border: none;
         border-color: transparent;
-        width: 35px;
+        width: 2.188rem;
         height: 100%;
         cursor: auto;
         &:focus {
           outline: none;
         }
         &:active svg {
-          border-color: #096dd9;
+          border-color: var(--primary-clr);
         }
         svg {
           filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.4));
           width: 30px;
           height: 30px;
-          color: var(--primary-clr);
           border-radius: 50%;
           border: 1px solid;
           border-color: transparent;
           font-size: 50px;
         }
-      }
+        &:not([disabled]){
+          svg {
+            color: var(--primary-clr);
+          }
+        }
     }
     @media only screen and (min-width: 780px) {
-      ul.slidableList--ul {
         .slidablelist--right--arrow,
         .slidablelist--left--arrow {
           display: none;
@@ -318,15 +386,16 @@ const GlobalStyles = createGlobalStyle`
             display: inline;
           }
         }
-      }
     }
     @media only screen and (max-width: 670px) {
-      padding: 1rem 0.4rem;
-      ul.slidableList--ul {
-        .slidablelist--right--arrow,
-        .slidablelist--left--arrow {
-          display: none;
-        }
+      padding: 1rem 0;
+      border-radius: 0;
+       .slidableList--header {
+        padding: 0 0.8rem;
+       }
+      .slidablelist--right--arrow,
+      .slidablelist--left--arrow {
+        display: none;
       }
     }
   }
@@ -334,6 +403,27 @@ const GlobalStyles = createGlobalStyle`
     display: grid;
     place-content: center;
   }
+  #shareList{
+    margin: 1.5rem 0 1rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+    button {
+      &:hover{
+        transform: scale(1.08);
+        transition: transform 200ms ease-in-out;
+      }
+    }
+  }
+  button.react-share__ShareButton {
+    display: block !important;
+    &.__web-inspector-hide-shortcut__, .__web-inspector-hide-shortcut__ *{
+      visibility: visible !important;
+    }
+    align-items: center;
+    justify-content: center;
+  }
+
   .primary__input {
     border: 2px solid var(--lighter-gray);
     border-radius: 0.4rem;
@@ -354,14 +444,35 @@ const GlobalStyles = createGlobalStyle`
       outline: none;
       border-color: var(--primary-clr);
       background-color: #fff;
+      &::placeholder {
+        color: var(--light-gray);
+      }
     }
   }
+  .embla__viewport {
+    cursor: grab;
+  }
 
+  .embla__viewport:active {
+    cursor: grabbing;
+  }
   .items--wrapper, .wrapper{
    overflow-x: hidden;
   }
   .wrapper, .items--wrapper, .wrapper{
     overflow-y: hidden;
+  }
+  .react-jinke-music-player-main svg:active, .react-jinke-music-player-main svg.favIcon {
+      color: var(--primary-clr);
+  }
+  .fav__btn--player {
+    padding: 0 0.2rem;
+  }
+  .transparent_btn {
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
   }
   .primary__btn {
     padding: 0.5rem 0.9rem;
@@ -369,6 +480,7 @@ const GlobalStyles = createGlobalStyle`
     color: #fff;
     border: none;
     border-radius: 0.4rem;
+    gap:0.2rem;
     cursor: pointer;
     transition: filter 0.3s linear;
     text-align: center;
@@ -423,43 +535,67 @@ const GlobalStyles = createGlobalStyle`
     }
     
   }
-  
-  .ReactModalPortal{
-      .ReactModal__Overlay{
-          z-index: var(--z-modal-backdrop);
-          .modal__header{
-              position: relative;
-              width: 100%;
-              max-height: 80px;
-              
-              strong{
-                  text-transform: capitalize;
-              }
-              span.close__modal__btn{
-                  position: fixed;
-                  top: 10px;
-                  right: 0;
-                  font-weight: var(--font-weight-medium);
-                  font-size: var(--font-size-x-large);
-                  padding: 0.3rem 0.7rem;
-                  cursor: pointer;
-                  transition: 0.3s linear;
-                  transition-property: background-color, color;
-                  border-radius: 0.1rem;
-                  &:active{
-                      background-color: var(--primary-clr);
-                      color: #fff;
-                  }
-              }
-          }
-          .ReactModal__Content{
-              max-height: 90vh;
-              overflow-y: auto !important;
-              background-color: var(--ultra-white) !important;
-              width: 600px;
-          }
-      }  
+  #modal {
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(2px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: var(--z-modal-backdrop);
+    }
+
+    .modal-container {
+      background: var(--ultra-white);
+      border-radius: 12px;
+      width: min(92vw, 520px);
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      animation: modalFadeIn 0.15s ease-out;
+    }
+
+    .modal-header {
+      padding: 0.9rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--borders-clr);
+    }
+
+    .modal-title {
+      font-size: 1rem;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+      color: var(--dark-gray);
+    }
+
+    .modal-body {
+      padding: 1rem 1.25rem;
+      overflow-y: auto;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
   }
+
   .stationsList--item--select{
     position: relative;
     overflow: hidden;
@@ -486,55 +622,81 @@ const GlobalStyles = createGlobalStyle`
     }
   }
   .ring-container {
-    position: relative;
-    display: flex;
-    width: 15px;
-    height: 15px;
-}
-.load--more__button__container {
-  margin-top: 1rem;
-  padding: 0 1rem;
-  button {
-    padding: 1rem;
-    border: none;
-    outline: none;
-    background: transparent;
-    cursor: pointer;
-    color: var(--primary-clr);
+      position: relative;
+      display: flex;
+      width: 15px;
+      height: 15px;
   }
-}
-.ring-container .circle {
-    width: 8px;
-    height: 8px;
-    background-color: #f98585;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
+  .load--more__button__container {
+    margin-top: 1rem;
+    padding: 0 1rem;
+    button {
+      padding: 1rem;
+      border: none;
+      outline: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--primary-clr);
+    }
+  }
+  .ring-container .circle {
+      width: 8px;
+      height: 8px;
+      background-color: #f98585;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+  }
 
-.ring-container .ringring {
-    border: 3px solid #f98585;
-    -webkit-border-radius: 30px;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    -webkit-animation: pulsate 1s ease-out;
-    -webkit-animation-iteration-count: infinite; 
-    opacity: 0.0;
-}
+  .ring-container .ringring {
+      border: 3px solid #f98585;
+      -webkit-border-radius: 30px;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0.0;
+  }
+  /* embla */
+  .embla {
+    position: relative;
+  }
+
+  .embla__viewport {
+    overflow: hidden;
+  }
+
+  .embla__container {
+    display: flex;
+    gap: 12px;
+  }
+
+  .embla__slide {
+    flex: 0 0 auto;
+    width: 200px;
+  }
+
+  /* responsive */
+  @media (max-width: 540px) {
+    .embla__slide {
+      width: 8.75rem;
+    }
+  }
+  /* end embla */
+  
   @-webkit-keyframes pulsate {
       0% {-webkit-transform: scale(0.1, 0.1); opacity: 0.0;}
       50% {opacity: 1.0;}
       100% {-webkit-transform: scale(1.2, 1.2); opacity: 0.0;}
   }
   // --xx-- Global classes --xx--
-  div#routesContainer {
+  .page-container,
+  .fluid-container {
     width: 100%;
-    padding: 20px 1.2rem 10px;
+    padding: var(--page-desktop-paddings);
   }
   
   // responsive
@@ -595,9 +757,13 @@ const GlobalStyles = createGlobalStyle`
     main#screens#screens {
       margin-left: 0;
     }
-    div#routesContainer {
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
+    .page-container {
+      padding-inline: var(--page-mobile-paddings);
+      padding-left: var(--page-mobile-paddings);
+      padding-right: var(--page-mobile-paddings);
+    }
+    .fluid-container{
+      padding:0;
     }
     input#nav-toggler:checked ~ main#screens .modal--backdrop {
       display: block;
@@ -622,14 +788,7 @@ const GlobalStyles = createGlobalStyle`
       margin-top: 0.8rem;
     }
     #slidableListItem {
-      width: 140px;
-    }
-    .ReactModalPortal{
-          .ReactModal__Overlay{
-              .ReactModal__Content{
-                  width: 95%;
-              }
-          }  
+      width: 8.75rem;
     }
   }
   

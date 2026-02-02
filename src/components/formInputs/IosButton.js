@@ -1,9 +1,8 @@
 import React, { Fragment } from 'react';
 import "./IosButton.scss";
-import { trimText } from "../../utilities/tools";
 import PropTypes from "prop-types";
 
-const IosButton = ({ onIOSChange, onCheckChange, label, val }) => {
+const IosButton = ({ onIOSChange, onCheckChange, label, val, disabled=false }) => {
     const { value, name, description } = val;
     const handleChange = (e) => {
         typeof onCheckChange === "function" && onCheckChange(e);
@@ -11,11 +10,11 @@ const IosButton = ({ onIOSChange, onCheckChange, label, val }) => {
     }
     return (
         <Fragment>
-            <div id="switchContainer" className="switch__container flex-column">
+            <div id="switchContainer" className={`switch__container flex-column ${disabled ? "disabled": ""}`}>
                 <div className="switch__inner flex-row">
-                   <span>{trimText(label, 25)}</span>
-                    <div>
-                        <input onChange={(e) => handleChange(e)} value={value} checked={value} name={name} id={name} className="switch switch--shadow" type="checkbox" />
+                   <span className="switch__title ellipsis-x1">{label}</span>
+                    <div className="switch__input">
+                        <input onChange={(e) => handleChange(e)} value={value} disabled={disabled} checked={value} name={name} id={name} className="switch switch--shadow" type="checkbox" />
                         <label htmlFor={name}></label>
                     </div>
                 </div>

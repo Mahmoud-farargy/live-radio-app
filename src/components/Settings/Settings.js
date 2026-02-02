@@ -7,16 +7,18 @@ import { notify } from "../../utilities/tools";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import { BsCheck } from 'react-icons/bs';
+import { selectTheme } from "../../utilities/tools";
+import CreatableSelect from 'react-select/creatable';
 
 const Settings = ({ updateMemo, localMemory, switchToMainSlide }) => {
     const { t } = useTranslation();
     const [formState, setFormState] = useState({
         sleepTimer: false,
         sleepTimeout: 1,
-        loadIcons: true,
+        loadIcons: false,
         httpsOnly: true,
         defaultVolume: 100,
-        choosenLangauge: "en",
+        chosenLanguage: { name: "english", label: "English", value: "en" },
     });
     const savedSettings = localMemory.settings;
     useEffect(() => {
@@ -43,13 +45,13 @@ const Settings = ({ updateMemo, localMemory, switchToMainSlide }) => {
 
     }
     const languageOptions = Object.freeze([
-        { id: "fu09ef0fw", name: "english", label: "English", code: "en" },
-        { id: "ifuwfwgwh", name: "spanish", label: "Spanish", code: "es" },
-        { id: "pgwug9pwr", name: "french", label: "French", code: "fr" },
-        { id: "w9yeghike", name: "chinese", label: "Chinese", code: "cn" },
-        { id: "powyighek", name: "german", label: "German", code: "de" },
-        { id: "opwhgegeg", name: "italian", label: "Italian", code: "it" },
-        { id: "poiegbguq", name: "indian", label: "Indian", code: "hi" },
+        { name: "english", label: "English", value: "en" },
+        { name: "spanish", label: "Spanish", value: "es" },
+        { name: "french", label: "French", value: "fr" },
+        { name: "chinese", label: "Chinese", value: "cn" },
+        { name: "german", label: "German", value: "de" },
+        { name: "italian", label: "Italian", value: "it" },
+        { name: "indian", label: "Indian", value: "hi" },
     ])
     const onFormSubmission = (e) => {
         e.preventDefault();
@@ -61,7 +63,7 @@ const Settings = ({ updateMemo, localMemory, switchToMainSlide }) => {
                 sleepTimeout: +formState.sleepTimeout > 0 ? parseInt(formState.sleepTimeout) : 1,
                 loadIcons: formState.loadIcons,
                 httpsOnly: formState.httpsOnly,
-                choosenLangauge: formState.choosenLangauge
+                chosenLanguage: formState.chosenLanguage
             }
             updateMemo({type: "set", newObject, destination: "settings"});
             notify(`${t("alerts.saved")}.`, "success");
@@ -85,22 +87,21 @@ const Settings = ({ updateMemo, localMemory, switchToMainSlide }) => {
                 <IosButton onCheckChange={onInputChange} val={{ value: formState.httpsOnly, name: "httpsOnly", description: t("settings.https_only.description") }} label={t("settings.https_only.title")} />
             </div>
             <div className="settings--input--group">
-                <IosButton onCheckChange={onInputChange} val={{ value: formState.loadIcons, name: "loadIcons", description: t("settings.load_icons.description") }} label={t("settings.load_icons.title")} />
+                <IosButton onCheckChange={onInputChange} disabled val={{ value: formState.loadIcons, name: "loadIcons", description: t("settings.load_icons.description") }} label={t("settings.load_icons.title")} />
             </div>
             <div className="settings--input--group">
-                <div className="settings--select--group flex-row">
-                    <label htmlFor="choosenLangauge">{t("settings.change_langauge.title")}</label>
-                    <select onChange={onInputChange}  value={formState.choosenLangauge} name="choosenLangauge" id="choosenLangauge">
-                        {
-                            languageOptions && languageOptions.length > 0 &&
-                            languageOptions.map((item) => {
-                                return (
-                                    <option key={item.id} value={item.code}>{item.label}</option>
-                                )
-                            })
-                        }
-                    </select>
-                </div>
+                <CreatableSelect
+                    classNamePrefix="app-select"
+                    isClearable={false}
+                    name="chosenLanguage"
+                    onChange={(e) => onInputChange({target: {value: e, type: "", name: "chosenLanguage"}})}
+                    theme={selectTheme}
+                    value={formState.chosenLanguage}
+                    placeholder={t("settings.change_langauge.title")}
+                    defaultValue={formState.chosenLanguage}
+                    menuPlacement="top"
+                    options={languageOptions}
+                />
 
             </div>
             <button type="submit" className="primary__btn flex-row flex-nowrap align-items-center">

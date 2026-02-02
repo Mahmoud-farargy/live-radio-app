@@ -1,19 +1,20 @@
 import * as actionTypes from "../actions/actions";
-import defaultImg from "../../desgin/Assets/radio.jpg";
 import { locStorage } from "../../utilities/tools";
 import { localStorageBasicData } from "../../info/localStorageSkeletonData";
+import appConfig from "../../info/app-config"
 
 const initialState = {
     isAudioPlaying: false,
-    currentBufferingAudio: {},
+    currentBufferingAudio: {
+        state: false
+    },
     isPlayerFullMode: true,
     isPlayerOpen: false,
     visitorLocation: {},
     currentStationId: "",
-    currentPlaylist: {
-        list: [],
-        activeIndex: 0
-    },
+    currentPlaylist: [],
+    currentAudio: null,
+    currentPlayIndex: 0,
     localStorageCopy: {
         favorites: [],
         history: [],
@@ -31,56 +32,58 @@ export const mainReducer = (state = initialState, actions) => {
                 ...state,
                 isAudioPlaying: actions.playingState
             }
+
         case actionTypes.CHANGE_AUDIO_BUFFERING:
             return {
                 ...state,
                 currentBufferingAudio: actions.bufferingState || {}
             }
+
         case actionTypes.CHANGE_PLAYER_MODE:
             return {
                 ...state,
                 isPlayerFullMode: actions.modeState
             }
+
         case actionTypes.CHANGE_VISITOR_LOCATION:
             return {
                 ...state,
                 visitorLocation: actions.visitorInfo
             }
-        case actionTypes.CHANGE_CURRENT_PLAYLIST:
-            const { list, currentStationId } = actions.payload;
-            if (list && list.length > 0 && Array.isArray(list) && currentStationId) {
-                const activeIndex = list.map((el) => el.stationuuid).indexOf(currentStationId);
-                const newList = list.map((item) => {
-                    return {
-                        name: item.name,
-                        musicSrc: (item.urlResolved || item.url),
-                        cover: defaultImg,
-                        duration: 0,
-                        singer: item.country,
-                        id: item.stationuuid
-                    }
-                });
-                return {
-                    ...state,
-                    currentPlaylist: { list: newList, activeIndex: activeIndex >= 0 ? activeIndex : 0, oldList: list },
-                    ...(!state.isPlayerOpen && { isPlayerOpen: true }),
-                    currentBufferingAudio: {state: true, id: currentStationId},
-                }
 
-            } else {
-                return state;
+        case actionTypes.CHANGE_CURRENT_PLAYLIST: {
+            const list = actions.payload;
+
+            return {
+                ...state,
+                currentPlaylist: list || []
             }
-        case actionTypes.CHANGE_CURRENT_ID:
-            const ID = actions.id;
-            if (ID) {
-                return {
-                    ...state,
-                    currentStationId: ID
-                }
-            } else {
-                return state;
+        }
+
+        case actionTypes.CHANGE_CURRENT_AUDIO: {
+            const itemIndex = actions.payload;
+            const list = state.currentPlaylist;
+            
+            if(list.length <= 0 || itemIndex < 0) return state;
+            
+            const currentAudio = list[itemIndex] || {};
+            const { id, name } = currentAudio;
+
+            if (id) {
+                document.title = `${name ? name + " | " : ""}${appConfig.title}`
             }
-        case actionTypes.UPDATE_MEMORY:
+
+            return {
+                ...state,
+                ...(!state.isPlayerOpen && { isPlayerOpen: true }),
+                currentBufferingAudio: {state: true},
+                currentStationId: currentAudio?.id,
+                currentAudio,
+                currentPlayIndex: itemIndex ?? 0,
+            }
+        }
+            
+        case actionTypes.UPDATE_MEMORY: {
             const { type, itemId, item, destination, storage, newObject } = actions.payload;
             if (type === "add" && typeof item === "object" && destination && (destination === "favorites" || destination === "history") && state.localStorageCopy?.hasOwnProperty(destination)) {
                 let newArr = JSON.parse(JSON.stringify(state.localStorageCopy?.[destination]));
@@ -90,12 +93,13 @@ export const mainReducer = (state = initialState, actions) => {
                         new Set(newArr.map((x) => x.stationuuid))
                     ).map((w) => newArr.find((el) => el.stationuuid === w));
                     locStorage({ type: "set", newData: newArr, destination });
-                    const newLocStorageArr = {...state.localStorageCopy,[destination] : newArr?.slice(0, 1000) };
+                    const newLocStorageArr = {...state.localStorageCopy,[destination] : newArr?.slice(0, 50) };
                     Object.keys(localStorageBasicData).forEach(key => {
                         if(!newLocStorageArr.hasOwnProperty(key)){
                             newLocStorageArr[key] = localStorageBasicData[key];
                         }
                     });
+
                     return {
                         ...state,
                         localStorageCopy: newLocStorageArr
@@ -111,9 +115,10 @@ export const mainReducer = (state = initialState, actions) => {
                         newArr.splice(delIndex, 1);
                         locStorage({ type: "set", newData: newArr, destination });
                     }
+
                     return {
                         ...state,
-                        localStorageCopy: {...state.localStorageCopy,[destination] : newArr?.slice(0, 1000) }
+                        localStorageCopy: {...state.localStorageCopy,[destination] : newArr?.slice(0, 1000) },
                     }
                 } else {
                     return state;
@@ -144,6 +149,7 @@ export const mainReducer = (state = initialState, actions) => {
             } else {
                 return state;
             }
+        }
 
         case actionTypes.CHANGE_CURRENT_THEME: {
             return {
@@ -151,11 +157,14 @@ export const mainReducer = (state = initialState, actions) => {
                 currentTheme: actions.currTheme
             }
         }
-        case actionTypes.TOGGLE_PLAYER_VISIBILITY:
+
+        case actionTypes.TOGGLE_PLAYER_VISIBILITY: {
             return {
                 ...state,
                 isPlayerOpen: !state.isPlayerOpen
             }
+        }
+
         default: return state;
     }
 };

@@ -18,7 +18,9 @@ const Home = ({visitorLocation}) => {
     }
     return (
         <Auxiliary>
-            
+            <SlidableList params={{ name: "quran", order: "clickcount", reverse: true}}
+                listTitle="Quran"
+            />
             <SlidableList params={{order: "votes", reverse: true}}
                 listTitle="Popular stations"
             />
@@ -27,8 +29,6 @@ const Home = ({visitorLocation}) => {
                 <SlidableList params={{countrycode: visitorLocation.country, reverse: true}}
                 listTitle={`Local stations from ${(countriesListJSON.filter(el => upperString(el.code) === upperString(visitorLocation.country)).pop()?.name || visitorLocation.country)}`}/>
             }
-             <SlidableList params={{tag: getRandomList(), order: "random"}}
-            />
             <Suggestions />
              <SlidableList params={{tag:  getRandomList(), order: "random"}}
             />

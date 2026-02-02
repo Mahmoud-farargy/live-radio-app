@@ -1,30 +1,46 @@
-import React, { Fragment, useEffect, useState, memo } from "react";
-import Carousel from "react-items-carousel";
-import Loader from "react-loader-spinner";
+import React, { useEffect, useState, memo, useContext, useMemo } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import {
+  PrevButton,
+  NextButton,
+  usePrevNextButtons
+} from '../UI/EmblaCarouselArrowButtons'
+import { TailSpin } from "react-loader-spinner";
 import SlidableListItem from "./SlidableListItem/SlidableListItem";
 import PropTypes from "prop-types";
-import { withStationsFetcher } from "../../components/HOC/withStationsFetcher";
-import { useHistory } from "react-router-dom";
+import { withStationsFetcher } from "../HOC/withStationsFetcher";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import * as Consts from "../../utilities/consts";
-import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from "react-icons/io";
 import { serialize, trimText } from "../../utilities/tools";
+import { AudioContext } from "../PlayerContext/PlayerContext";
 import { connect } from "react-redux";
 
-const SlidableList = ({ params, fetchStations, listTitle, currentBufferingAudio }) => {
-  const [itemsPerSide, setItemsPerSlide] = useState(6);
-  const [activeItemIndex, setActiveItemIndex] = useState(0);
+const SlidableList = ({ params = {}, fetchStations, listTitle, isAudioBuffering, storageCopy }) => {
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "start",
+    slidesToScroll: 5,
+    containScroll: "trimSnaps",
+  });
+    const {
+    prevBtnDisabled,
+    nextBtnDisabled,
+    onPrevButtonClick,
+    onNextButtonClick
+  } = usePrevNextButtons(emblaApi)
+  
   const [listName, setListName] = useState("");
   const [response, setResponse] = useState({
     list: [],
     loading: true
   });
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
+
+  const { toggleStationPlaying, toggleStationLiking } = useContext( AudioContext );
 
   useEffect(() => {
   if (params && typeof params === "object" && params !== null) {
-      setActiveItemIndex(0);
       setResponse((prev) => ({
         ...prev,
         loading: true,
@@ -48,116 +64,97 @@ const SlidableList = ({ params, fetchStations, listTitle, currentBufferingAudio 
     setListName(params?.tag ? params.tag : "");
   }, [params, fetchStations]);
 
-  useEffect(() => {
-    const ITEM_GUTTER = 12;
-    const MIN_ITEMS = 1;
-    const MAX_ITEMS = 9;
-
-    const handleResize = () => {
-        const viewportWidth =
-          window.innerWidth || document.documentElement.clientWidth;
-        const ITEM_WIDTH = viewportWidth <= 540 ? 140 : 200;
-
-        const availableWidth = viewportWidth - 40;
-        const calculatedItems = Math.floor(
-          availableWidth / (ITEM_WIDTH + ITEM_GUTTER)
-        );
-
-        const itemsToShow = Math.max(
-          MIN_ITEMS,
-          Math.min(MAX_ITEMS, calculatedItems)
-        );
-        setItemsPerSlide(itemsToShow);
-      };
-
-      let timeout;
-      const debouncedResize = () => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-          handleResize();
-        }, 150);
-      };
-
-      handleResize();
-      window.addEventListener("resize", debouncedResize);
-
-      return () => {
-        clearTimeout(timeout);
-        window.removeEventListener("resize", debouncedResize);
-      };
-
-  }, []);
-
+  const list = useMemo(()=> response.list, [response?.list]);
+  
   const directMeToCategoryPage = () => {
-    history.push(`${Consts.CATEGORY}?${serialize({ ...params })}`);
+    navigate(`${Consts.CATEGORY}?${serialize({ ...params })}`);
   }
+
+
+  const itemMap = useMemo(() => new Map(list.map(i => [i.id, i])),[list]);
+
+  const onListClick = (event) => {
+    const element = event.target.closest("[data-item-id]");
+    if(!element) return;
+    const elementId = element.dataset.itemId
+    if(!elementId) return;
+    const item = itemMap.get(elementId);
+    if(!item) return;
+
+    const actionType = event.target.closest("[data-action]")?.dataset.action;
+
+    switch(actionType){
+      case "toggleLiking": 
+        const isLiked = !!+element.dataset.liked;
+        toggleStationLiking({item, isLiked});
+
+      break;
+      case "togglePlaying":
+        toggleStationPlaying({list, itemId: elementId});
+
+      break;
+      default: {
+        return {}
+      }
+    }
+  }
+  
+
   return (
-    <Fragment>
+    <div className="fluid-container">
       {response.loading ?
         <div id="slidableListLoading">
-          <Loader
-            type="TailSpin"
-            arialLabel="loading-indicator"
+          <TailSpin
+            aria-label="loading..."
             color="var(--gray)"
             height={70}
             width={70} />
         </div>
-        : response && response.list.length > 0 &&
-        <section id="slidableList">
+        : response && list.length > 0 &&
+        <section className="slidableList">
           <div className="slidableList--header flex-row">
-            <h4 className="list--name"title={listTitle}>{trimText(listTitle || listName, 25)}</h4>
+            <h4 className="list--name ellipsis-x1"title={listTitle}>{trimText(listTitle || listName, 25)}</h4>
             <span className="see--all--btn" onClick={() => directMeToCategoryPage()}>{t("titles.see_all")}</span>
           </div>
-          <ul className="slidableList--ul">
-            <Carousel
-              requestToChangeActive={setActiveItemIndex}
-              activeItemIndex={activeItemIndex}
-              numberOfCards={itemsPerSide}
-              infiniteLoop={false}
-              firstAndLastGutter={true}
-              enablePlaceholder={true}
-              gutter={4}
-              outsideChevron={false}
-              slidesToScroll={3}
-              chevronWidth={25}
-              placeholderItem={
-                <Loader
-                  type="TailSpin"
-                  arialLabel="loading-indicator"
-                  color="var(--light-black)"
-                  height={60}
-                  width={60} />
-              }
-              classes={{ wrapper: "wrapper", itemsWrapper: "items--wrapper", itemsInnerWrapper: "items--inner--wrapper" }}
-              rightChevron={<button aria-label="Scroll right" className="slidablelist--right--arrow">
-                <IoIosArrowDroprightCircle />
-              </button>}
-              leftChevron={<button aria-label="Scroll left" className="slidablelist--left--arrow">
-                <IoIosArrowDropleftCircle />
-              </button>}
-            >
-              {response.list?.map((item, i) => {
-                return item && (<SlidableListItem key={item.stationuuid || i} isAudioBuffering={currentBufferingAudio?.state && currentBufferingAudio?.id && (currentBufferingAudio?.id === item.stationuuid)} item={item} wholeList={response.list} />)
-              })}
-            </Carousel>
+          <div className="embla">
+              <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
 
-          </ul>
+              <div className="embla__viewport" ref={emblaRef}>
+                <div className="embla__container" onClick={onListClick}>
+                  {list.map((item) => (
+                    <ul className="embla__slide slidableList--ul" key={item.stationuuid}>
+                      <SlidableListItem
+                        isAudioBuffering={isAudioBuffering}
+                        item={item}
+                        wholeList={list}
+                        favoritesList={storageCopy?.favorites || []}
+                        historyList={storageCopy?.history || []}
+                      />
+                    </ul>
+                  ))}
+                </div>
+              </div>
+              <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
+          </div>
         </section>
       }
-    </Fragment>
+    </div>
   )
 };
+
 SlidableList.propTypes = {
   params: PropTypes.object.isRequired,
   fetchStations: PropTypes.func.isRequired,
   listTitle: PropTypes.string,
+  storageCopy: PropTypes.object.isRequired,
 }
-SlidableList.defaultProps = {
-  params: {}
-}
+
 const mapStateToProps = state => {
+  const mainState = state[Consts.MAIN] || {};
   return {
-    currentBufferingAudio: state[Consts.MAIN].currentBufferingAudio || {}
+    isAudioBuffering: mainState.currentBufferingAudio?.state ?? false,
+    storageCopy: mainState.localStorageCopy ?? {},
   }
 }
+
 export default connect(mapStateToProps)(withStationsFetcher( memo(SlidableList)));

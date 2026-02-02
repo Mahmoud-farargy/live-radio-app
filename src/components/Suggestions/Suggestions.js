@@ -1,5 +1,5 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import * as Consts from "../../utilities/consts";
 import topTags from "../../info/topTags.json";
 import { hashtigify } from "../../utilities/tools";
@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import "./Suggestions.scss";
 
 const Suggestions = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const { t } = useTranslation();
     const [shuffledTags, setTagsArr] = useState();
     const list = Object.freeze([
@@ -38,12 +38,12 @@ const Suggestions = () => {
     }, []);
     const openCategory = (name) => {
         if(name){
-            history.push(`${Consts.CATEGORY}?tag=${name}&order=votes&reverse=true`);
+            navigate(`${Consts.CATEGORY}?tag=${name}&order=votes&reverse=true`);
         }
     }
 
     return (
-        <Fragment>
+        <div className="page-container">
             {/* Recommended */}
             <section id="suggestions">
                 <div id="recommended">
@@ -83,7 +83,7 @@ const Suggestions = () => {
                     }
                 </div>
             </section>
-        </Fragment>
+        </div>
     )
 };
 

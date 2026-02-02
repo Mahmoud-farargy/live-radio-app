@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import Routes from "../../router/routes";
+import AppRoutes from "../../router/routes";
 import Header from "../Header/Header";
 import styled from "styled-components";
 import { connect } from "react-redux";
@@ -8,7 +8,7 @@ import * as consts from "../../utilities/consts";
 import GlobalLoading from "../../components/Loading/Global";
 
 const Main = styled.main`
-        posititon: relative;
+        position: relative;
         margin-left: var(--default-layout-size);
         background-color: var(--seconday-clr);
         min-height: 100vh;
@@ -25,16 +25,22 @@ const Main = styled.main`
             z-index: var(--z-backdrop);
             display:none;
         }
-        padding-bottom:${(props) => props.playerState.isPlayerFullMode && props.playerState.isPlayerOpen ? "calc(var(--player-height-size) + 30px)" : "30px"};
+        padding-bottom:${({$playerState}) => $playerState.isPlayerFullMode && $playerState.isPlayerOpen ? "calc(var(--player-height-size) + 30px)" : "30px"};
 `;
 const Screens = ({isPlayerFullMode, isPlayerOpen, closeSidebarOnMobile, isAppLoading}) => {
     return (
         <Fragment>
-            <Main playerState={{isPlayerFullMode, isPlayerOpen}} id="screens">
-                {isAppLoading && <GlobalLoading />}
+            <Main $playerState={{isPlayerFullMode, isPlayerOpen}} id="screens">
+                
                 <div className="modal--backdrop" onClick={() => closeSidebarOnMobile()}></div>
                 <Header />
-                <Routes />
+                {
+                    isAppLoading ?
+                        <GlobalLoading />
+                    :
+                        <AppRoutes />
+                }
+                
             </Main>
         </Fragment>
     )

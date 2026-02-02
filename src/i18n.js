@@ -1,46 +1,29 @@
 import i18n from "i18next";
-import backend from "i18next-http-backend";
-import languageDetector from "i18next-browser-languagedetector";
+import HttpBackend from "i18next-http-backend";
+import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
-import { translationEn, translationEs, translationFr, translationCn, translationIt, translationDe, translationHi }from "./locales";
 
-const resources = {
-    en: {
-        translation: translationEn
-    },
-    es: {
-        translation: translationEs
-    },
-    fr: {
-        translation: translationFr
-    },
-    hi: {
-        translation: translationHi
-    },
-    cn: {
-        translation: translationCn
-    },
-    it: {
-        translation: translationIt
-    },
-    de: {
-        translation: translationDe
-    }
-}
-
-
-i18n.use(backend).use(languageDetector).use(initReactI18next).init({
+i18n
+  .use(HttpBackend)
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
     fallbackLng: "en",
-    debug: true,
-    lng:"en",
-    resources,
+    debug: process.env.NODE_ENV === "development",
+    lng: "en",
+    backend: {
+      loadPath: "/locales/{{lng}}/{{lng}}.json",
+    },
     detection: {
-        order: ["path", "localStorage", "cookie", "queryString", "htmlTag"],
-        cache: ["cookie"]
+      order: ["path", "localStorage", "cookie", "queryString", "htmlTag"],
+      caches: ["localStorage", "cookie"],
     },
     interpolation: {
-        escapeValue: false
-    }
-});
+      escapeValue: false,
+    },
+    react: {
+      useSuspense: true,
+    },
+  });
 
 export default i18n;

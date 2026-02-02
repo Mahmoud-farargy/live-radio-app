@@ -1,12 +1,14 @@
-import React, { Fragment } from "react";
+import React from "react";
 import "./About.scss";
 import { ImGithub } from "react-icons/im";
 import { MdEmail } from "react-icons/md";
-import { portfolioURL } from "../../../info/app-config.json"; 
+import appInfo from "../../../info/app-config";
+
 import { AiFillInstagram, AiFillCodepenCircle } from "react-icons/ai";
 import { useTranslation } from "react-i18next";
 
 const About = () => {
+    const { portfolioURL } = appInfo;
     const { t } = useTranslation();
     const contactList = Object.freeze([
         {type: "github", title: "Github",url: "https://github.com/Mahmoud-farargy", icon: (<ImGithub style={{ fontSize: "30px" }} />), id: "github"},
@@ -16,7 +18,7 @@ const About = () => {
     ]);
     
     return (
-        <Fragment>
+        <div className="page-container">
             <div id="about--container" className="flex-column">
                 <div className="about--inner">
                     <div className="about-sub flex-column">
@@ -42,7 +44,7 @@ const About = () => {
                     </div>
                 </div>
             </div>
-        </Fragment>
+        </div>
     )
 }
 export default About;

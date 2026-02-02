@@ -65,7 +65,8 @@
         "volume_down": {"title": "Bajar volumen", "description": "Disminuir el volumen en un 10%."},
         "prev_station": {"title": "Estación anterior", "description": "Cambiar a la emisora ​​anterior de la lista actual."},
         "nxt_station": {"title": "Siguiente estacion", "description": "Cambiar a la siguiente estación de la lista actual."},
-        "reload": {"title": "Recargar",  "description": "Recargar la emisora ​​actual."}
+        "reload": {"title": "Recargar",  "description": "Recargar la emisora ​​actual."},
+        "favorite_unfavorite": {"title": "Marcar/Desmarcar favorito", "description": "Marcar o desmarcar la emisora actual como favorita."}
     },
     "station_options": {
         "default_option": "Por favor seleccione",

@@ -76,6 +76,9 @@ const root = css`
   --z-global-loading: 90;
   --z-modal-backdrop: 300;
   --z-modal-inner: 350;
+  /* paddings */
+  --page-desktop-paddings: 1.25rem 1.2rem 0.625rem;
+  --page-mobile-paddings: 1.25rem 1.2rem 0.625rem;
 }
 `;
 

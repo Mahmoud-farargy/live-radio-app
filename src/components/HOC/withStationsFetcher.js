@@ -1,18 +1,20 @@
 import React, { PureComponent } from "react";
-import { notify, serialize, lowerString } from "../../utilities/tools";
+import { notify, serialize, lowerString, isValidAudioSrc, convertToAPlayerItem } from "../../utilities/tools";
 import PropTypes from "prop-types";
-import api from "../../services/api";
+import api, { setBaseURL } from "../../services/api";
 import { connect } from "react-redux";
 import * as Consts from "../../utilities/consts";
-import { pageLimit } from "../../info/app-config.json";
+import appInfo from "../../info/app-config";
 
 
 export const withStationsFetcher = WrappedComponent => {
+    const { pageLimit, radioBrowserUrls } = appInfo;
 
     class newComponent extends PureComponent {
         constructor(props) {
             super(props);
             this._isMounted = true;
+            this.hasError = false;
         }
         componentWillUnmount(){
             this._isMounted = false;
@@ -32,20 +34,30 @@ export const withStationsFetcher = WrappedComponent => {
                     api().get(`/stations/search?${serialize(mainObject)}`).then((res) => {
                         
                         if (this._isMounted) {
-                            const filteredData = (res.data?.filter(item => parseInt(item.ssl_error) === 0));
+                            const filteredData = res.data?.filter(item => {
+                                const src = item?.urlResolved || item?.url;
+                                const isSecure = parseInt(item.ssl_error) === 0;
+                                const isSrcValid = isValidAudioSrc(src);
+
+                                return isSrcValid && isSecure;
+                            }).map(audioItem => convertToAPlayerItem(audioItem));
+                            
                             const lengthBeforeFitlering = res.data?.length;
                             const newObject = {
                                 data: filteredData,
                                 length: lengthBeforeFitlering,
                             };
                             const receievedData = (res?.data ? newObject : {});
+                            
                             resolve(receievedData);
                         }
                     }).catch((err) => {
-                        if(this._isMounted){
-                            notify(err?.message || "An error occurred.", "error");
-                            reject([]);
-                        }
+                        if(!this._isMounted || this.hasError) return;                
+                        setBaseURL(radioBrowserUrls[2]);
+                        this.hasError = true;
+                        
+                        notify(err?.message || "An error occurred.", "error");
+                        reject([]);
                     });
                 } else {
                     reject([]);

@@ -65,7 +65,8 @@
         "volume_down": {"title": "Lautstärke verringern", "description": "Verringert die Lautstärke um 10%."},
         "prev_station": {"title": "Vorheriger Sender", "description": "Wechselt zum vorherigen Sender in der aktuellen Liste."},
         "nxt_station": {"title": "Nächster Sender", "description": "Wechselt zum nächsten Sender in der aktuellen Liste."},
-        "reload": {"title": "Neu laden",  "description": "Lädt den aktuellen Sender neu."}
+        "reload": {"title": "Neu laden",  "description": "Lädt den aktuellen Sender neu."},
+        "favorite_unfavorite": {"title": "Favorisieren / Entfernen", "description": "Den aktuellen Sender zu den Favoriten hinzufügen oder entfernen."}
     },
     "station_options": {
         "default_option": "Bitte auswählen",

@@ -12,8 +12,9 @@ import { useTranslation } from 'react-i18next';
 import LostConnectivity from "./components/Modal/LostConnection/LostConnection";
 import { useLocation } from "react-router-dom";
 import { googleAnalyticsKey } from "./info/secretInfo";
-import { portfolioURL, ipapiURL } from "./info/app-config.json";
+import appInfo from "./info/app-config";
 import Api from "./services/api";
+import PlayerContext from "./components/PlayerContext/PlayerContext"
 
 function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, changeVisitorLocation ,localMemory }) {
   const currlocation = useLocation();
@@ -23,8 +24,13 @@ function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, changeVis
   // states
   const [isMenuExpanded, setMenuExpansion]= useState(false);
   const [isConnected, setConnectivity] = useState(navigator.onLine);
-  const [isLoading, setLoading] = useState(true);
+  const [isFetchingLocation, setFetchingLocation] = useState(true);
   const { i18n } = useTranslation();
+
+  // ==== 2026 Note ====
+  // I made this app in 2021 whilst learning React and JavaScript, it needs to follow clean code principles, avoid nested if, else conditions and some parts needs to be refactored.
+
+  const { portfolioURL, ipapiURL } = appInfo;
   // effects
   useEffect(() => {
      // xxx Google analytics xxx
@@ -52,17 +58,22 @@ function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, changeVis
 
     Api()
     .get(ipapiURL).then((res) => {
-      if(_isMounted.current){
-          const data = res?.data;
-          const { country_code = "", city = "", ip = "" } = data || {};
-          (country_code && typeof country_code === "string") && changeVisitorLocation({
-            ip: ip,
-            city: city,
-            country: country_code
-          });
-      }
+     if(!_isMounted.current) return;
+
+      const data = res?.data;
+      const { country_code = "", city = "", ip = "" } = data || {};
+      (country_code && typeof country_code === "string") && changeVisitorLocation({
+        ip: ip,
+        city: city,
+        country: country_code
+      });
+      
+    }).finally(() => {
+      if(!_isMounted.current) return;
+
+      setFetchingLocation(false);
     });
-    window.addEventListener("load", () => setLoading(false));
+
     window.addEventListener('offline', ()=> setConnectivity(false));
     window.addEventListener('online', () => setConnectivity(true));
     changeTheme(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light");
@@ -102,9 +113,9 @@ function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, changeVis
   useEffect(() => {
     const settings = localMemory?.settings;
     if(settings){
-      settings.choosenLangauge && i18n.changeLanguage(settings.choosenLangauge);
+      settings.chosenLanguage && i18n.changeLanguage([settings.chosenLanguage.value]);
     }
-  }, [localMemory]);
+  }, [i18n, localMemory]);
   const closeSidebarOnMobile = useCallback(() => {
     if(_isMounted?.current && navToggler.current && ((window.innerWidth || document.documentElement.clientWidth) <= 670)){
       navToggler.current.checked = false;
@@ -130,19 +141,22 @@ function App({ updateStoreWithLocalStorage, currentTheme, changeTheme, changeVis
     }
     setMenuExpansion(isChecked);
   }
-  // jsx
+
   return (
     <div id="app">
-      {/* modals */}
+      {/* Modals */}
       <ToastContainer />
       {!isConnected && <LostConnectivity />}
-      {/* app */}
+      {/* Views */}
       <input ref={navToggler} type="checkbox" onChange={(e) => onNavTogglerChange(e)} id="nav-toggler" />
-      <>
-        <Sidebar closeSidebarOnMobile={closeSidebarOnMobile} isMenuExpanded={isMenuExpanded}/>
-        <Screens closeSidebarOnMobile={closeSidebarOnMobile} isAppLoading={isLoading}/>
-      </>
-      <Player />
+      
+      <Sidebar closeSidebarOnMobile={closeSidebarOnMobile} isMenuExpanded={isMenuExpanded}/>
+
+      <PlayerContext>
+        <Screens closeSidebarOnMobile={closeSidebarOnMobile} isAppLoading={isFetchingLocation}/>
+        <Player />
+      </PlayerContext>
+     
     </div>
   );
 }

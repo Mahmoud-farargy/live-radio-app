@@ -2,13 +2,13 @@ import React from "react";
 import "./Header.scss";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdArrowDropleftCircle, IoMdArrowDroprightCircle  } from "react-icons/io";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import appConfig from "../../info/app-config.json";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import appConfig from "../../info/app-config";
 const Header = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation(); 
-    const navigate = (direction) => {
-        history.go(direction);
+    const moveToPage = (direction) => {
+        navigate(direction);
     };
     return (
         <header id="header">
@@ -20,8 +20,8 @@ const Header = () => {
                     <Link to="/" className="logo__text">{appConfig.title}</Link>
                 </span>
                 <div className="navigation--container flex-row">
-                    <span onClick={() => navigate(-1)} className={`tooltip ${!location.key ? 'disabled' :''}`.trim()} data-title="Next"><IoMdArrowDropleftCircle /></span>
-                    <span onClick={() => navigate(1)}  className="tooltip" data-title="Prev"><IoMdArrowDroprightCircle/></span>
+                    <span onClick={() => moveToPage(-1)} className={`tooltip ${!location.key ? 'disabled' :''}`.trim()} data-title="Next"><IoMdArrowDropleftCircle /></span>
+                    <span onClick={() => moveToPage(1)}  className="tooltip" data-title="Prev"><IoMdArrowDroprightCircle/></span>
                 </div>
             </div>
         </header>

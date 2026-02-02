@@ -65,7 +65,8 @@
         "volume_down": {"title": "Volume down", "description": "Decrease the volume by 10%."},
         "prev_station": {"title": "Previous station", "description": "Switch to the previous station in the current list."},
         "nxt_station": {"title": "Next station", "description": "Switch to the next station in the current list."},
-        "reload": {"title": "Reload",  "description": "Reload the current station."}
+        "reload": {"title": "Reload",  "description": "Reload the current station."},
+        "favorite_unfavorite": {"title": "Favorite/Unfavorite",  "description": "Favorite or unfavorite the current station."}
     },
     "station_options": {
         "default_option": "Please select",

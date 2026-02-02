@@ -65,7 +65,8 @@
         "volume_down": {"title": "वॉल्यूम घटाएं", "description": "वॉल्यूम को 10% घटाएं।"},
         "prev_station": {"title": "पिछला स्टेशन", "description": "वर्तमान सूची में पिछले स्टेशन पर स्विच करें।"},
         "nxt_station": {"title": "अगला स्टेशन", "description": "वर्तमान सूची में अगले स्टेशन पर स्विच करें।"},
-        "reload": {"title": "रिलोड",  "description": "वर्तमान स्टेशन को फिर से लोड करें।"}
+        "reload": {"title": "रिलोड",  "description": "वर्तमान स्टेशन को फिर से लोड करें।"},
+        "favorite_unfavorite": {"title": "पसंदीदा/हटाएँ", "description": "वर्तमान स्टेशन को पसंदीदा में जोड़ें या हटाएँ।"}
     },
     "station_options": {
         "default_option": "कृपया चयन करें",

@@ -10,14 +10,15 @@ const Hotkeys = () => {
         {id: "ofiw8fowf", name: t("hotkeys.volume_down.title"), btnKey: "-", desciption: t("hotkeys.volume_down.description")},
         {id: "e7tfwojgw", name: t("hotkeys.prev_station.title"), btnKey: "P", desciption: t("hotkeys.prev_station.description")},
         {id: "woigu9wgh", name: t("hotkeys.nxt_station.title"), btnKey: "N", desciption: t("hotkeys.nxt_station.description")},
-        {id: "948gheoij", name: t("hotkeys.reload.title"), btnKey: "R", desciption: t("hotkeys.reload.description")},
+        {id: "woigu9wgh", name: t("hotkeys.nxt_station.title"), btnKey: "N", desciption: t("hotkeys.nxt_station.description")},
+        {id: "hiepoweff", name: t("hotkeys.favorite_unfavorite.title"), btnKey: "F", desciption: t("hotkeys.favorite_unfavorite.description")},
     ]);
     return (
-        <>
+        <div id="hotKeys">
         {
             keysList && keysList.length > 0 
             && keysList.map(item => item &&(
-                <div key={item.id} id="hotKeys" className="flex-row">
+                <div key={item.id} className="flex-row hotkey--inner">
                     <div className={`${item.id === 'fhsifhous' ? "space__hotkey" : ""} key__item`}>
                         <span>{item.btnKey}</span>
                     </div>
@@ -28,7 +29,7 @@ const Hotkeys = () => {
                 </div>
             ))
         }
-        </>
+        </div>
     )
 };
 export default Hotkeys;

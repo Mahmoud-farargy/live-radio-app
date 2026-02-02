@@ -1,5 +1,7 @@
 import { toast } from "react-toastify";
 import { localStorageBasicData } from "../info/localStorageSkeletonData";
+import defaultImg from "../desgin/Assets/radio.jpg";
+
 // Notify
 export const notify = (text, type) => {
     switch (type) {
@@ -82,3 +84,46 @@ export const stringifyNumber = (num) => {
 
 export const lowerString = (str) => (str && typeof str === "string") ? (str.toLowerCase()): "";
 export const upperString = (str) => (str && typeof str === "string") ? (str.toUpperCase()): "";
+
+export const isValidAudioSrc = (src) => {
+  return (
+    typeof src === "string" &&
+    src.trim().length > 0 &&
+    /^https?:\/\//i.test(src)
+  );
+};
+
+export const convertToAPlayerItem = (item) => {
+
+  return {
+    name: item.name,
+    musicSrc: (item.urlResolved || item.url),
+    cover: defaultImg,
+    duration: 0,
+    singer: item.country,
+    id: item.stationuuid,
+    stationuuid: item.stationuuid,
+    country: item.country ?? "",
+    state: item.state ?? "",
+    homepage: item.homepage,
+    tags: item.tags,
+    votes: item.votes,
+    language: item.language,
+  }
+}
+
+export const arraysMatchById = (arr1, arr2) => {
+  if (arr1.length !== arr2.length) return false;
+
+  const ids = new Set();
+
+  for (const item of arr1) {
+    ids.add(item.id);
+  }
+
+  for (const item of arr2) {
+    if (!ids.has(item.id)) return false;
+  }
+
+  return true;
+}

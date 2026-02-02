@@ -59,6 +59,7 @@ export default class CreatableInputOnly extends Component{
     const { placeholder } = this.props;
     return (
       <CreatableSelect
+        classNamePrefix="app-select"
         components={components}
         inputValue={inputValue}
         isClearable
