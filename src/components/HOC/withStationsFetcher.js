@@ -35,7 +35,7 @@ export const withStationsFetcher = WrappedComponent => {
                         
                         if (this._isMounted) {
                             const filteredData = res.data?.filter(item => {
-                                const src = item?.urlResolved || item?.url;
+                                const src = item?.url_resolved || item?.url;
                                 const isSecure = parseInt(item.ssl_error) === 0;
                                 const isSrcValid = isValidAudioSrc(src);
 

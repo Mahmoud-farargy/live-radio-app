@@ -97,7 +97,7 @@ export const convertToAPlayerItem = (item) => {
 
   return {
     name: item.name,
-    musicSrc: (item.urlResolved || item.url),
+    musicSrc: (item.url_resolved || item.url),
     cover: defaultImg,
     duration: 0,
     singer: item.country,

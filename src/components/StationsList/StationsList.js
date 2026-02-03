@@ -78,7 +78,7 @@ const StationsList = ({ list = [], loading = false, isPlayerFullMode = true, isP
     const { t } = useTranslation();
     const { toggleStationPlaying, toggleStationLiking } = useContext( AudioContext );
 
-    const itemMap = useMemo(() => new Map(list.map(i => [i.id, i])),[list]);
+    const itemMap = useMemo(() => new Map(list?.map(i => [i.id, i])),[list]);
 
     const onListClick = (event) => {
     const element = event.target.closest("[data-item-id]");

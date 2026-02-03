@@ -170,6 +170,7 @@ const GlobalStyles = createGlobalStyle`
   p,
   strong,
   span,
+  small,
   i {
     color: var(--text-black);
   }
@@ -408,6 +409,7 @@ const GlobalStyles = createGlobalStyle`
     display: flex;
     justify-content: center;
     gap: 0.8rem;
+    padding-inline: 1rem;
     button {
       &:hover{
         transform: scale(1.08);

@@ -64,7 +64,7 @@ const Category = ({ fetchStations }) => {
 
     return (
         <div className="page-container">
-            <StationsList list={response?.results} loading={response?.loading} title={currentQueries?.get("tag") || (currentQueries?.get("name") ? `"${currentQueries?.get("name")}"` : "")} areSavedStations={false}/>
+            <StationsList list={response?.results || []} loading={response?.loading} title={currentQueries?.get("tag") || (currentQueries?.get("name") ? `"${currentQueries?.get("name")}"` : "")} areSavedStations={false}/>
             <div className="load--more__button__container">
                 {isLoadingMoreItemsAllowed ? <button onClick={loadMoreStations}>
                     { response.isLoadingMore ? 'Loading More...' : 'Load More' }

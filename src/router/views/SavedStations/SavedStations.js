@@ -14,7 +14,15 @@ const SavedStations = ({savedList = {}}) => {
     useEffect(() => {
         const availableListNames = ["favorites", "history"];
         if(listType && availableListNames.some(name => name === listType)){
-            setCurrentList(savedList[listType]);
+            const stationsList = savedList[listType] || [];
+            const newStationsArray = stationsList.map(({url, url_resolved, musicSrc,...station}) => {
+                return{
+                    ...station,
+                    musicSrc: url_resolved || url || musicSrc
+                };
+            });
+            
+            setCurrentList(newStationsArray);
         };
     }, [listType,savedList]);
     return (

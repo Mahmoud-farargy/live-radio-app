@@ -64,14 +64,14 @@ const SlidableList = ({ params = {}, fetchStations, listTitle, isAudioBuffering,
     setListName(params?.tag ? params.tag : "");
   }, [params, fetchStations]);
 
-  const list = useMemo(()=> response.list, [response?.list]);
+  const list = useMemo(()=> response.list || [], [response?.list]);
   
   const directMeToCategoryPage = () => {
     navigate(`${Consts.CATEGORY}?${serialize({ ...params })}`);
   }
 
 
-  const itemMap = useMemo(() => new Map(list.map(i => [i.id, i])),[list]);
+  const itemMap = useMemo(() => new Map(list?.map(i => [i.id, i])),[list]);
 
   const onListClick = (event) => {
     const element = event.target.closest("[data-item-id]");
