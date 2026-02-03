@@ -43,7 +43,7 @@ const Suggestions = () => {
     }
 
     return (
-        <div className="page-container">
+        <div className="fluid-container">
             {/* Recommended */}
             <section id="suggestions">
                 <div id="recommended">

@@ -5,81 +5,98 @@
     min-height: 59px;
     transition: background-color 0.3s linear;
     border-radius: 0.4rem;
-    .stationsList--item--inner{
+    .stationsList--item--table{
         width: 100%;
-        align-items: center;
-        justify-content: space-between;
-        .stationsList--item--left, .stationsList--item--actions{
-            display: flex;
-            align-items: center;
+        border-collapse: collapse;
+        table-layout: fixed;
+        td{
+            vertical-align: middle;
+            padding: 0;
         }
-        $right-spacing: 0.6rem;
-        .stationsList--item--left{
-            flex: 1;
+        .col-number{
+            width: 2rem;
             cursor: pointer;
-            .station--number{
-                width: 20px;
-                display: grid;
-                place-content: center;
-                color: var(--text-black);
-                margin-right: $right-spacing;
-            }
-            .image--container {
-                display: inline-block;
-                width: 2.813rem;
-                height: 2.813rem;
-                margin-right: $right-spacing;
-            }
-            img{
-                width: 2.813rem;
-                height: 2.813rem;
-                object-fit: cover;
-                border-radius: 5px;
-                vertical-align: middle;
-                margin: 0;
-                display: inline-block;
-            }
-            .stations__item__media__btn{
-                font-size: var(--font-size-large);
-            }
         }
-       .stationsList--item--actions{
-           .stationsList--item--like{
-                display: grid;
-                place-items: center;
-                transition: all 0.3s linear;
-                cursor: pointer;
-                opacity: 0.7;
-                font-size: var(--font-size-large);
-                padding: 0.2rem 0.5rem;
-                &:hover{
-                    opacity: 1;
-                }
-           }
-           .like{
-               display: none;
-               color: var(--dark-gray);
-           }
-           .unlike{
-                opacity: 0.5;
-                color: var(--light-red);
-            }
-        .options__btn{
-            color: var(--text-black);
-            font-size: var(--font-size-medium);
+        .col-image{
+            width: 3.4rem;
+            cursor: pointer;
         }
-       }
+        .col-info{
+            width: auto;
+            padding-right: 0.5rem;
+            cursor: pointer;
+        }
+        .col-like{
+            width: 2.6rem;
+            text-align: center;
+        }
+        .col-options{
+            width: 2rem;
+            text-align: center;
+        }
+    }
+    $right-spacing: 0.6rem;
+    .station--number{
+        width: 20px;
+        display: grid;
+        place-content: center;
+        color: var(--text-black);
+        margin-right: $right-spacing;
+    }
+    .image--container {
+        display: inline-block;
+        width: 2.813rem;
+        height: 2.813rem;
+        margin-right: $right-spacing;
+    }
+    img{
+        width: 2.813rem;
+        height: 2.813rem;
+        object-fit: cover;
+        border-radius: 5px;
+        vertical-align: middle;
+        margin: 0;
+        display: inline-block;
+    }
+    .stations__item__media__btn{
+        font-size: var(--font-size-large);
+    }
+    .stationsList--item--info{
+        display: block;
+        min-width: 0;
+    }
+    .stationsList--item--like{
+        display: grid;
+        place-items: center;
+        transition: all 0.3s linear;
+        cursor: pointer;
+        opacity: 0.7;
+        font-size: var(--font-size-large);
+        padding: 0.2rem 0.5rem;
+        &:hover{
+            opacity: 1;
+        }
+    }
+    .like{
+        display: none;
+        color: var(--dark-gray);
+    }
+    .unlike{
+        opacity: 0.5;
+        color: var(--light-red);
+    }
+    .options__btn{
+        color: var(--text-black);
+        font-size: var(--font-size-medium);
     }
 
     &:hover{
         background-color: var(--transparent-black);
-        .stationsList--item--actions .stationsList--item--like{
-            .like{
-               display: inline-block;  
-            }
-            .unlike{
-                opacity: 1;
-            }
+        .stationsList--item--like .like{
+            display: inline-block;  
+        }
+        .stationsList--item--like .unlike{
+            opacity: 1;
         }
     }
 } 

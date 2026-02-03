@@ -317,12 +317,12 @@ const GlobalStyles = createGlobalStyle`
     background-color: var(--homeBoxes-bg-clr);
     padding: 1.3rem 1.5rem;
     margin-top: 1.3rem;
-    border-radius: var(--radius-curved);
+    border-radius: var(--radius);
     min-height: 240px;
     overflow: hidden;
     min-width: 100px;
   }
-  .slidableList{
+  .slidableList {
     .slidableList--header {
       width: 100%;
       align-items: center;
@@ -693,10 +693,11 @@ const GlobalStyles = createGlobalStyle`
       100% {-webkit-transform: scale(1.2, 1.2); opacity: 0.0;}
   }
   // --xx-- Global classes --xx--
-  .page-container,
+  .page-container {
+    padding: var(--page-paddings);
+  }
   .fluid-container {
-    width: 100%;
-    padding: var(--page-desktop-paddings);
+    padding: var(--fluid-container-paddings);
   }
   
   // responsive
@@ -742,6 +743,9 @@ const GlobalStyles = createGlobalStyle`
   }
   // 980px and less
   @media only screen and (max-width: 980px) {
+    :root{
+       --page-paddings: 1.25rem 1.2rem 0.625rem;
+    }
     section#suggestions {
       grid-template-columns: 100%;
     }
@@ -750,6 +754,8 @@ const GlobalStyles = createGlobalStyle`
   @media only screen and (max-width: 700px) {
     :root {
       --minimized-layout-size: 84%;
+      --fluid-container-paddings: 0.2rem 0;
+      --page-paddings: 1.25rem 0.8rem 0.625rem;
     }
     aside#sidebar#sidebar {
       width: 0;
@@ -757,24 +763,16 @@ const GlobalStyles = createGlobalStyle`
     main#screens#screens {
       margin-left: 0;
     }
-    .page-container {
-      padding-inline: var(--page-mobile-paddings);
-      padding-left: var(--page-mobile-paddings);
-      padding-right: var(--page-mobile-paddings);
-    }
-    .fluid-container{
-      padding:0;
-    }
     input#nav-toggler:checked ~ main#screens .modal--backdrop {
       display: block;
     }
   }
   // 670px and less
   @media only screen and (max-width: 670px) {
-    .stationsList--outer--container #stationsList {
-      padding: 1.3rem 0.6rem !important;
+    .stationsList--outer--container ul#stationsList {
+      padding: 1.3rem 0.3rem;
       li#stationsListItem {
-        padding: 0.6rem;
+        padding: 0.4rem;
       }
     }
     #recommended,

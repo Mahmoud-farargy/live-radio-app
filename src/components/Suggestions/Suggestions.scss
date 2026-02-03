@@ -13,7 +13,7 @@
         display: block;
         padding: 1.3rem 1rem;
         margin-top: 1.3rem;
-        border-radius: 0.5rem;
+        border-radius: var(--radius);
         box-shadow: 0px 4px 16px 0px rgba(44,101, 144, 0.1);
         .suggestions--box--header{
             align-items: center;
@@ -36,11 +36,11 @@
             width: 100%;
             background-color: var(--more-lighter-gray);
             align-items: stretch;
-            border-radius: 0.3rem;
+            border-radius: var(--radius);
             li.pop--tags--list--item{
                 .pop--tag{
                     padding: 0.2rem 0.4rem;
-                    border-radius: 0.4rem;
+                    border-radius: var(--radius);
                     background-color: var(--pill-bg-color);
                     color: var(--pill-text-color);
                     transition:  0.3s linear;
@@ -65,7 +65,7 @@
             gap: 0.8rem 0.6rem;
             .recommended--item{
                 background-color: var(--more-lighter-gray);
-                border-radius: 0.4rem;
+                border-radius: var(--radius);
                 display: grid;
                 place-items: center;
                 padding: 0.9rem 0.5rem;

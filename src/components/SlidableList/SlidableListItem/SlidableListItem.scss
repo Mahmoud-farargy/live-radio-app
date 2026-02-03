@@ -71,7 +71,7 @@
 
         }
         img{
-            height: 8.75rem;
+            height: 7rem;
             min-height: 100%;
             object-fit: fill;
             border-radius: var(--radius);
@@ -96,7 +96,7 @@
         }
     }
     .slidablelist--station--info{
-        margin-top:0.3rem;
+        margin-top:0.5rem;
         .station--name, .station--location{
             width:100%;
         }

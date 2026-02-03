@@ -25,10 +25,10 @@ export default class CreatableInputOnly extends Component{
     }
   };
   handleChange = (value) => {
-    this.setState({ value });
+    this.setState((prev)=> ({...prev, value }));
   };
   handleInputChange = (inputValue) => {
-    this.setState({ inputValue });
+    this.setState((prev)=> ({...prev, inputValue }));
   };
   handleKeyDown = (event) => {
     const { inputValue, value } = this.state;
@@ -39,10 +39,10 @@ export default class CreatableInputOnly extends Component{
       case 'Enter':
       case 'Tab': {
             if(!value.some(word => lowerString(word.value) === lowerCasedVal)){
-                this.setState({
+                this.setState((prev)=> ({...prev,
                     inputValue: '',
                     value: [...value, createOption(lowerCasedVal)],
-                });
+                }));
             }else{
                 // edit this please
                 notify(`${translate("alerts.already_added")}.`, "error");

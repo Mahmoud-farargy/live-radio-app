@@ -46,7 +46,7 @@ const OuterContainer = styled.div`
             display: block;
             padding: 1.3rem 1rem;
             margin-top: 1.3rem;
-            border-radius: 0.5rem;
+            border-radius: var(--radius);
             overflow: hidden;
         }
         .list--loading{

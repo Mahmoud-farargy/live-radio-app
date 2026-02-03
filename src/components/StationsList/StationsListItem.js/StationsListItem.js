@@ -61,50 +61,59 @@ const StationsListItem = ({ item, index, updateFavs, wholeList, currentStationId
             </Suspense>
 
             <li id="stationsListItem" onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)} className={`${isPlaying ? "active--station" : ""}`} data-item-id={item.id} data-liked={+isLiked}>
-                <div className="stationsList--item--inner flex-row">
-                    <div className="stationsList--item--left" data-action="togglePlaying">
-                        <span className="station--number" >{ isHoveredOn ?  ((isPlaying && isAudioPlaying && !isAudioBuffering)  ? <BsFillPauseFill className="stations__item__media__btn"/> : <BsPlayFill className="stations__item__media__btn"/>) : (isPlaying && isAudioPlaying && !isAudioBuffering) ?
-                            <BsSoundwave 
-                                aria-label="Playing"
-                                color="#fff"
-                                size={20}
-                            />
-                            : `${index + 1}` }
-                            </span>
-                        <span className="image--container">
-                            <img
-                                src={defaultImg}
-                                alt={item.name || "station"}
-                                ref={imgRef}
-                                loading="lazy"
-                            />  
-                        </span>
-
-                        <div className="stationsList--item--info">
-                            <h5 title={item.name} className="station--name ellipsis-x1">{item.name}</h5>
-                            <span title={stationLocation} className="station--location ellipsis-x1">{stationLocation}</span>
-                        </div>
-                    </div>
-                    <div className="stationsList--item--actions">
-                        <button data-action="toggleLiking" className="stationsList--item--like transparent_btn">
-                            {
-                                isLiked ?
-                                    <AiFillHeart className="unlike favIcon" /> :
-                                    <AiOutlineHeart className="like favIcon" />
-                            }
-                        </button>
-                        <span className="options__btn">
-                            <StationOptions
-                                isRecentlyPlayed={isRecentlyPlayed}
-                                isLiked={isLiked}
-                                setInfoModal={setInfoModal}
-                                item={item}
-                                removeFromHistory={removeFromHistory}
-                                btnIcon={<BsThreeDotsVertical />}
-                            />   
-                        </span>
-                    </div>
-                </div>
+                <table className="stationsList--item--table">
+                    <tbody>
+                        <tr>
+                            <td className="col-number" data-action="togglePlaying">
+                                <span className="station--number">{ isHoveredOn ?  ((isPlaying && isAudioPlaying && !isAudioBuffering)  ? <BsFillPauseFill className="stations__item__media__btn"/> : <BsPlayFill className="stations__item__media__btn"/>) : (isPlaying && isAudioPlaying && !isAudioBuffering) ?
+                                    <BsSoundwave 
+                                        aria-label="Playing"
+                                        color="#fff"
+                                        size={20}
+                                    />
+                                    : `${index + 1}` }
+                                </span>
+                            </td>
+                            <td className="col-image" data-action="togglePlaying">
+                                <span className="image--container">
+                                    <img
+                                        src={defaultImg}
+                                        alt={item.name || "station"}
+                                        ref={imgRef}
+                                        loading="lazy"
+                                    />  
+                                </span>
+                            </td>
+                            <td className="col-info" data-action="togglePlaying">
+                                <div className="stationsList--item--info">
+                                    <h5 title={item.name} className="station--name ellipsis-x1">{item.name}</h5>
+                                    <span title={stationLocation} className="station--location ellipsis-x1">{stationLocation}</span>
+                                </div>
+                            </td>
+                            <td className="col-like">
+                                <button data-action="toggleLiking" className="stationsList--item--like transparent_btn">
+                                    {
+                                        isLiked ?
+                                            <AiFillHeart className="unlike favIcon" /> :
+                                            <AiOutlineHeart className="like favIcon" />
+                                    }
+                                </button>
+                            </td>
+                            <td className="col-options">
+                                <span className="options__btn">
+                                    <StationOptions
+                                        isRecentlyPlayed={isRecentlyPlayed}
+                                        isLiked={isLiked}
+                                        setInfoModal={setInfoModal}
+                                        item={item}
+                                        removeFromHistory={removeFromHistory}
+                                        btnIcon={<BsThreeDotsVertical />}
+                                    />   
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </li>
         </Fragment>
     )

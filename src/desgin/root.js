@@ -40,8 +40,7 @@ const root = css`
   // letter spacing
   --spacing: 0.25rem;
   // border radius
-  --radius: 0.5rem;
-  --radius-curved: 1.5rem;
+  --radius: 0.4rem;
   /* font-sizes */
   //-- static
   --font-size-sm: 14px;
@@ -77,8 +76,8 @@ const root = css`
   --z-modal-backdrop: 300;
   --z-modal-inner: 350;
   /* paddings */
-  --page-desktop-paddings: 1.25rem 1.2rem 0.625rem;
-  --page-mobile-paddings: 1.25rem 1.2rem 0.625rem;
+  --page-paddings: 1.25rem 2rem 0.625rem;
+  --fluid-container-paddings: 0.5rem 2rem 0 2rem;
 }
 `;
 
